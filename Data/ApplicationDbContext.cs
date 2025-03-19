@@ -1,6 +1,10 @@
 using EgitimSitesi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EgitimSitesi.Data
 {
@@ -31,6 +35,72 @@ namespace EgitimSitesi.Data
                 warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
             
             base.OnConfiguring(optionsBuilder);
+        }
+
+        // Override SaveChanges to convert all DateTime properties to UTC before saving
+        public override int SaveChanges()
+        {
+            ConvertDateTimesToUtc();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            ConvertDateTimesToUtc();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            ConvertDateTimesToUtc();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            ConvertDateTimesToUtc();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        private void ConvertDateTimesToUtc()
+        {
+            // Get all entities with DateTime properties that have been added or modified
+            var entityEntries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+            foreach (var entityEntry in entityEntries)
+            {
+                // Find all DateTime properties
+                var dateTimeProperties = entityEntry.Entity.GetType().GetProperties()
+                    .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+
+                foreach (var property in dateTimeProperties)
+                {
+                    // Get the current value
+                    var value = property.GetValue(entityEntry.Entity);
+
+                    if (value != null)
+                    {
+                        if (property.PropertyType == typeof(DateTime))
+                        {
+                            var dateTime = (DateTime)value;
+                            // Only convert if it's not already UTC
+                            if (dateTime.Kind != DateTimeKind.Utc)
+                            {
+                                property.SetValue(entityEntry.Entity, DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
+                            }
+                        }
+                        else if (property.PropertyType == typeof(DateTime?))
+                        {
+                            var nullableDateTime = (DateTime?)value;
+                            if (nullableDateTime.HasValue && nullableDateTime.Value.Kind != DateTimeKind.Utc)
+                            {
+                                property.SetValue(entityEntry.Entity, DateTime.SpecifyKind(nullableDateTime.Value, DateTimeKind.Utc));
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
