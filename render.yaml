@@ -4,7 +4,7 @@ services:
     env: docker
     repo: https://github.com/yourusername/egitimsite.git  # Replace with your repository URL
     region: ohio  # Choose a region close to your users
-    plan: starter  # Choose an appropriate plan
+    plan: free  # Using free plan
     branch: main  # Replace with your main branch name
     healthCheckPath: /
     numInstances: 1
@@ -15,10 +15,16 @@ services:
         fromDatabase:
           name: egitimsite-db
           property: connectionString
+      - key: CloudinarySettings__CloudName
+        value: dm15yghqc
+      - key: CloudinarySettings__ApiKey
+        value: 815717773816796
+      - key: CloudinarySettings__ApiSecret
+        value: 2x8oZu-E0jFIWIzUXWCyxoquAAM
 
 databases:
   - name: egitimsite-db
-    plan: starter  # Choose an appropriate plan
+    plan: free  # Using free plan
     region: ohio  # Use the same region as your web service
     databaseName: egitimsite
     user: egitimsite_user 
