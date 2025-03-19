@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: egitimsite
+    env: docker
+    repo: https://github.com/yourusername/egitimsite.git  # Replace with your repository URL
+    region: ohio  # Choose a region close to your users
+    plan: starter  # Choose an appropriate plan
+    branch: main  # Replace with your main branch name
+    healthCheckPath: /
+    numInstances: 1
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: egitimsite-db
+          property: connectionString
+
+databases:
+  - name: egitimsite-db
+    plan: starter  # Choose an appropriate plan
+    region: ohio  # Use the same region as your web service
+    databaseName: egitimsite
+    user: egitimsite_user 

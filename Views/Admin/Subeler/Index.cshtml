@@ -1,0 +1,258 @@
+@model IEnumerable<EgitimSitesi.Models.SubeModel>
+
+@{
+    ViewData["Title"] = "Şubeler Yönetimi";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid py-4">
+    <!-- For AJAX antiforgery token -->
+    <form id="antiforgeryForm">
+        @Html.AntiForgeryToken()
+    </form>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Şubeler Yönetimi</h1>
+        <div>
+            <button id="startReorder" class="btn btn-info me-2">
+                <i class="fas fa-sort me-1"></i>Sürükle & Bırak ile Sırala
+            </button>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Yeni Şube Ekle
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Şubeler</h6>
+            <div id="reorderControls" style="display:none;">
+                <button id="saveOrder" class="btn btn-success btn-sm me-2">
+                    <i class="fas fa-save me-1"></i>Sıralamayı Kaydet
+                </button>
+                <button id="cancelReorder" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-times me-1"></i>İptal
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="reorderHelp" class="alert alert-info" style="display:none;">
+                <i class="fas fa-info-circle me-2"></i>Şubeleri sıralamak için istediğiniz konuma sürükleyip bırakın. İşleminiz bittiğinde "Sıralamayı Kaydet" butonuna tıklayın.
+            </div>
+            
+            <div id="reorderSuccess" class="alert alert-success" style="display:none;">
+                <i class="fas fa-check-circle me-2"></i>Şube sıralaması başarıyla güncellendi.
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="subeTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th width="100">Sıra</th>
+                            <th>Şube Adı</th>
+                            <th>Adres</th>
+                            <th>Telefon</th>
+                            <th>Çalışma Saatleri</th>
+                            <th width="80">Durum</th>
+                            <th width="200">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sortableList">
+                        @foreach (var item in Model)
+                        {
+                            <tr data-id="@item.Id">
+                                <td class="text-center">
+                                    <span class="order-badge">@item.Order</span>
+                                    <div class="drag-handle" style="cursor: move; display: none;">
+                                        <i class="fas fa-grip-vertical text-secondary"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>@item.Name</strong>
+                                </td>
+                                <td>
+                                    @(item.Address.Length > 50 ? item.Address.Substring(0, 47) + "..." : item.Address)
+                                </td>
+                                <td>
+                                    @item.TelNo
+                                </td>
+                                <td>
+                                    @item.WorkHours
+                                </td>
+                                <td class="text-center">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pasif</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        
+                                        <form asp-action="Toggle" asp-route-id="@item.Id" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-@(item.IsActive ? "warning" : "success") btn-sm" 
+                                                title="@(item.IsActive ? "Pasife Al" : "Aktifleştir")">
+                                                <i class="fas fa-@(item.IsActive ? "eye-slash" : "eye")"></i>
+                                            </button>
+                                        </form>
+                                        
+                                        <div class="btn-group normal-actions">
+                                            <form asp-action="MoveUp" asp-route-id="@item.Id" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-secondary btn-sm" title="Yukarı Taşı">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </button>
+                                            </form>
+                                            <form asp-action="MoveDown" asp-route-id="@item.Id" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-secondary btn-sm" title="Aşağı Taşı">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Yönetim Paneline Dön
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#subeTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json'
+                },
+                "columnDefs": [
+                    { "orderable": false, "targets": [6] } // Disable sorting on action column
+                ],
+                "order": [[0, "asc"]] // Order by sequence column
+            });
+            
+            // Get anti-forgery token
+            const antiForgeryToken = $('#antiforgeryForm input[name="__RequestVerificationToken"]').val();
+            
+            // Initialize Sortable
+            var sortable;
+            
+            // Handle reorder start
+            $('#startReorder').click(function() {
+                // Hide DataTable features
+                $('.dataTables_filter, .dataTables_length, .dataTables_paginate, .dataTables_info').hide();
+                
+                // Show drag handles, hide normal order actions
+                $('.order-badge').hide();
+                $('.drag-handle').show();
+                $('.normal-actions').hide();
+                
+                // Show reordering UI elements
+                $('#reorderControls, #reorderHelp').show();
+                $(this).hide();
+                
+                // Initialize Sortable
+                sortable = new Sortable(document.getElementById('sortableList'), {
+                    handle: '.drag-handle',
+                    animation: 150,
+                    onEnd: function (evt) {
+                        // Optional: Update visual order after drag
+                        refreshVisualOrder();
+                    }
+                });
+            });
+            
+            // Handle reorder cancel
+            $('#cancelReorder').click(function() {
+                endReorderMode();
+                // Reload the page to reset the order
+                location.reload();
+            });
+            
+            // Handle reorder save
+            $('#saveOrder').click(function() {
+                const itemIds = [];
+                $('#sortableList tr').each(function() {
+                    itemIds.push($(this).data('id'));
+                });
+                
+                // Send the new order to the server
+                $.ajax({
+                    url: '@Url.Action("ReorderSubeler")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(itemIds),
+                    headers: {
+                        'RequestVerificationToken': antiForgeryToken
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#reorderSuccess').show();
+                            setTimeout(function() {
+                                $('#reorderSuccess').fadeOut();
+                                endReorderMode();
+                                refreshVisualOrder();
+                            }, 2000);
+                        } else {
+                            alert('Hata: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Sıralama kaydedilemedi: ' + error);
+                    }
+                });
+            });
+            
+            // Helper function to end reorder mode
+            function endReorderMode() {
+                if (sortable) {
+                    sortable.destroy();
+                    sortable = null;
+                }
+                
+                // Show DataTable features
+                $('.dataTables_filter, .dataTables_length, .dataTables_paginate, .dataTables_info').show();
+                
+                // Hide drag handles, show normal order badges
+                $('.order-badge').show();
+                $('.drag-handle').hide();
+                $('.normal-actions').show();
+                
+                // Hide reordering UI elements
+                $('#reorderControls, #reorderHelp').hide();
+                $('#startReorder').show();
+            }
+            
+            // Helper function to refresh the visual order numbers
+            function refreshVisualOrder() {
+                $('#sortableList tr').each(function(index) {
+                    $(this).find('.order-badge').text(index + 1);
+                });
+            }
+        });
+    </script>
+} 

@@ -1,0 +1,332 @@
+@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<!-- Multiple Banners Carousel Section -->
+<section id="banner-carousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+        @{
+            var banners = ViewBag.Banners as List<EgitimSitesi.Models.BannerModel>;
+            for (int i = 0; i < banners.Count; i++)
+            {
+                <button type="button" data-bs-target="#banner-carousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"></button>
+            }
+        }
+    </div>
+    
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+        @{
+            for (int i = 0; i < banners.Count; i++)
+            {
+                var banner = banners[i];
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="position-relative w-100 m-0 p-0" style="height: 600px; overflow: hidden; max-width: 100vw;">
+                        <img src="@banner.ImagePath" 
+                             alt="@banner.Title" 
+                             style="width: 100vw; height: 100%; object-fit: cover; filter: brightness(0.7);">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h2 class="display-4 fw-bold">@banner.Title</h2>
+                            <p class="lead">@banner.Description</p>
+                            @if (!string.IsNullOrEmpty(banner.ButtonText))
+                            {
+                                <a href="@banner.ButtonUrl" class="btn btn-primary btn-lg">@banner.ButtonText</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    
+    @if(banners.Count > 1)
+    {
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#banner-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Önceki</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#banner-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Sonraki</span>
+        </button>
+    }
+</section>
+
+<!-- Features Section (Anasayfa_IcerikModel items) -->
+<section class="py-5 bg-light">
+    <div class="container-fluid">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold">Neden Bizi Tercih Etmelisiniz?</h2>
+                <p class="lead text-muted">Kaliteli eğitim için sunduğumuz avantajlar</p>
+            </div>
+        </div>
+
+        @{
+            var contentItems = ViewBag.ContentItems as List<EgitimSitesi.Models.Anasayfa_IcerikModel>;
+            if (contentItems != null && contentItems.Any())
+            {
+                foreach (var item in contentItems)
+                {
+                    <div class="row align-items-center py-5 @(item.IsImageRight ? "" : "flex-row-reverse")">
+                        <!-- Image Column -->
+                        <div class="col-lg-6 mb-4 mb-lg-0">
+                            <img src="@item.ImagePath" alt="@item.Title" class="img-fluid rounded shadow-sm" style="max-height: 400px; width: 100%; object-fit: cover;">
+                        </div>
+                        
+                        <!-- Content Column -->
+                        <div class="col-lg-6">
+                            <div class="px-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    @if (!string.IsNullOrEmpty(item.IconClass))
+                                    {
+                                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; min-width: 60px;">
+                                            <i class="@item.IconClass text-white fa-2x"></i>
+                                        </div>
+                                    }
+                                    <h3 class="fw-bold mb-0">@item.Title</h3>
+                                </div>
+                                
+                                <p class="lead mb-4">@item.Description</p>
+                                
+                                @if (!string.IsNullOrEmpty(item.ButtonText) && !string.IsNullOrEmpty(item.ButtonUrl))
+                                {
+                                    <a href="@item.ButtonUrl" class="btn btn-outline-primary">@item.ButtonText</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @if (contentItems.IndexOf(item) < contentItems.Count - 1)
+                    {
+                        <hr class="my-5" />
+                    }
+                }
+            }
+            else
+            {
+                <!-- Fallback/Static Content if no items are available -->
+                <div class="row">
+                    <!-- Feature 1 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 h-100 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                    <i class="fas fa-user-graduate text-white fa-2x"></i>
+                                </div>
+                                <h4>Uzman Kadro</h4>
+                                <p class="text-muted">Alanında uzman, deneyimli ve öğrencileriyle birebir ilgilenen öğretmen kadrosu ile eğitimde fark yaratıyoruz.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 h-100 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                    <i class="fas fa-book-open text-white fa-2x"></i>
+                                </div>
+                                <h4>Özel Müfredat</h4>
+                                <p class="text-muted">Her öğrencinin ihtiyacına göre özel hazırlanmış müfredat ve çalışma programları sunuyoruz.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 h-100 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                    <i class="fas fa-chart-line text-white fa-2x"></i>
+                                </div>
+                                <h4>Başarı Takibi</h4>
+                                <p class="text-muted">Düzenli sınavlar ve değerlendirmelerle öğrencilerimizin gelişimini yakından takip ediyor ve geri bildirim sağlıyoruz.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        
+        <!-- Action Buttons -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-controller="BasvuruFormu" asp-action="Index" class="btn btn-outline-primary btn-lg">Hemen Başvur</a>
+                    <a asp-controller="Iletisim" asp-action="Index" class="btn btn-outline-primary btn-lg">İletişime Geç</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Carousel Section (Kurslarımız) -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold">Kurslarımız</h2>
+                <p class="lead text-muted">Her seviye için özel hazırlanmış eğitim programları</p>
+            </div>
+        </div>
+        
+        @{
+            var courses = ViewBag.Courses as List<EgitimSitesi.Models.KursModel>;
+            if (courses != null && courses.Any())
+            {
+                // Divide courses into groups of 3 for carousel
+                var courseGroups = new List<List<KursModel>>();
+                var groupSize = 3;
+                for (int i = 0; i < courses.Count; i += groupSize)
+                {
+                    courseGroups.Add(courses.Skip(i).Take(groupSize).ToList());
+                }
+                
+                <!-- Courses Carousel -->
+                <div id="courses-carousel" class="carousel slide" data-bs-ride="carousel">
+                    <!-- Carousel indicators -->
+                    <div class="carousel-indicators">
+                        @for (int i = 0; i < courseGroups.Count; i++)
+                        {
+                            <button type="button" data-bs-target="#courses-carousel" data-bs-slide-to="@i" 
+                                class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" 
+                                aria-label="Slide @(i+1)"></button>
+                        }
+                    </div>
+                    
+                    <!-- Carousel inner wrapper -->
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < courseGroups.Count; i++)
+                        {
+                            var group = courseGroups[i];
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <div class="row @(group.Count < 3 ? "justify-content-center" : "")">
+                                    @foreach (var course in group)
+                                    {
+                                        <div class="col-md-4 mb-4">
+                                            <div class="card border-0 shadow-sm h-100">
+                                                @if (!string.IsNullOrEmpty(course.ImagePath))
+                                                {
+                                                    <img src="@course.ImagePath" class="card-img-top" alt="@course.Type" style="height: 200px; object-fit: cover;">
+                                                }
+                                                else
+                                                {
+                                                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                                        <i class="fas fa-book fa-3x text-muted"></i>
+                                                    </div>
+                                                }
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@course.Type</h5>
+                                                    <p class="card-text">@course.Description</p>
+                                                    <a href="#" class="btn btn-outline-primary stretched-link">Detaylı Bilgi</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    
+                    @if (courseGroups.Count > 1)
+                    {
+                        <!-- Carousel controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#courses-carousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Önceki</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#courses-carousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Sonraki</span>
+                        </button>
+                    }
+                </div>
+            }
+            else
+            {
+                <!-- Fallback content if no courses are available -->
+                <div class="alert alert-info text-center">
+                    <p>Henüz kurs bilgisi bulunmamaktadır.</p>
+                </div>
+            }
+        }
+        
+        <!-- View All Courses Button -->
+        <div class="text-center mt-4">
+            <a href="#" class="btn btn-primary">Tüm Kurslarımızı Görüntüle</a>
+        </div>
+    </div>
+</section>
+
+<!-- Duyurular (Announcements) Section - 3x2 Grid -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold">Duyurular</h2>
+                <p class="lead text-muted">Eğitim kurumumuzdan son haberler ve duyurular</p>
+            </div>
+        </div>
+        
+        @{
+            var recentAnnouncements = ViewBag.RecentAnnouncements as List<EgitimSitesi.Models.DuyurularModel>;
+            
+            if (recentAnnouncements == null || !recentAnnouncements.Any())
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle me-2"></i> Henüz duyuru bulunmamaktadır.
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var duyuru in recentAnnouncements)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                @if (!string.IsNullOrEmpty(duyuru.ImagePath))
+                                {
+                                    <img src="@duyuru.ImagePath" class="card-img-top" alt="@duyuru.Title" style="height: 180px; object-fit: cover;">
+                                }
+                                <div class="card-body p-4">
+                                    <div class="d-flex mb-3">
+                                        @if (string.IsNullOrEmpty(duyuru.ImagePath) && !string.IsNullOrEmpty(duyuru.IconClass))
+                                        {
+                                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; min-width: 50px;">
+                                                <i class="@duyuru.IconClass fa-lg"></i>
+                                            </div>
+                                        }
+                                        else if (string.IsNullOrEmpty(duyuru.ImagePath))
+                                        {
+                                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; min-width: 50px;">
+                                                <i class="fas fa-bullhorn fa-lg"></i>
+                                            </div>
+                                        }
+                                        <h5 class="card-title mb-0 fw-bold">@duyuru.Title</h5>
+                                    </div>
+                                    <p class="card-text mb-3">@(duyuru.Description.Length > 100 ? duyuru.Description.Substring(0, 97) + "..." : duyuru.Description)</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">@duyuru.CreationDate.ToString("dd MMMM yyyy")</small>
+                                        <a href="@Url.Action("Details", "Duyurular", new { id = duyuru.Id })" class="btn btn-sm btn-outline-primary">
+                                            @(string.IsNullOrEmpty(duyuru.ButtonText) ? "Detaylar" : duyuru.ButtonText)
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        
+        <div class="text-center mt-4">
+            <a href="@Url.Action("Index", "Duyurular")" class="btn btn-outline-primary">Tüm Duyurular</a>
+        </div>
+    </div>
+</section>
+
+
+

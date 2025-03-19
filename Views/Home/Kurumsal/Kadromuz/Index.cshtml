@@ -1,0 +1,288 @@
+@model IEnumerable<EgitimSitesi.Models.KadromuzModel>
+@using EgitimSitesi.Models
+
+@{
+    ViewData["Title"] = "Kadromuz";
+}
+
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold text-primary mb-4">Kadromuz</h1>
+            <p class="lead mb-4">Uzman ve deneyimli eğitim kadromuz ile öğrencilerimize en kaliteli eğitimi sunmak için çalışıyoruz.</p>
+        </div>
+    </div>
+
+    <!-- Yönetici Kadromuz Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="display-6 fw-bold text-primary mb-4 pb-2 border-bottom">Yönetici Kadromuz</h2>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        @{
+            var yoneticiler = Model.Where(m => m.Title == StaffTitle.Yonetici).OrderBy(m => m.Order).ToList();
+            
+            if (!yoneticiler.Any())
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        Yakında eklenecektir.
+                    </div>
+                </div>
+            }
+            else
+            {
+                foreach (var yonetici in yoneticiler)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="text-center pt-4">
+                                @if (!string.IsNullOrEmpty(yonetici.ImagePath))
+                                {
+                                    <img src="@yonetici.ImagePath" alt="@yonetici.Name" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle bg-light d-flex justify-content-center align-items-center mx-auto" style="width: 150px; height: 150px;">
+                                        <i class="fas fa-user fa-4x text-secondary"></i>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold">@yonetici.Name</h5>
+                                <p class="card-text text-primary">@yonetici.Field</p>
+                                @if (!string.IsNullOrEmpty(yonetici.Exp))
+                                {
+                                    <p class="card-text small">@yonetici.Exp</p>
+                                }
+                                @if (!string.IsNullOrEmpty(yonetici.Email))
+                                {
+                                    <p class="card-text small">
+                                        <a href="mailto:@yonetici.Email" class="text-decoration-none">
+                                            <i class="fas fa-envelope me-1"></i> @yonetici.Email
+                                        </a>
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <!-- Öğretmen Kadromuz Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="display-6 fw-bold text-primary mb-4 pb-2 border-bottom">Öğretmen Kadromuz</h2>
+        </div>
+    </div>
+
+    <!-- İlkokul Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="h4 fw-bold text-primary mb-3">İlkokul Öğretmenlerimiz</h3>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        @{
+            var ilkokulOgretmenleri = Model.Where(m => m.Title == StaffTitle.Ogretmen && 
+                                                (m.Grade == Grade.Ilkokul || m.Grade == Grade.All))
+                                          .OrderBy(m => m.Order).ToList();
+            
+            if (!ilkokulOgretmenleri.Any())
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        Yakında eklenecektir.
+                    </div>
+                </div>
+            }
+            else
+            {
+                foreach (var ogretmen in ilkokulOgretmenleri)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="text-center pt-3">
+                                @if (!string.IsNullOrEmpty(ogretmen.ImagePath))
+                                {
+                                    <img src="@ogretmen.ImagePath" alt="@ogretmen.Name" class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle bg-light d-flex justify-content-center align-items-center mx-auto" style="width: 120px; height: 120px;">
+                                        <i class="fas fa-user fa-3x text-secondary"></i>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold">@ogretmen.Name</h5>
+                                <p class="card-text text-primary">@ogretmen.Field</p>
+                                @if (!string.IsNullOrEmpty(ogretmen.Exp))
+                                {
+                                    <p class="card-text small">@ogretmen.Exp</p>
+                                }
+                                @if (!string.IsNullOrEmpty(ogretmen.Email))
+                                {
+                                    <p class="card-text small">
+                                        <a href="mailto:@ogretmen.Email" class="text-decoration-none">
+                                            <i class="fas fa-envelope me-1"></i> @ogretmen.Email
+                                        </a>
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <!-- Ortaokul Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="h4 fw-bold text-primary mb-3">Ortaokul Öğretmenlerimiz</h3>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        @{
+            var ortaokulOgretmenleri = Model.Where(m => m.Title == StaffTitle.Ogretmen && 
+                                                  (m.Grade == Grade.Ortaokul || m.Grade == Grade.All))
+                                            .OrderBy(m => m.Order).ToList();
+            
+            if (!ortaokulOgretmenleri.Any())
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        Yakında eklenecektir.
+                    </div>
+                </div>
+            }
+            else
+            {
+                foreach (var ogretmen in ortaokulOgretmenleri)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="text-center pt-3">
+                                @if (!string.IsNullOrEmpty(ogretmen.ImagePath))
+                                {
+                                    <img src="@ogretmen.ImagePath" alt="@ogretmen.Name" class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle bg-light d-flex justify-content-center align-items-center mx-auto" style="width: 120px; height: 120px;">
+                                        <i class="fas fa-user fa-3x text-secondary"></i>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold">@ogretmen.Name</h5>
+                                <p class="card-text text-primary">@ogretmen.Field</p>
+                                @if (!string.IsNullOrEmpty(ogretmen.Exp))
+                                {
+                                    <p class="card-text small">@ogretmen.Exp</p>
+                                }
+                                @if (!string.IsNullOrEmpty(ogretmen.Email))
+                                {
+                                    <p class="card-text small">
+                                        <a href="mailto:@ogretmen.Email" class="text-decoration-none">
+                                            <i class="fas fa-envelope me-1"></i> @ogretmen.Email
+                                        </a>
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <!-- Lise Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="h4 fw-bold text-primary mb-3">Lise Öğretmenlerimiz</h3>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        @{
+            var liseOgretmenleri = Model.Where(m => m.Title == StaffTitle.Ogretmen && 
+                                               (m.Grade == Grade.Lise || m.Grade == Grade.All))
+                                         .OrderBy(m => m.Order).ToList();
+            
+            if (!liseOgretmenleri.Any())
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        Yakında eklenecektir.
+                    </div>
+                </div>
+            }
+            else
+            {
+                foreach (var ogretmen in liseOgretmenleri)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="text-center pt-3">
+                                @if (!string.IsNullOrEmpty(ogretmen.ImagePath))
+                                {
+                                    <img src="@ogretmen.ImagePath" alt="@ogretmen.Name" class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle bg-light d-flex justify-content-center align-items-center mx-auto" style="width: 120px; height: 120px;">
+                                        <i class="fas fa-user fa-3x text-secondary"></i>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold">@ogretmen.Name</h5>
+                                <p class="card-text text-primary">@ogretmen.Field</p>
+                                @if (!string.IsNullOrEmpty(ogretmen.Exp))
+                                {
+                                    <p class="card-text small">@ogretmen.Exp</p>
+                                }
+                                @if (!string.IsNullOrEmpty(ogretmen.Email))
+                                {
+                                    <p class="card-text small">
+                                        <a href="mailto:@ogretmen.Email" class="text-decoration-none">
+                                            <i class="fas fa-envelope me-1"></i> @ogretmen.Email
+                                        </a>
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <!-- Contact Information -->
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="mb-3">Kadromuz hakkında daha fazla bilgi mi almak istiyorsunuz?</h4>
+                            <p>Eğitim kadromuz ve çalışma prensipleri hakkında detaylı bilgi için bizimle iletişime geçebilirsiniz.</p>
+                            <a href="/Iletisim" class="btn btn-primary">İletişime Geç</a>
+                        </div>
+                        <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                            <i class="fas fa-users fa-5x text-primary opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

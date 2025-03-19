@@ -1,0 +1,349 @@
+/* Layout1 Theme - Teal */
+:root {
+    /* Primary color scheme */
+    --primary-color: #009688;
+    --primary-light: #4DB6AC;
+    --primary-dark: #00796B;
+    --primary-bg: #E0F2F1;
+    
+    /* Text colors */
+    --text-on-primary: #FFFFFF;
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    
+    /* Common component colors */
+    --card-bg: #FFFFFF;
+    --card-border: #E0E0E0;
+    --input-border: #BDBDBD;
+    --divider-color: #EEEEEE;
+    --hover-color: #B2DFDB;
+    
+    /* Status colors */
+    --success-color: #4CAF50;
+    --warning-color: #FFC107;
+    --danger-color: #F44336;
+    --info-color: #2196F3;
+}
+
+/* Reset Bootstrap's theme colors */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--primary-dark) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+/* Component styling */
+.card {
+    background-color: var(--card-bg) !important;
+    border-color: var(--card-border) !important;
+}
+
+.card:hover {
+    box-shadow: 0 5px 15px rgba(0, 150, 136, 0.2) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--text-on-primary) !important;
+    box-shadow: 0 4px 8px rgba(0, 150, 136, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 150, 136, 0.3);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color) !important;
+    color: var(--text-on-primary) !important;
+}
+
+/* Navigation styling */
+.navbar {
+    background: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 0.8rem 1.2rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: white !important;
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-item {
+    position: relative;
+    margin: 0 0.3rem;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 0.7rem;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0, 150, 136, 0.1);
+    color: var(--primary-color);
+    transform: translateX(3px);
+}
+
+/* Form controls */
+.form-control:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(0, 150, 136, 0.25) !important;
+}
+
+/* Other common elements */
+a {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+.dropdown-item.active, 
+.dropdown-item:active {
+    background-color: var(--primary-color) !important;
+}
+
+/* Badge styling */
+.badge.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+/* Pagination styling */
+.page-item.active .page-link {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.page-link {
+    color: var(--primary-color) !important;
+}
+
+.page-link:hover {
+    color: var(--primary-dark) !important;
+}
+
+/* Alert styling */
+.alert-primary {
+    background-color: var(--primary-bg) !important;
+    border-color: var(--primary-light) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* Table styling */
+.table-primary {
+    background-color: var(--primary-bg) !important;
+}
+
+/* Custom styling for common site elements */
+.section-title {
+    color: var(--primary-dark);
+    border-bottom: 3px solid var(--primary-light);
+}
+
+.feature-icon {
+    color: var(--primary-color);
+}
+
+/* Footer styling */
+footer {
+    background-color: var(--primary-dark);
+    color: white !important;
+    padding: 3rem 0 1rem;
+    margin-top: 3rem;
+}
+
+footer h5 {
+    color: white !important;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+}
+
+footer p, footer .small {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+footer a {
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: white !important;
+    text-decoration: none;
+    transform: translateX(3px);
+}
+
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+}
+
+/* Carousel indicators */
+.carousel-indicators [data-bs-target] {
+    background-color: var(--primary-color) !important;
+}
+
+/* Progress bars */
+.progress-bar {
+    background-color: var(--primary-color) !important;
+}
+
+/* Layout 1 specific */
+.layout-indicator {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0.5;
+    z-index: 1000;
+}
+
+.content-container {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    padding: 2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+/* Sosyal Medya Butonları */
+.btn-facebook, .btn-instagram, .btn-youtube {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-facebook {
+    background-color: #3b5998;
+}
+
+.btn-instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.btn-youtube {
+    background-color: #FF0000;
+}
+
+.btn-facebook:hover, .btn-instagram:hover, .btn-youtube:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    color: white;
+}
+
+/* Bootstrap Pagination Overrides */
+.pagination .page-link {
+    color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-on-primary);
+}
+
+/* Gallery styles */
+.sidebar {
+    background-color: #f8f9fa;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-container {
+    margin-top: 1rem;
+}
+
+.gallery-item {
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-item img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.gallery-header {
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-bottom: 1.5rem;
+    }
+} 

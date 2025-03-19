@@ -1,0 +1,78 @@
+@model EgitimSitesi.Models.HakkimizdaModel
+
+@{
+    ViewData["Title"] = "Hakkımızda Sil";
+   
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Hakkımızda Bilgisi Sil</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Paneli</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Hakkimizda">Hakkımızda</a></li>
+        <li class="breadcrumb-item active">Sil</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            Silme Onayı
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">Dikkat!</h4>
+                <p>Bu hakkımızda bilgisini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Tarihçemiz</h5>
+                    <div class="border p-3 mb-4 bg-light">
+                        @(Model.Tarihcemiz.Length > 200 ? Model.Tarihcemiz.Substring(0, 200) + "..." : Model.Tarihcemiz)
+                    </div>
+                    
+                    <h5>Vizyonumuz</h5>
+                    <div class="border p-3 mb-4 bg-light">
+                        @(Model.Vizyonumuz.Length > 200 ? Model.Vizyonumuz.Substring(0, 200) + "..." : Model.Vizyonumuz)
+                    </div>
+                    
+                    <h5>Misyonumuz</h5>
+                    <div class="border p-3 mb-4 bg-light">
+                        @(Model.Misyonumuz.Length > 200 ? Model.Misyonumuz.Substring(0, 200) + "..." : Model.Misyonumuz)
+                    </div>
+                    
+                    <dl class="row">
+                        <dt class="col-sm-3">Durum</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                @(Model.IsActive ? "Aktif" : "Pasif")
+                            </span>
+                        </dd>
+                        
+                        <dt class="col-sm-3">Oluşturulma Tarihi</dt>
+                        <dd class="col-sm-9">@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        <div class="card mb-4">
+                            <div class="card-header">Hakkımızda Görseli</div>
+                            <div class="card-body">
+                                <img src="@Model.ImagePath" alt="Hakkımızda Görseli" class="img-fluid" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex mt-4">
+                    <a asp-action="Index" class="btn btn-secondary me-2">İptal</a>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,99 @@
+@model EgitimSitesi.Models.KursModel
+@inject EgitimSitesi.Data.ApplicationDbContext _context
+@using Microsoft.EntityFrameworkCore
+
+@{
+    ViewData["Title"] = $"{Model.Type} Kursu";
+    var otherCourseTypes = await _context.Kurslar
+        .Where(k => k.IsActive && k.Type != Model.Type)
+        .Select(k => k.Type)
+        .Distinct()
+        .ToListAsync();
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Anasayfa")">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Kurslarimiz")">Kurslarımız</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Model.Type</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-3">@Model.Type Kursu</h1>
+            <p class="lead">@Model.Description</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="@Url.Action("Index", "KayitFormu")" class="btn btn-primary btn-lg">
+                <i class="fas fa-edit me-1"></i> Kayıt Ol
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Kurs Detayları</h5>
+                </div>
+                <div class="card-body">
+                    <div class="kurs-details">
+                        @Html.Raw(Model.Details)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@Model.ImagePath" class="card-img-top" alt="@Model.Type">
+                }
+                <div class="card-body">
+                    <h5 class="card-title">Kurs Bilgileri</h5>
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-graduation-cap text-primary me-2"></i>
+                            <strong>Kurs Türü:</strong>
+                        </div>
+                        <div class="ps-4">@Model.Type</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-calendar-alt text-primary me-2"></i>
+                            <strong>Eklenme Tarihi:</strong>
+                        </div>
+                        <div class="ps-4">@Model.CreationDate.ToString("dd.MM.yyyy")</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Index", "KayitFormu")" class="btn btn-primary w-100">
+                        <i class="fas fa-user-plus me-1"></i> Şimdi Kayıt Ol
+                    </a>
+                </div>
+            </div>
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Diğer Kurslarımız</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        @foreach (var kursTuru in otherCourseTypes)
+                        {
+                            <a href="@Url.Action("Tur", "Kurslarimiz", new { type = kursTuru })" class="list-group-item list-group-item-action">
+                                <i class="fas fa-angle-right me-2"></i> @kursTuru
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

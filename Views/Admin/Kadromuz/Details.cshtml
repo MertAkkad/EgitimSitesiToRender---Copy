@@ -1,0 +1,104 @@
+@model EgitimSitesi.Models.KadromuzModel
+@using EgitimSitesi.Models
+
+@{
+    ViewData["Title"] = "Personel Detayları";
+    
+}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Personel Detayları</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Panel</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Kadromuz">Kadromuz</a></li>
+        <li class="breadcrumb-item active">Detaylar</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-user me-1"></i> Personel Bilgileri
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <div class="text-center mb-4">
+                        @if (!string.IsNullOrEmpty(Model.ImagePath))
+                        {
+                            <img src="@Model.ImagePath" alt="@Model.Name" class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="bg-light d-flex justify-content-center align-items-center mx-auto rounded-circle" style="width: 200px; height: 200px;">
+                                <i class="fas fa-user fa-4x text-secondary"></i>
+                            </div>
+                        }
+                    </div>
+                    
+                    <div class="text-center">
+                        <h3 class="mb-1">@Model.Name</h3>
+                        <p class="text-primary mb-1">@Model.Field</p>
+                        <p class="mb-0">
+                            <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">
+                                @(Model.IsActive ? "Aktif" : "Pasif")
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 200px;">Ünvan/Görev</th>
+                                    <td>@Model.Title.ToString()</td>
+                                </tr>
+                                <tr>
+                                    <th>Kademe</th>
+                                    <td>@Model.Grade.ToString()</td>
+                                </tr>
+                                <tr>
+                                    <th>Alan/Branş</th>
+                                    <td>@Model.Field</td>
+                                </tr>
+                                <tr>
+                                    <th>Deneyim</th>
+                                    <td>@(string.IsNullOrEmpty(Model.Exp) ? "-" : Model.Exp)</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(Model.Email))
+                                        {
+                                            <a href="mailto:@Model.Email">@Model.Email</a>
+                                        }
+                                        else
+                                        {
+                                            <span>-</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Sıralama</th>
+                                    <td>@Model.Order</td>
+                                </tr>
+                                <tr>
+                                    <th>Oluşturma Tarihi</th>
+                                    <td>@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i> Düzenle
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</div> 

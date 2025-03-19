@@ -1,0 +1,185 @@
+@model EgitimSitesi.Models.IletisimModel
+
+@{
+    ViewData["Title"] = "İletişim Bilgisi Detayı";
+  
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">İletişim Bilgisi Detayı</h1>
+    <p class="mb-4">İletişim bilgisinin tüm detaylarını bu sayfadan görüntüleyebilirsiniz.</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">@Model.MerkezSube</h6>
+            <div>
+                <form asp-action="ToggleActive" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn @(Model.IsActive ? "btn-warning" : "btn-success") btn-sm">
+                        <i class="fas @(Model.IsActive ? "fa-ban" : "fa-check")"></i>
+                        @(Model.IsActive ? "Pasife Al" : "Aktifleştir")
+                    </button>
+                </form>
+                <a href="/Admin/Iletisim/Edit/@Model.Id" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a href="/Admin/Iletisim/Delete/@Model.Id" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i> Sil
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Temel Bilgiler</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Merkez/Şube:</h6>
+                                <p>@Model.MerkezSube</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Adres:</h6>
+                                <p>@Model.Adress</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Telefon:</h6>
+                                <p>
+                                    @Model.TelNo
+                                    <a href="tel:@Model.TelNo.Replace(" ", "")" class="btn btn-sm btn-outline-primary ml-2">
+                                        <i class="fas fa-phone"></i> Ara
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">E-mail:</h6>
+                                <p>
+                                    @Model.Email
+                                    <a href="mailto:@Model.Email" class="btn btn-sm btn-outline-primary ml-2">
+                                        <i class="fas fa-envelope"></i> Mail Gönder
+                                    </a>
+                                </p>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.CalismaSaatleri))
+                            {
+                                <div class="mb-3">
+                                    <h6 class="font-weight-bold">Çalışma Saatleri:</h6>
+                                    <p>@Model.CalismaSaatleri</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Sistem Bilgileri</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Durum:</h6>
+                                <p>
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Eklenme Tarihi:</h6>
+                                <p>@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Harita</h6>
+                        </div>
+                        <div class="card-body">
+                            @if (!string.IsNullOrEmpty(Model.GoogleMapsEmbed))
+                            {
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    @Html.Raw(Model.GoogleMapsEmbed)
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center p-4">
+                                    <p class="text-muted">Harita bilgisi eklenmemiş.</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Sosyal Medya</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Facebook:</h6>
+                                @if (!string.IsNullOrEmpty(Model.FacebookUrl))
+                                {
+                                    <p>
+                                        <a href="@Model.FacebookUrl" target="_blank" class="btn btn-outline-primary">
+                                            <i class="fab fa-facebook-f"></i> @Model.FacebookUrl
+                                        </a>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Facebook URL'si eklenmemiş.</p>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Instagram:</h6>
+                                @if (!string.IsNullOrEmpty(Model.InstagramUrl))
+                                {
+                                    <p>
+                                        <a href="@Model.InstagramUrl" target="_blank" class="btn btn-outline-danger">
+                                            <i class="fab fa-instagram"></i> @Model.InstagramUrl
+                                        </a>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Instagram URL'si eklenmemiş.</p>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">YouTube:</h6>
+                                @if (!string.IsNullOrEmpty(Model.YouTubeUrl))
+                                {
+                                    <p>
+                                        <a href="@Model.YouTubeUrl" target="_blank" class="btn btn-outline-danger">
+                                            <i class="fab fa-youtube"></i> @Model.YouTubeUrl
+                                        </a>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">YouTube URL'si eklenmemiş.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/Admin/Iletisim" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

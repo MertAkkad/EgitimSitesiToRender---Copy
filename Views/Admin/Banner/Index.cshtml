@@ -1,0 +1,259 @@
+@model IEnumerable<EgitimSitesi.Models.BannerModel>
+
+@{
+    ViewData["Title"] = "Banner Yönetimi";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid py-4">
+    <!-- For AJAX antiforgery token -->
+    <form id="antiforgeryForm">
+        @Html.AntiForgeryToken()
+    </form>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Banner Yönetimi</h1>
+        <div>
+            <button id="startReorder" class="btn btn-info me-2">
+                <i class="fas fa-sort me-1"></i>Sürükle & Bırak ile Sırala
+            </button>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Yeni Banner Ekle
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Bannerlar</h6>
+            <div id="reorderControls" style="display:none;">
+                <button id="saveOrder" class="btn btn-success btn-sm me-2">
+                    <i class="fas fa-save me-1"></i>Sıralamayı Kaydet
+                </button>
+                <button id="cancelReorder" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-times me-1"></i>İptal
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="reorderHelp" class="alert alert-info" style="display:none;">
+                <i class="fas fa-info-circle me-2"></i>Bannerları sıralamak için istediğiniz konuma sürükleyip bırakın. İşleminiz bittiğinde "Sıralamayı Kaydet" butonuna tıklayın.
+            </div>
+            
+            <div id="reorderSuccess" class="alert alert-success" style="display:none;">
+                <i class="fas fa-check-circle me-2"></i>Banner sıralaması başarıyla güncellendi.
+            </div>
+
+            <div id="reorderError" class="alert alert-danger" style="display:none;">
+                <i class="fas fa-exclamation-circle me-2"></i><span id="errorMessage"></span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th width="80">Sıra</th>
+                            <th width="120">Görsel</th>
+                            <th>Başlık</th>
+                            <th>Açıklama</th>
+                            <th width="80">Durum</th>
+                            <th width="120">Oluşturulma</th>
+                            <th width="120">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bannerTableBody">
+                        @foreach (var item in Model.OrderBy(b => b.Order))
+                        {
+                            <tr data-id="@item.Id" data-order="@item.Order">
+                                <td class="text-center align-middle">
+                                    <span class="badge bg-primary order-badge">@item.Order</span>
+                                    <div class="drag-handle" style="display:none;">
+                                        <i class="fas fa-grip-vertical fa-2x text-muted"></i>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <img src="@item.ImagePath" alt="@item.Title" style="max-height: 60px; max-width: 120px;">
+                                </td>
+                                <td class="align-middle">@item.Title</td>
+                                <td class="align-middle">@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</td>
+                                <td class="text-center align-middle">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pasif</span>
+                                    }
+                                </td>
+                                <td class="align-middle">@item.CreationDate.ToString("dd.MM.yyyy")</td>
+                                <td class="text-center align-middle action-buttons">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary" title="Düzenle">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info" title="Detaylar">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" title="Sil">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Make sure DataTables is loaded before using it -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Don't use DataTables for now, it's causing issues
+            var dataTable = null;
+            var sortable = null;
+            var isReorderMode = false;
+
+            // Start reordering mode
+            document.getElementById('startReorder').addEventListener('click', function() {
+                if (isReorderMode) return;
+                
+                console.log('Starting reorder mode');
+                // Switch to reorder mode
+                isReorderMode = true;
+                
+                // Hide the start button
+                this.style.display = 'none';
+                
+                // Show reorder controls and help message
+                document.getElementById('reorderControls').style.display = 'block';
+                document.getElementById('reorderHelp').style.display = 'block';
+                
+                // Hide action buttons and show drag handles
+                var actionButtons = document.querySelectorAll('.action-buttons');
+                var orderBadges = document.querySelectorAll('.order-badge');
+                var dragHandles = document.querySelectorAll('.drag-handle');
+                
+                actionButtons.forEach(function(el) { el.style.display = 'none'; });
+                orderBadges.forEach(function(el) { el.style.display = 'none'; });
+                dragHandles.forEach(function(el) { el.style.display = 'block'; });
+                
+                // Initialize Sortable
+                sortable = new Sortable(document.getElementById('bannerTableBody'), {
+                    handle: '.drag-handle',
+                    animation: 150,
+                    onEnd: function() {
+                        // Update the visual order numbers
+                        var rows = document.querySelectorAll('#bannerTableBody tr');
+                        rows.forEach(function(row, index) {
+                            row.querySelector('.order-badge').textContent = index + 1;
+                        });
+                    }
+                });
+            });
+
+            // Cancel reordering
+            document.getElementById('cancelReorder').addEventListener('click', function() {
+                if (!isReorderMode) return;
+                
+                exitReorderMode();
+                // Reload the page to restore original order
+                location.reload();
+            });
+
+            // Save the new order
+            document.getElementById('saveOrder').addEventListener('click', function() {
+                if (!isReorderMode) return;
+                
+                var bannerIds = [];
+                
+                // Collect the banner IDs in their new order
+                var rows = document.querySelectorAll('#bannerTableBody tr');
+                rows.forEach(function(row) {
+                    bannerIds.push(row.getAttribute('data-id'));
+                });
+                
+                console.log('Saving new order:', bannerIds);
+                
+                // Send the order to the server
+                fetch('@Url.Action("ReorderBanners", "BannerAdmin")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('#antiforgeryForm input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify(bannerIds)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('reorderSuccess').style.display = 'block';
+                    
+                    // After 2 seconds, exit reorder mode and reload
+                    setTimeout(function() {
+                        exitReorderMode();
+                        location.reload();
+                    }, 2000);
+                })
+                .catch(error => {
+                    document.getElementById('errorMessage').textContent = 'Sıralama kaydedilirken bir hata oluştu.';
+                    document.getElementById('reorderError').style.display = 'block';
+                    console.error('Error saving order:', error);
+                });
+            });
+            
+            // Helper function to exit reorder mode
+            function exitReorderMode() {
+                isReorderMode = false;
+                
+                // Show the start button
+                document.getElementById('startReorder').style.display = 'block';
+                
+                // Hide reorder controls
+                document.getElementById('reorderControls').style.display = 'none';
+                document.getElementById('reorderHelp').style.display = 'none';
+                
+                // Show action buttons and hide drag handles
+                var actionButtons = document.querySelectorAll('.action-buttons');
+                var orderBadges = document.querySelectorAll('.order-badge');
+                var dragHandles = document.querySelectorAll('.drag-handle');
+                
+                actionButtons.forEach(function(el) { el.style.display = 'block'; });
+                orderBadges.forEach(function(el) { el.style.display = 'block'; });
+                dragHandles.forEach(function(el) { el.style.display = 'none'; });
+                
+                // Destroy Sortable instance
+                if (sortable) {
+                    sortable.destroy();
+                    sortable = null;
+                }
+            }
+        });
+    </script>
+    
+    <style>
+        .drag-handle {
+            cursor: move;
+            cursor: grab;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        #bannerTableBody tr.sortable-ghost {
+            background-color: #e9ecef;
+            opacity: 0.8;
+        }
+        #bannerTableBody tr.sortable-chosen {
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+} 

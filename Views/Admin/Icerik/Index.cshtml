@@ -1,0 +1,275 @@
+@model IEnumerable<EgitimSitesi.Models.Anasayfa_IcerikModel>
+@{
+    ViewData["Title"] = "İçerik Yönetimi";
+   
+}
+
+<div class="container-fluid p-4">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h5 class="m-0 font-weight-bold text-primary">Ana Sayfa İçerik Yönetimi</h5>
+            <div>
+                <button id="startReorder" class="btn btn-info btn-sm me-2">
+                    <i class="fas fa-sort"></i> Sıralamayı Değiştir
+                </button>
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Yeni İçerik Ekle
+                </a>
+            </div>
+        </div>
+        
+        <!-- Reordering Controls -->
+        <div id="reorderControls" class="card-header py-3 bg-light" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Sıralama Modu</h6>
+                <div>
+                    <button id="saveOrder" class="btn btn-success btn-sm me-2">
+                        <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                    </button>
+                    <button id="cancelReorder" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-times"></i> İptal
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success and Error Messages -->
+        <div id="reorderSuccess" class="alert alert-success m-3" style="display: none;">
+            <i class="fas fa-check-circle me-2"></i> Sıralama başarıyla kaydedildi.
+        </div>
+        
+        <div id="reorderError" class="alert alert-danger m-3" style="display: none;">
+            <i class="fas fa-exclamation-circle me-2"></i> 
+            <span id="errorMessage">Bir hata oluştu.</span>
+        </div>
+
+        <div class="card-body">
+            <div id="reorderHelp" class="alert alert-info mb-4" style="display: none;">
+                <i class="fas fa-info-circle me-2"></i> İçerikleri yeniden sıralamak için satırları sürükleyip bırakabilirsiniz.
+            </div>
+            
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz içerik eklenmemiş. Yeni bir içerik eklemek için "Yeni İçerik Ekle" butonuna tıklayın.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th width="50">Sıra</th>
+                                <th width="120">Görsel</th>
+                                <th>Başlık</th>
+                                <th>İçerik Türü</th>
+                                <th width="80">Görsel Konumu</th>
+                                <th width="80">Durum</th>
+                                <th width="150">Oluşturma Tarihi</th>
+                                <th width="200">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="icerikTableBody">
+                            @foreach (var item in Model.OrderBy(i => i.Order))
+                            {
+                                <tr data-id="@item.Id">
+                                    <td class="text-center">
+                                        <span class="order-badge">@item.Order</span>
+                                        <div class="drag-handle" style="cursor: move; display: none;">
+                                            <i class="fas fa-grip-vertical text-secondary"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <img src="@item.ImagePath" alt="@item.Title" class="img-thumbnail" style="max-height: 80px; max-width: 100px;" />
+                                    </td>
+                                    <td>
+                                        <strong>@item.Title</strong>
+                                        <div class="small text-muted">@(item.Description.Length > 50 ? item.Description.Substring(0, 47) + "..." : item.Description)</div>
+                                    </td>
+                                    <td>
+                                        @item.ContentType
+                                        @if (!string.IsNullOrEmpty(item.IconClass))
+                                        {
+                                            <span class="ms-2"><i class="@item.IconClass"></i></span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.IsImageRight)
+                                        {
+                                            <span class="badge bg-info">Sağda</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Solda</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-success">Aktif</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Pasif</span>
+                                        }
+                                    </td>
+                                    <td>@item.CreationDate.ToString("dd.MM.yyyy")</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <div class="btn-group btn-group-sm">
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary" title="Düzenle">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" title="Detaylar">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" title="Sil">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Form for the anti-forgery token -->
+<form id="antiforgeryForm">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Don't use DataTables for now, it's causing issues
+            var dataTable = null;
+            var sortable = null;
+            var isReorderMode = false;
+
+            // Start reordering mode
+            document.getElementById('startReorder').addEventListener('click', function() {
+                if (isReorderMode) return;
+                
+                console.log('Starting reorder mode');
+                // Switch to reorder mode
+                isReorderMode = true;
+                
+                // Hide the start button
+                this.style.display = 'none';
+                
+                // Show reorder controls and help message
+                document.getElementById('reorderControls').style.display = 'block';
+                document.getElementById('reorderHelp').style.display = 'block';
+                
+                // Hide action buttons and show drag handles
+                var actionButtons = document.querySelectorAll('.action-buttons');
+                var orderBadges = document.querySelectorAll('.order-badge');
+                var dragHandles = document.querySelectorAll('.drag-handle');
+                
+                actionButtons.forEach(function(el) { el.style.display = 'none'; });
+                orderBadges.forEach(function(el) { el.style.display = 'none'; });
+                dragHandles.forEach(function(el) { el.style.display = 'block'; });
+                
+                // Initialize Sortable
+                sortable = new Sortable(document.getElementById('icerikTableBody'), {
+                    handle: '.drag-handle',
+                    animation: 150,
+                    onEnd: function() {
+                        // Update the visual order numbers
+                        var rows = document.querySelectorAll('#icerikTableBody tr');
+                        rows.forEach(function(row, index) {
+                            row.querySelector('.order-badge').textContent = index + 1;
+                        });
+                    }
+                });
+            });
+
+            // Cancel reordering
+            document.getElementById('cancelReorder').addEventListener('click', function() {
+                if (!isReorderMode) return;
+                
+                exitReorderMode();
+                // Reload the page to restore original order
+                location.reload();
+            });
+
+            // Save the new order
+            document.getElementById('saveOrder').addEventListener('click', function() {
+                if (!isReorderMode) return;
+                
+                var icerikIds = [];
+                
+                // Collect the content item IDs in their new order
+                var rows = document.querySelectorAll('#icerikTableBody tr');
+                rows.forEach(function(row) {
+                    icerikIds.push(row.getAttribute('data-id'));
+                });
+                
+                console.log('Saving new order:', icerikIds);
+                
+                // Send the order to the server
+                fetch('@Url.Action("ReorderIcerikler", "Anasayfa_IcerikAdmin")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('#antiforgeryForm input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify(icerikIds)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('reorderSuccess').style.display = 'block';
+                    
+                    // After 2 seconds, exit reorder mode and reload
+                    setTimeout(function() {
+                        exitReorderMode();
+                        location.reload();
+                    }, 2000);
+                })
+                .catch(error => {
+                    document.getElementById('errorMessage').textContent = 'Sıralama kaydedilirken bir hata oluştu.';
+                    document.getElementById('reorderError').style.display = 'block';
+                    console.error('Error saving order:', error);
+                });
+            });
+            
+            // Helper function to exit reorder mode
+            function exitReorderMode() {
+                isReorderMode = false;
+                
+                // Show the start button
+                document.getElementById('startReorder').style.display = 'block';
+                
+                // Hide reorder controls
+                document.getElementById('reorderControls').style.display = 'none';
+                document.getElementById('reorderHelp').style.display = 'none';
+                
+                // Show action buttons and hide drag handles
+                var actionButtons = document.querySelectorAll('.action-buttons');
+                var orderBadges = document.querySelectorAll('.order-badge');
+                var dragHandles = document.querySelectorAll('.drag-handle');
+                
+                actionButtons.forEach(function(el) { el.style.display = 'block'; });
+                orderBadges.forEach(function(el) { el.style.display = 'block'; });
+                dragHandles.forEach(function(el) { el.style.display = 'none'; });
+                
+                // Destroy Sortable instance
+                if (sortable) {
+                    sortable.destroy();
+                    sortable = null;
+                }
+            }
+        });
+    </script>
+} 

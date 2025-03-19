@@ -1,0 +1,128 @@
+@model EgitimSitesi.Models.Anasayfa_IcerikModel
+@{
+    ViewData["Title"] = "İçerik Detayları";
+   
+}
+
+<div class="container-fluid p-4">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Ana Sayfa İçerik Detayları</h6>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Listeye Dön
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="150">ID</th>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <th>Başlık</th>
+                            <td>@Model.Title</td>
+                        </tr>
+                        <tr>
+                            <th>Açıklama</th>
+                            <td>@Model.Description</td>
+                        </tr>
+                        <tr>
+                            <th>İçerik Türü</th>
+                            <td>@Model.ContentType</td>
+                        </tr>
+                        <tr>
+                            <th>İkon</th>
+                            <td>
+                                @if (!string.IsNullOrEmpty(Model.IconClass))
+                                {
+                                    <i class="@Model.IconClass me-2"></i> @Model.IconClass
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Tanımlanmamış</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Buton Metni</th>
+                            <td>
+                                @if (!string.IsNullOrEmpty(Model.ButtonText))
+                                {
+                                    @Model.ButtonText
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Tanımlanmamış</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Buton URL</th>
+                            <td>
+                                @if (!string.IsNullOrEmpty(Model.ButtonUrl))
+                                {
+                                    <a href="@Model.ButtonUrl" target="_blank">@Model.ButtonUrl</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Tanımlanmamış</span>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="150">Sıralama</th>
+                            <td>@Model.Order</td>
+                        </tr>
+                        <tr>
+                            <th>Durum</th>
+                            <td>
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Pasif</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Görsel Konumu</th>
+                            <td>
+                                @if (Model.IsImageRight)
+                                {
+                                    <span class="badge bg-info">Sağda</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Solda</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Oluşturma Tarihi</th>
+                            <td>@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                        </tr>
+                        <tr>
+                            <th>Görsel</th>
+                            <td>
+                                <img src="@Model.ImagePath" alt="@Model.Title" class="img-fluid mt-2" style="max-height: 300px;" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

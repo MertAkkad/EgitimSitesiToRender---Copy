@@ -1,0 +1,234 @@
+@model EgitimSitesi.Models.SubeModel
+
+@{
+    ViewData["Title"] = "Yeni Şube Ekle";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Yeni Şube Ekle</h6>
+                    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Listeye Dön
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="TelNo" class="control-label"></label>
+                                    <input asp-for="TelNo" class="form-control" />
+                                    <span asp-validation-for="TelNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label"></label>
+                                <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label asp-for="WorkHours" class="control-label"></label>
+                                <input asp-for="WorkHours" class="form-control" />
+                                <span asp-validation-for="WorkHours" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+                        <h5 class="mb-3">Google Harita Bilgileri</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Latitude" class="control-label"></label>
+                                    <input asp-for="Latitude" class="form-control" type="number" step="0.000001" />
+                                    <span asp-validation-for="Latitude" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Longitude" class="control-label"></label>
+                                    <input asp-for="Longitude" class="form-control" type="number" step="0.000001" />
+                                    <span asp-validation-for="Longitude" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="MapUrl" class="control-label"></label>
+                                    <input asp-for="MapUrl" class="form-control" />
+                                    <span asp-validation-for="MapUrl" class="text-danger"></span>
+                                    <small class="form-text text-muted">Google Harita paylaşım linki ekleyebilirsiniz (isteğe bağlı).</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="ZoomLevel" class="control-label"></label>
+                                    <input asp-for="ZoomLevel" class="form-control" type="number" min="1" max="20" />
+                                    <span asp-validation-for="ZoomLevel" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div id="map" style="height: 300px; width: 100%" class="border rounded"></div>
+                            <small class="form-text text-muted">Haritada bir konumu tıklayarak koordinatları otomatik doldurabilirsiniz.</small>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Order" class="control-label"></label>
+                                    <input asp-for="Order" class="form-control" type="number" min="1" />
+                                    <span asp-validation-for="Order" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group form-check mt-4">
+                                    <input asp-for="IsActive" class="form-check-input" />
+                                    <label asp-for="IsActive" class="form-check-label"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-1"></i>İptal
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" defer></script>
+    <script>
+        // Initialize the map
+        let map;
+        let marker;
+        
+        function initMap() {
+            // Default coordinates (Turkey center)
+            const initialLat = document.getElementById('Latitude').value || 39.9334;
+            const initialLng = document.getElementById('Longitude').value || 32.8597;
+            
+            // Create the map
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: parseFloat(initialLat), lng: parseFloat(initialLng) },
+                zoom: 13,
+                mapTypeId: "roadmap",
+            });
+            
+            // Add initial marker if coordinates are provided
+            if (document.getElementById('Latitude').value && document.getElementById('Longitude').value) {
+                marker = new google.maps.Marker({
+                    position: { 
+                        lat: parseFloat(document.getElementById('Latitude').value),
+                        lng: parseFloat(document.getElementById('Longitude').value)
+                    },
+                    map: map,
+                    draggable: true
+                });
+                
+                // Update coordinates when marker is dragged
+                google.maps.event.addListener(marker, 'dragend', function() {
+                    document.getElementById('Latitude').value = marker.getPosition().lat().toFixed(6);
+                    document.getElementById('Longitude').value = marker.getPosition().lng().toFixed(6);
+                });
+            }
+            
+            // Add click event to map to add/move marker
+            google.maps.event.addListener(map, 'click', function(event) {
+                const lat = event.latLng.lat().toFixed(6);
+                const lng = event.latLng.lng().toFixed(6);
+                
+                // Update form fields
+                document.getElementById('Latitude').value = lat;
+                document.getElementById('Longitude').value = lng;
+                
+                // Add or move marker
+                if (marker) {
+                    marker.setPosition(event.latLng);
+                } else {
+                    marker = new google.maps.Marker({
+                        position: event.latLng,
+                        map: map,
+                        draggable: true
+                    });
+                    
+                    // Update coordinates when marker is dragged
+                    google.maps.event.addListener(marker, 'dragend', function() {
+                        document.getElementById('Latitude').value = marker.getPosition().lat().toFixed(6);
+                        document.getElementById('Longitude').value = marker.getPosition().lng().toFixed(6);
+                    });
+                }
+            });
+            
+            // Update map when coordinates change
+            document.getElementById('Latitude').addEventListener('change', updateMarkerFromFields);
+            document.getElementById('Longitude').addEventListener('change', updateMarkerFromFields);
+        }
+        
+        function updateMarkerFromFields() {
+            const lat = parseFloat(document.getElementById('Latitude').value);
+            const lng = parseFloat(document.getElementById('Longitude').value);
+            
+            if (!isNaN(lat) && !isNaN(lng)) {
+                const position = new google.maps.LatLng(lat, lng);
+                
+                // Center map on new coordinates
+                map.setCenter(position);
+                
+                // Add or move marker
+                if (marker) {
+                    marker.setPosition(position);
+                } else {
+                    marker = new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        draggable: true
+                    });
+                    
+                    // Update coordinates when marker is dragged
+                    google.maps.event.addListener(marker, 'dragend', function() {
+                        document.getElementById('Latitude').value = marker.getPosition().lat().toFixed(6);
+                        document.getElementById('Longitude').value = marker.getPosition().lng().toFixed(6);
+                    });
+                }
+            }
+        }
+        
+        // Initialize map when window loads
+        window.initMap = initMap;
+    </script>
+} 

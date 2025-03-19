@@ -1,0 +1,118 @@
+@model EgitimSitesi.Models.BizeYazinModel
+
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Mesaj Detayı</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Paneli</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/BizeYazin">Gelen Mesajlar</a></li>
+        <li class="breadcrumb-item active">Detay</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-user me-1"></i>
+            @Model.AdSoyad
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-4">Ad Soyad:</dt>
+                            <dd class="col-sm-8">@Model.AdSoyad</dd>
+                        
+                        <dt class="col-sm-4">Telefon Numarası:</dt>
+                        <dd class="col-sm-8">
+                            <a href="tel:@Model.TelefonNo">@Model.TelefonNo</a>
+                        </dd>
+                        
+                        <dt class="col-sm-4">E-posta:</dt>
+                        <dd class="col-sm-8">
+                            <a href="mailto:@Model.Email">@Model.Email</a>
+                        </dd>
+                        
+                        <dt class="col-sm-4">Konu:</dt>
+                        <dd class="col-sm-8">@Model.Konu</dd>
+                        
+                        <dt class="col-sm-4">Mesaj:</dt>
+                        <dd class="col-sm-8">@Model.Mesaj</dd>
+
+                        <dt class="col-sm-4">Gönderim Tarihi:</dt>
+                        <dd class="col-sm-8">@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-info">
+                        <div class="card-header bg-info text-white">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Hızlı İletişim
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <a href="tel:@Model.TelefonNo" class="btn btn-outline-primary w-100 mb-2">
+                                    <i class="fas fa-phone me-1"></i>
+                                    Ara
+                                </a>
+                                <a href="https://wa.me/@(Model.TelefonNo)" target="_blank" class="btn btn-outline-success w-100 mb-2">
+                                    <i class="fab fa-whatsapp me-1"></i>
+                                    WhatsApp
+                                </a>
+                                <a href="mailto:@Model.Email" class="btn btn-outline-info w-100">
+                                    <i class="fas fa-envelope me-1"></i>
+                                    E-posta Gönder
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <form asp-action="ToggleActive" asp-route-id="@Model.Id" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn @(Model.Okundu ? "btn-warning" : "btn-success")">
+                        <i class="fas @(Model.Okundu ? "fa-ban" : "fa-check") me-1"></i>
+                        @(Model.Okundu ? "Okundu Yap" : "Okundu Yap")
+                    </button>
+                </form>
+                
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <i class="fas fa-trash me-1"></i>
+                    Sil
+                </button>
+                
+                <a href="/Admin/BizeYazin" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Listeye Dön
+                </a>
+            </div>
+            
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel"> Mesaj Silme Onayı</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>@Model.AdSoyad</strong> isimli kişinin mesajını silmek istediğinizden emin misiniz?</p>
+                            <p class="text-danger">Bu işlem geri alınamaz!</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger">Sil</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

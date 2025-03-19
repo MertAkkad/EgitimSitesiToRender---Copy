@@ -1,0 +1,133 @@
+@model EgitimSitesi.Models.Anasayfa_IcerikModel
+@{
+    ViewData["Title"] = "Yeni İçerik Ekle";
+    
+}
+
+<div class="container-fluid p-4">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Yeni Ana Sayfa İçeriği Ekle</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="row">
+                    <!-- Left Column - Text Fields -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">Başlık</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ContentType" class="form-label">İçerik Türü</label>
+                            <input asp-for="ContentType" class="form-control" placeholder="Uzman Kadro, Özel Müfredat, vb." />
+                            <span asp-validation-for="ContentType" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="IconClass" class="form-label">İkon Kodu (Font Awesome)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-icons"></i></span>
+                                <input asp-for="IconClass" class="form-control" placeholder="fa-user-graduate, fa-book-open, vb." />
+                            </div>
+                            <span asp-validation-for="IconClass" class="text-danger"></span>
+                            <small class="form-text text-muted">Örnek: "fas fa-user-graduate" şeklinde yazınız</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column - Image and Other Settings -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Görsel</label>
+                            <input type="file" name="imageFile" id="imageFile" class="form-control" accept="image/*" />
+                            <div id="imagePreview" class="mt-2 d-none">
+                                <img id="imagePreviewImg" src="#" alt="Önizleme" class="img-thumbnail" style="max-height: 200px;" />
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ButtonText" class="form-label">Buton Metni</label>
+                            <input asp-for="ButtonText" class="form-control" />
+                            <span asp-validation-for="ButtonText" class="text-danger"></span>
+                            <small class="form-text text-muted">Buton olmasını istemiyorsanız boş bırakın</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ButtonUrl" class="form-label">Buton URL</label>
+                            <input asp-for="ButtonUrl" class="form-control" />
+                            <span asp-validation-for="ButtonUrl" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Order" class="form-label">Sıralama</label>
+                                    <input asp-for="Order" class="form-control" type="number" min="1" max="100" />
+                                    <span asp-validation-for="Order" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label d-block">Durum</label>
+                                    <div class="form-check form-switch">
+                                        <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" checked />
+                                        <label asp-for="IsActive" class="form-check-label">Aktif</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label d-block">Görsel Konumu</label>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="IsImageRight" class="form-check-input" type="radio" value="false" checked />
+                                <label class="form-check-label">Solda</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="IsImageRight" class="form-check-input" type="radio" value="true" />
+                                <label class="form-check-label">Sağda</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Image preview
+        document.getElementById("imageFile").onchange = function() {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                document.getElementById("imagePreviewImg").src = e.target.result;
+                document.getElementById("imagePreview").classList.remove("d-none");
+            };
+            
+            // Read the image file as a data URL
+            if(this.files[0]) {
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                document.getElementById("imagePreview").classList.add("d-none");
+            }
+        };
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

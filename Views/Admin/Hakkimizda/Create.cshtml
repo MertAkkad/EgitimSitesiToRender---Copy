@@ -1,0 +1,84 @@
+@model EgitimSitesi.Models.HakkimizdaModel
+
+@{
+    ViewData["Title"] = "Hakkımızda Ekle";
+    
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Hakkımızda Bilgisi Ekle</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Paneli</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Hakkimizda">Hakkımızda</a></li>
+        <li class="breadcrumb-item active">Ekle</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-plus me-1"></i>
+            Yeni Hakkımızda Bilgisi
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="mb-3">
+                    <label asp-for="Tarihcemiz" class="form-label">Tarihçemiz</label>
+                    <textarea asp-for="Tarihcemiz" class="form-control" rows="6"></textarea>
+                    <span asp-validation-for="Tarihcemiz" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Vizyonumuz" class="form-label">Vizyonumuz</label>
+                    <textarea asp-for="Vizyonumuz" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Vizyonumuz" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Misyonumuz" class="form-label">Misyonumuz</label>
+                    <textarea asp-for="Misyonumuz" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Misyonumuz" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="ImagePath" class="form-label">Görsel</label>
+                    <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                    <small class="form-text text-muted">Hakkımızda sayfası için görsel seçebilirsiniz. (İsteğe bağlı)</small>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">Aktif</label>
+                </div>
+                
+                <div class="mb-3">
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#Tarihcemiz'))
+            .catch(error => {
+                console.error(error);
+            });
+            
+        ClassicEditor
+            .create(document.querySelector('#Vizyonumuz'))
+            .catch(error => {
+                console.error(error);
+            });
+            
+        ClassicEditor
+            .create(document.querySelector('#Misyonumuz'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+} 

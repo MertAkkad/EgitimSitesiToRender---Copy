@@ -1,0 +1,70 @@
+@model EgitimSitesi.Models.HakkimizdaModel
+
+@{
+    ViewData["Title"] = "Hakkımızda Detayları";
+    
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Hakkımızda Detayları</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Paneli</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Hakkimizda">Hakkımızda</a></li>
+        <li class="breadcrumb-item active">Detaylar</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-info-circle me-1"></i>
+            Hakkımızda Bilgisi Detayları
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>Tarihçemiz</h4>
+                    <div class="border p-3 mb-4 bg-light">
+                        @Html.Raw(Model.Tarihcemiz)
+                    </div>
+                    
+                    <h4>Vizyonumuz</h4>
+                    <div class="border p-3 mb-4 bg-light">
+                        @Html.Raw(Model.Vizyonumuz)
+                    </div>
+                    
+                    <h4>Misyonumuz</h4>
+                    <div class="border p-3 mb-4 bg-light">
+                        @Html.Raw(Model.Misyonumuz)
+                    </div>
+                    
+                    <dl class="row">
+                        <dt class="col-sm-3">Durum</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                @(Model.IsActive ? "Aktif" : "Pasif")
+                            </span>
+                        </dd>
+                        
+                        <dt class="col-sm-3">Oluşturulma Tarihi</dt>
+                        <dd class="col-sm-9">@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        <div class="card mb-4">
+                            <div class="card-header">Hakkımızda Görseli</div>
+                            <div class="card-body">
+                                <img src="@Model.ImagePath" alt="Hakkımızda Görseli" class="img-fluid" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <div class="d-flex mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">Düzenle</a>
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,80 @@
+@model EgitimSitesi.Models.IletisimModel
+
+@{
+    ViewData["Title"] = "İletişim Bilgisi Sil";
+   
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">İletişim Bilgisi Sil</h1>
+    <p class="mb-4">İletişim bilgisini silmek istediğinizden emin misiniz?</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">İletişim Bilgisini Sil</h6>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle"></i> <strong>Uyarı:</strong> Bu işlem geri alınamaz. İletişim bilgisini sildiğinizde, bu bilgi tamamen sistemden silinecektir.
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">Silinecek İletişim Bilgileri</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Merkez/Şube:</h6>
+                                <p>@Model.MerkezSube</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Adres:</h6>
+                                <p>@Model.Adress</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Telefon:</h6>
+                                <p>@Model.TelNo</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">E-mail:</h6>
+                                <p>@Model.Email</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Durum:</h6>
+                                <p>
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold">Eklenme Tarihi:</h6>
+                                <p>@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group text-right">
+                    <a href="/Admin/Iletisim" class="btn btn-secondary">İptal</a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Sil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

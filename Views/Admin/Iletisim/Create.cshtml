@@ -1,0 +1,102 @@
+@model EgitimSitesi.Models.IletisimModel
+
+@{
+    ViewData["Title"] = "İletişim Bilgisi Ekle";
+   
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">İletişim Bilgisi Ekle</h1>
+    <p class="mb-4">Bu sayfadan yeni iletişim bilgisi ekleyebilirsiniz.</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">İletişim Bilgisi Formu</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="MerkezSube">Merkez/Şube Adı</label>
+                    <input asp-for="MerkezSube" class="form-control" placeholder="Merkez veya şube adını girin" required />
+                    <span asp-validation-for="MerkezSube" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Adress">Adres</label>
+                    <textarea asp-for="Adress" class="form-control" rows="3" placeholder="Tam adres bilgisini girin" required></textarea>
+                    <span asp-validation-for="Adress" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TelNo">Telefon Numarası</label>
+                    <input asp-for="TelNo" class="form-control" placeholder="Telefon numarası girin (örn: 0212 123 45 67)" required />
+                    <span asp-validation-for="TelNo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email">E-posta Adresi</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="E-posta adresi girin" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GoogleMapsEmbed">Google Maps Embed Kodu</label>
+                    <textarea asp-for="GoogleMapsEmbed" class="form-control" rows="3" placeholder="Google Maps embed kodunu buraya yapıştırın (isteğe bağlı)"></textarea>
+                    <small class="form-text text-muted">Google Maps'ten alınan iframe kodunu buraya yapıştırabilirsiniz. Boş bırakılabilir.</small>
+                    <span asp-validation-for="GoogleMapsEmbed" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CalismaSaatleri">Çalışma Saatleri</label>
+                    <input asp-for="CalismaSaatleri" class="form-control" placeholder="Çalışma saatlerini girin (örn: Pazartesi-Cuma 09:00-18:00)" />
+                    <span asp-validation-for="CalismaSaatleri" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FacebookUrl">Facebook URL</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fab fa-facebook-f"></i></span>
+                        </div>
+                        <input asp-for="FacebookUrl" class="form-control" placeholder="Facebook sayfanızın URL'sini girin" />
+                    </div>
+                    <span asp-validation-for="FacebookUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="InstagramUrl">Instagram URL</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                        </div>
+                        <input asp-for="InstagramUrl" class="form-control" placeholder="Instagram profilinizin URL'sini girin" />
+                    </div>
+                    <span asp-validation-for="InstagramUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="YouTubeUrl">YouTube URL</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fab fa-youtube"></i></span>
+                        </div>
+                        <input asp-for="YouTubeUrl" class="form-control" placeholder="YouTube kanalınızın URL'sini girin" />
+                    </div>
+                    <span asp-validation-for="YouTubeUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group text-right">
+                    <a href="/Admin/Iletisim" class="btn btn-secondary">İptal</a>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

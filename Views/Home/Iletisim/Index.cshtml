@@ -1,0 +1,200 @@
+@model IEnumerable<EgitimSitesi.Models.IletisimModel>
+
+@{
+    ViewData["Title"] = "İletişim";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="fw-bold text-center">İletişim</h1>
+            <div class="text-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a href="/">Anasayfa</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">İletişim</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <p>Henüz iletişim bilgisi eklenmemiş.</p>
+        </div>
+    }
+    else
+    {
+        foreach (var iletisim in Model.Where(i => i.IsActive))
+        {
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="m-0"><i class="fas fa-map-marker-alt me-2"></i> @iletisim.MerkezSube</h4>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">İletişim Bilgileri</h5>
+                            <hr>
+                            <div class="mb-3">
+                                <h6 class="fw-bold"><i class="fas fa-map-marked-alt me-2"></i> Adres:</h6>
+                                <p>@iletisim.Adress</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="fw-bold"><i class="fas fa-phone-alt me-2"></i> Telefon:</h6>
+                                <p>
+                                    <a href="tel:@iletisim.TelNo.Replace(" ", "")" class="text-decoration-none">
+                                        @iletisim.TelNo
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="fw-bold"><i class="fas fa-envelope me-2"></i> E-posta:</h6>
+                                <p>
+                                    <a href="mailto:@iletisim.Email" class="text-decoration-none">
+                                        @iletisim.Email
+                                    </a>
+                                </p>
+                            </div>
+                            @if (!string.IsNullOrEmpty(iletisim.CalismaSaatleri))
+                            {
+                                <div class="mb-3">
+                                    <h6 class="fw-bold"><i class="fas fa-clock me-2"></i> Çalışma Saatleri:</h6>
+                                    <p>@iletisim.CalismaSaatleri</p>
+                                </div>
+                            }
+                            
+                            <!-- Sosyal Medya Bölümü -->
+                            <div class="mb-3">
+                                <h6 class="fw-bold"><i class="fas fa-share-alt me-2"></i> Sosyal Medya:</h6>
+                                <div class="d-flex gap-2 mt-2">
+                                    @if (!string.IsNullOrEmpty(iletisim.FacebookUrl))
+                                    {
+                                        <a href="@iletisim.FacebookUrl" target="_blank" class="btn btn-facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(iletisim.InstagramUrl))
+                                    {
+                                        <a href="@iletisim.InstagramUrl" target="_blank" class="btn btn-instagram">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(iletisim.YouTubeUrl))
+                                    {
+                                        <a href="@iletisim.YouTubeUrl" target="_blank" class="btn btn-youtube">
+                                            <i class="fab fa-youtube"></i>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-around">
+                            <a href="tel:@iletisim.TelNo.Replace(" ", "")" class="btn btn-outline-primary">
+                                <i class="fas fa-phone-alt me-1"></i> Ara
+                            </a>
+                            <a href="https://wa.me/@iletisim.TelNo.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "")" 
+                               class="btn btn-outline-success" target="_blank">
+                                <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                            </a>
+                            <a href="mailto:@iletisim.Email" class="btn btn-outline-danger">
+                                <i class="fas fa-envelope me-1"></i> E-posta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="m-0"><i class="fas fa-map me-2"></i> Harita</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            @if (!string.IsNullOrEmpty(iletisim.GoogleMapsEmbed))
+                            {
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    @Html.Raw(iletisim.GoogleMapsEmbed)
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center p-5">
+                                    <i class="fas fa-map-marked-alt fa-4x text-muted mb-3"></i>
+                                    <p class="lead">Harita bilgisi henüz eklenmemiş.</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="m-0">Bize Yazın</h4>
+                </div>
+                <div class="card-body">
+                    <form id="contactForm" asp-action="SendMessage" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Adınız Soyadınız *</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Adınız Soyadınız" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">E-posta Adresiniz *</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="E-posta Adresiniz" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Telefon Numaranız</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Telefon Numaranız">
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Konu *</label>
+                            <input type="text" class="form-control" id="subject" name="subject" placeholder="Konu" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Mesajınız *</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" placeholder="Mesajınız" required></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i> Gönder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Remove the JavaScript that prevents form submission
+        // The form will now submit normally to the controller action
+        
+        // If you want to show a success message from the controller:
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@TempData["SuccessMessage"]');
+            });
+            </text>
+        }
+        
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@TempData["ErrorMessage"]');
+            });
+            </text>
+        }
+    </script>
+} 

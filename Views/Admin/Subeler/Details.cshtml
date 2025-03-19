@@ -1,0 +1,171 @@
+@model EgitimSitesi.Models.SubeModel
+
+@{
+    ViewData["Title"] = "Şube Detayları";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">@Model.Name Şubesi Detayları</h6>
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit me-1"></i>Düzenle
+                        </a>
+                        <a asp-action="Index" class="btn btn-sm btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Listeye Dön
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">Temel Bilgiler</h5>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.Name):</div>
+                                <div class="col-md-8">@Model.Name</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.Address):</div>
+                                <div class="col-md-8">@Model.Address</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.TelNo):</div>
+                                <div class="col-md-8">@Model.TelNo</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.WorkHours):</div>
+                                <div class="col-md-8">@Model.WorkHours</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.CreationDate):</div>
+                                <div class="col-md-8">@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.Order):</div>
+                                <div class="col-md-8">@Model.Order</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.IsActive):</div>
+                                <div class="col-md-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pasif</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">Konum Bilgileri</h5>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.Latitude):</div>
+                                <div class="col-md-8">@Model.Latitude</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.Longitude):</div>
+                                <div class="col-md-8">@Model.Longitude</div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.ZoomLevel):</div>
+                                <div class="col-md-8">@Model.ZoomLevel</div>
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.MapUrl))
+                            {
+                                <div class="row mb-2">
+                                    <div class="col-md-4 fw-bold">@Html.DisplayNameFor(model => model.MapUrl):</div>
+                                    <div class="col-md-8">
+                                        <a href="@Model.MapUrl" target="_blank">@Model.MapUrl</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="border-bottom pb-2 mb-3">Harita Görünümü</h5>
+                        <div id="map" style="height: 300px; width: 100%" class="border rounded"></div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-edit me-1"></i>Düzenle
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Listeye Dön
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger float-end">
+                            <i class="fas fa-trash me-1"></i>Sil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" defer></script>
+    <script>
+        // Initialize the map
+        function initMap() {
+            // Get coordinates from model
+            const lat = @Model.Latitude;
+            const lng = @Model.Longitude;
+            const zoomLevel = @Model.ZoomLevel;
+            
+            // Create the map
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: lat, lng: lng },
+                zoom: zoomLevel,
+                mapTypeId: "roadmap",
+            });
+            
+            // Add marker
+            const marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                title: "@Model.Name"
+            });
+            
+            // Add info window with branch information
+            const infoContent = '<div><strong>@Model.Name</strong><br>' +
+                                '@Model.Address<br>' +
+                                'Tel: @Model.TelNo<br>' +
+                                'Çalışma Saatleri: @Model.WorkHours</div>';
+                                
+            const infowindow = new google.maps.InfoWindow({
+                content: infoContent
+            });
+            
+            // Open info window by default
+            infowindow.open(map, marker);
+            
+            // Add click event to marker
+            marker.addListener("click", () => {
+                infowindow.open(map, marker);
+            });
+        }
+        
+        // Initialize map when window loads
+        window.initMap = initMap;
+    </script>
+} 

@@ -1,0 +1,94 @@
+@model EgitimSitesi.Models.KadromuzModel
+@using EgitimSitesi.Models
+
+@{
+    ViewData["Title"] = "Personel Sil";
+ 
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Personel Sil</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Panel</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Kadromuz">Kadromuz</a></li>
+        <li class="breadcrumb-item active">Sil</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-trash me-1"></i> Personel Kaydını Silme Onayı
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                <strong>Uyarı!</strong> Bu personel kaydını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        <img src="@Model.ImagePath" alt="@Model.Name" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="bg-light d-flex justify-content-center align-items-center mx-auto rounded-circle mb-3" style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-3x text-secondary"></i>
+                        </div>
+                    }
+                    <h4>@Model.Name</h4>
+                    <p class="text-primary">@Model.Field</p>
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 200px;">Ünvan/Görev</th>
+                                    <td>@Model.Title.ToString()</td>
+                                </tr>
+                                <tr>
+                                    <th>Kademe</th>
+                                    <td>@Model.Grade.ToString()</td>
+                                </tr>
+                                <tr>
+                                    <th>Deneyim</th>
+                                    <td>@(string.IsNullOrEmpty(Model.Exp) ? "-" : Model.Exp)</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>@(string.IsNullOrEmpty(Model.Email) ? "-" : Model.Email)</td>
+                                </tr>
+                                <tr>
+                                    <th>Durum</th>
+                                    <td>
+                                        <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">
+                                            @(Model.IsActive ? "Aktif" : "Pasif")
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Oluşturma Tarihi</th>
+                                    <td>@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i> Sil
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> İptal
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

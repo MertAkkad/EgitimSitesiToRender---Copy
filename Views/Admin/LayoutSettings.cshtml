@@ -1,0 +1,135 @@
+@model EgitimSitesi.Controllers.AdminControllers.LayoutSettingsViewModel
+
+@{
+    ViewData["Title"] = "Site Ayarları";
+    Layout = "_Layout"; // Use the default layout for admin panel
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Site Ayarları</h1>
+    
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Site Ayarları</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="LayoutSettings" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <!-- Logo Upload Section -->
+                <div class="mb-4">
+                    <h5 class="mb-3">Site Logosu</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                @if (!string.IsNullOrEmpty(Model.CurrentLogoPath))
+                                {
+                                    <div class="mb-3">
+                                        <label class="form-label">Mevcut Logo:</label>
+                                        <div class="border p-2 bg-light text-center">
+                                            <img src="@Model.CurrentLogoPath" alt="Mevcut Logo" class="img-fluid" style="max-height: 100px;" />
+                                        </div>
+                                    </div>
+                                }
+                                <label asp-for="Logo" class="form-label"></label>
+                                <input asp-for="Logo" type="file" class="form-control" accept="image/*" />
+                                <span asp-validation-for="Logo" class="text-danger"></span>
+                                <div class="form-text text-muted">
+                                    Önerilen boyut: 200x60 piksel, maksimum 2MB.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="my-4" />
+                
+                <!-- Layout Selection Section -->
+                <div class="mb-4">
+                    <h5 class="mb-3">Düzen Seçimi</h5>
+                    <p class="mb-2">Aktif Düzen: <strong>@Model.ActiveLayout</strong></p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="ActiveLayout" class="form-label"></label>
+                            <select asp-for="ActiveLayout" class="form-select" asp-items="Model.AvailableLayouts"></select>
+                            <span asp-validation-for="ActiveLayout" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 class="mt-4 mb-3">Düzen Önizlemeleri</h4>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header py-2">
+                                <h5 class="m-0">Default Layout (_Layout)</h5>
+                            </div>
+                            <div class="card-body text-center p-3">
+                                <img src="https://via.placeholder.com/400x300?text=Default+Layout" alt="Default Layout Preview" class="img-fluid mb-2 border" style="max-height: 200px;" />
+                                <p class="small text-muted">Varsayılan düzen</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header py-2">
+                                <h5 class="m-0">Blue Layout (_Layout1)</h5>
+                            </div>
+                            <div class="card-body text-center p-3">
+                                <img src="https://via.placeholder.com/400x300?text=Blue+Layout" alt="Blue Layout Preview" class="img-fluid mb-2 border" style="max-height: 200px; background-color: #1e88e5; color: white;" />
+                                <p class="small text-muted">Mavi renk temalı düzen</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header py-2">
+                                <h5 class="m-0">Green Layout with Sidebar (_Layout2)</h5>
+                            </div>
+                            <div class="card-body text-center p-3">
+                                <img src="https://via.placeholder.com/400x300?text=Green+Layout+with+Sidebar" alt="Green Layout Preview" class="img-fluid mb-2 border" style="max-height: 200px; background-color: #4caf50; color: white;" />
+                                <p class="small text-muted">Yeşil temalı kenar çubuğu düzeni</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header py-2">
+                                <h5 class="m-0">Dark Purple Layout (_Layout3)</h5>
+                            </div>
+                            <div class="card-body text-center p-3">
+                                <img src="https://via.placeholder.com/400x300?text=Dark+Purple+Layout" alt="Dark Layout Preview" class="img-fluid mb-2 border" style="max-height: 200px; background-color: #121212; color: white; border: 1px solid #9c27b0;" />
+                                <p class="small text-muted">Koyu mor temalı düzen</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-1"></i> Ayarları Kaydet
+                    </button>
+                    <a href="/Admin" class="btn btn-secondary ml-2">
+                        <i class="fas fa-arrow-left mr-1"></i> Geri Dön
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

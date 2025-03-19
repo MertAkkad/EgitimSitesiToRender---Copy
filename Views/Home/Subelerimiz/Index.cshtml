@@ -1,0 +1,162 @@
+@model IEnumerable<EgitimSitesi.Models.SubeModel>
+
+@{
+    ViewData["Title"] = "Şubelerimiz";
+}
+
+<div class="container py-5">
+
+
+    <div class="row">
+        @foreach (var sube in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">@sube.Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>@sube.Address
+                        </p>
+                        <p class="card-text">
+                            <i class="fas fa-phone me-2 text-primary"></i>@sube.TelNo
+                        </p>
+                        <p class="card-text">
+                            <i class="fas fa-clock me-2 text-primary"></i>@sube.WorkHours
+                        </p>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <a href="#" class="btn btn-sm btn-outline-primary show-on-map" 
+                           data-lat="@sube.Latitude" data-lng="@sube.Longitude" 
+                           data-name="@sube.Name" data-zoom="@sube.ZoomLevel">
+                            <i class="fas fa-map-marked-alt me-1"></i>Haritada Göster
+                        </a>
+                        @if (!string.IsNullOrEmpty(sube.MapUrl))
+                        {
+                            <a href="@sube.MapUrl" target="_blank" class="btn btn-sm btn-outline-secondary ms-2">
+                                <i class="fas fa-directions me-1"></i>Yol Tarifi
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" defer></script>
+    <script>
+        // Initialize the map and markers
+        let map;
+        let markers = [];
+        let infoWindows = [];
+        
+        function initMap() {
+            // Default center on Turkey
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 39.9334, lng: 32.8597 },
+                zoom: 6,
+                mapTypeId: "roadmap",
+            });
+            
+            // Add markers for each branch
+            @foreach (var sube in Model)
+            {
+                <text>
+                addMarker({
+                    lat: @sube.Latitude,
+                    lng: @sube.Longitude,
+                    title: "@sube.Name",
+                    address: "@sube.Address",
+                    phone: "@sube.TelNo",
+                    hours: "@sube.WorkHours",
+                    zoomLevel: @sube.ZoomLevel
+                });
+                </text>
+            }
+            
+            // If we have branches, fit bounds to show all markers
+            if (markers.length > 0) {
+                const bounds = new google.maps.LatLngBounds();
+                markers.forEach(marker => {
+                    bounds.extend(marker.getPosition());
+                });
+                map.fitBounds(bounds);
+                
+                // If only one location, set proper zoom
+                if (markers.length === 1) {
+                    map.setZoom(markers[0].zoomLevel || 15);
+                }
+            }
+        }
+        
+        function addMarker(branch) {
+            const marker = new google.maps.Marker({
+                position: { lat: branch.lat, lng: branch.lng },
+                map: map,
+                title: branch.title,
+                animation: google.maps.Animation.DROP,
+                zoomLevel: branch.zoomLevel
+            });
+            
+            const infoContent = `
+                <div class="p-2">
+                    <h5 class="mb-2">${branch.title}</h5>
+                    <p class="mb-1"><i class="fas fa-map-marker-alt me-2 text-primary"></i>${branch.address}</p>
+                    <p class="mb-1"><i class="fas fa-phone me-2 text-primary"></i>${branch.phone}</p>
+                    <p class="mb-1"><i class="fas fa-clock me-2 text-primary"></i>${branch.hours}</p>
+                </div>
+            `;
+            
+            const infoWindow = new google.maps.InfoWindow({
+                content: infoContent
+            });
+            
+            marker.addListener("click", () => {
+                // Close all other info windows
+                infoWindows.forEach(iw => iw.close());
+                
+                // Open this info window
+                infoWindow.open(map, marker);
+            });
+            
+            markers.push(marker);
+            infoWindows.push(infoWindow);
+        }
+        
+        // Handle "Show on Map" button clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.show-on-map').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const lat = parseFloat(this.getAttribute('data-lat'));
+                    const lng = parseFloat(this.getAttribute('data-lng'));
+                    const name = this.getAttribute('data-name');
+                    const zoom = parseInt(this.getAttribute('data-zoom')) || 15;
+                    
+                    // Center map on branch
+                    map.setCenter({ lat, lng });
+                    map.setZoom(zoom);
+                    
+                    // Find and click the corresponding marker
+                    const markerIndex = markers.findIndex(m => 
+                        m.getPosition().lat() === lat && 
+                        m.getPosition().lng() === lng);
+                    
+                    if (markerIndex !== -1) {
+                        google.maps.event.trigger(markers[markerIndex], 'click');
+                    }
+                    
+                    // Scroll to map
+                    document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
+        
+        // Initialize map when window loads
+        window.initMap = initMap;
+    </script>
+} 

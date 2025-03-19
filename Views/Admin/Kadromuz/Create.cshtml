@@ -1,0 +1,107 @@
+@model EgitimSitesi.Models.KadromuzModel
+@using EgitimSitesi.Models
+
+@{
+    ViewData["Title"] = "Yeni Personel Ekle";
+    
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Yeni Personel Ekle</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Panel</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Kadromuz">Kadromuz</a></li>
+        <li class="breadcrumb-item active">Yeni Ekle</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-plus me-1"></i> Yeni Personel Bilgileri
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label"></label>
+                            <select asp-for="Title" class="form-select" asp-items="Html.GetEnumSelectList<StaffTitle>()">
+                                <option value="">-- Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Grade" class="form-label"></label>
+                            <select asp-for="Grade" class="form-select" asp-items="Html.GetEnumSelectList<Grade>()">
+                                <option value="">-- Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="Grade" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Field" class="form-label"></label>
+                            <input asp-for="Field" class="form-control" />
+                            <span asp-validation-for="Field" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Exp" class="form-label"></label>
+                            <textarea asp-for="Exp" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Exp" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Order" class="form-label"></label>
+                            <input asp-for="Order" class="form-control" />
+                            <span asp-validation-for="Order" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label"></label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label asp-for="ImagePath" class="form-label"></label>
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                            <div class="form-text">Profil fotoğrafı yükleyebilirsiniz. Önerilen boyut: 300x300px</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Kaydet
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

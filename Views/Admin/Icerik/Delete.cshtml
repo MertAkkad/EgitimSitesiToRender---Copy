@@ -1,0 +1,92 @@
+@model EgitimSitesi.Models.Anasayfa_IcerikModel
+@{
+    ViewData["Title"] = "İçerik Sil";
+    
+}
+
+<div class="container-fluid p-4">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Ana Sayfa İçeriğini Sil</h6>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle"></i> Uyarı!</h5>
+                <p>Bu içeriği silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-7">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="150">ID</th>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <th>Başlık</th>
+                            <td>@Model.Title</td>
+                        </tr>
+                        <tr>
+                            <th>Açıklama</th>
+                            <td>@Model.Description</td>
+                        </tr>
+                        <tr>
+                            <th>İçerik Türü</th>
+                            <td>@Model.ContentType</td>
+                        </tr>
+                        <tr>
+                            <th>Buton</th>
+                            <td>
+                                @if (!string.IsNullOrEmpty(Model.ButtonText))
+                                {
+                                    <span>@Model.ButtonText <small class="text-muted">(@Model.ButtonUrl)</small></span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Tanımlanmamış</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Durum</th>
+                            <td>
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Pasif</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Oluşturma Tarihi</th>
+                            <td>@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="m-0">Görsel</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="@Model.ImagePath" alt="@Model.Title" class="img-fluid" style="max-height: 250px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <form asp-action="Delete" method="post" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i> Sil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

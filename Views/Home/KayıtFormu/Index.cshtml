@@ -1,0 +1,208 @@
+@model EgitimSitesi.Models.KayitFormuModel
+
+@{
+    ViewData["Title"] = "Kayıt Formu";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="mb-0">Kayıt Formu</h2>
+                    <p class="mt-2 mb-0">Kurslarımıza kayıt olmak için lütfen aşağıdaki formu doldurunuz</p>
+                </div>
+                <div class="card-body p-5">
+                    @if (ViewBag.Success != null && ViewBag.Success)
+                    {
+                        <div class="alert alert-success">
+                            <h4 class="alert-heading">Teşekkürler!</h4>
+                            <p>Kayıt formunuz başarıyla gönderilmiştir. En kısa zamanda sizinle iletişime geçilecektir.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-controller="KayitFormu" asp-action="Index" method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                            
+                            <div class="mb-4">
+                                <label asp-for="Name" class="form-label fw-bold">Ad Soyad</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input asp-for="Name" class="form-control" placeholder="Adınız ve soyadınız" />
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label asp-for="TelNo" class="form-label fw-bold">Telefon Numarası</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input asp-for="TelNo" class="form-control" placeholder="05XX XXX XX XX" />
+                                </div>
+                                <span asp-validation-for="TelNo" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label asp-for="Email" class="form-label fw-bold">E-posta Adresi</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input asp-for="Email" class="form-control" placeholder="ornek@adres.com" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label asp-for="Grade" class="form-label fw-bold">Sınıf / Seviye</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
+                                    <select asp-for="Grade" class="form-select">
+                                        <option value="">Sınıf Seçiniz</option>
+                                        <optgroup label="İlkokul">
+                                            <option value="1. Sınıf">1. Sınıf</option>
+                                            <option value="2. Sınıf">2. Sınıf</option>
+                                            <option value="3. Sınıf">3. Sınıf</option>
+                                            <option value="4. Sınıf">4. Sınıf</option>
+                                        </optgroup>
+                                        <optgroup label="Ortaokul">
+                                            <option value="5. Sınıf">5. Sınıf</option>
+                                            <option value="6. Sınıf">6. Sınıf</option>
+                                            <option value="7. Sınıf">7. Sınıf</option>
+                                            <option value="8. Sınıf (LGS)">8. Sınıf (LGS)</option>
+                                        </optgroup>
+                                        <optgroup label="Lise">
+                                            <option value="9. Sınıf">9. Sınıf</option>
+                                            <option value="10. Sınıf">10. Sınıf</option>
+                                            <option value="11. Sınıf">11. Sınıf</option>
+                                            <option value="12. Sınıf (TYT/AYT)">12. Sınıf (TYT/AYT)</option>
+                                        </optgroup>
+                                        <optgroup label="Mezun">
+                                            <option value="Mezun (TYT/AYT)">Mezun (TYT/AYT)</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Grade" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="kvkkCheck" required>
+                                <label class="form-check-label" for="kvkkCheck">
+                                    <small>Kişisel verilerin korunması kapsamında <a href="#" data-bs-toggle="modal" data-bs-target="#kvkkModal">KVKK metnini</a> okudum ve kabul ediyorum.</small>
+                                </label>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Kaydı Gönder
+                                </button>
+                            </div>
+                        </form>
+                    }
+                </div>
+                <div class="card-footer bg-light p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-phone-alt text-primary me-2"></i>
+                            <span>Telefon: <a href="tel:+902123456789">0212 345 67 89</a></span>
+                        </div>
+                        <div>
+                            <i class="fas fa-envelope text-primary me-2"></i>
+                            <span>E-posta: <a href="mailto:info@egitimkurumu.com">info@egitimkurumu.com</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KVKK Modal -->
+<div class="modal fade" id="kvkkModal" tabindex="-1" aria-labelledby="kvkkModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="kvkkModalLabel">Kişisel Verilerin Korunması</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Kişisel Verilerin İşlenmesine İlişkin Aydınlatma Metni</h6>
+                <p>
+                    Bu aydınlatma metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında veri sorumlusu sıfatıyla hareket eden Eğitim Kurumu tarafından, kişisel verilerinizin işlenmesine ilişkin olarak hazırlanmıştır.
+                </p>
+                <p>
+                    Kişisel verileriniz; Eğitim Kurumu tarafından sunulan eğitim hizmetlerinden faydalanmanız amacıyla, elektronik ortamda web sitemiz üzerinden doldurduğunuz formlar aracılığıyla toplanmaktadır.
+                </p>
+                <p>
+                    Bu kapsamda toplanan kişisel verileriniz; size sunulacak eğitim hizmetlerinin belirlenmesi, iletişim kurulması, eğitim ve etkinlikler hakkında bilgilendirme yapılması amaçlarıyla işlenmektedir.
+                </p>
+                <p>
+                    Toplanan kişisel verileriniz, yukarıda belirtilen amaçların gerçekleştirilmesi doğrultusunda, tedarikçilerimizle, iş ortaklarımızla ve kanunen yetkili kamu kurumları ve özel kişilerle paylaşılabilecektir.
+                </p>
+                <p>
+                    KVKK'nın 11. maddesi uyarınca, kişisel veri sahibi olarak; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme gibi haklara sahipsiniz.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Form validation using jQuery Validation
+        $(document).ready(function() {
+            $.validator.addMethod("phoneFormat", function(value, element) {
+                return this.optional(element) || /^(05)[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/.test(value.replace(/\s/g, ''));
+            }, "Geçerli bir telefon numarası giriniz (05XX XXX XX XX formatında)");
+            
+            $("form").validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 3
+                    },
+                    TelNo: {
+                        required: true,
+                        phoneFormat: true
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    Grade: {
+                        required: true
+                    }
+                },
+                messages: {
+                    Name: {
+                        required: "Lütfen adınızı ve soyadınızı giriniz",
+                        minlength: "Ad soyad en az 3 karakter olmalıdır"
+                    },
+                    TelNo: {
+                        required: "Lütfen telefon numaranızı giriniz"
+                    },
+                    Email: {
+                        required: "Lütfen e-posta adresinizi giriniz",
+                        email: "Geçerli bir e-posta adresi giriniz"
+                    },
+                    Grade: {
+                        required: "Lütfen sınıfınızı seçiniz"
+                    }
+                },
+                errorElement: "div",
+                errorPlacement: function(error, element) {
+                    error.addClass("invalid-feedback");
+                    error.insertAfter(element.closest(".input-group"));
+                },
+                highlight: function(element) {
+                    $(element).addClass("is-invalid").removeClass("is-valid");
+                },
+                unhighlight: function(element) {
+                    $(element).addClass("is-valid").removeClass("is-invalid");
+                }
+            });
+        });
+    </script>
+} 

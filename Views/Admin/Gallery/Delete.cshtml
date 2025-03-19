@@ -1,0 +1,88 @@
+@model EgitimSitesi.Models.GalleryModel
+
+@{
+    ViewData["Title"] = "Galeri Resmi Sil";
+    
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Galeri Resmi Sil</h1>
+        <a asp-action="Index" class="btn btn-sm btn-secondary shadow-sm">
+            <i class="fas fa-arrow-left fa-sm text-white-50 mr-1"></i> Listeye Dön
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-danger">
+                    <h6 class="m-0 font-weight-bold text-white">Uyarı</h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> Bu işlem geri alınamaz. Bu resmi silmek istediğinizden emin misiniz?
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">ID</dt>
+                                <dd class="col-sm-8">@Model.Id</dd>
+                                
+                                <dt class="col-sm-4">Kategori</dt>
+                                <dd class="col-sm-8">@GetDisplayName(Model.Type)</dd>
+                                
+                                <dt class="col-sm-4">Açıklama</dt>
+                                <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Description) ? "-" : Model.Description)</dd>
+                                
+                                <dt class="col-sm-4">Sıralama</dt>
+                                <dd class="col-sm-8">@Model.Order</dd>
+                                
+                                <dt class="col-sm-4">Oluşturulma Tarihi</dt>
+                                <dd class="col-sm-8">@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</dd>
+                                
+                                <dt class="col-sm-4">Durum</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <img src="@Model.ImagePath" class="img-thumbnail" style="max-height: 300px;" alt="@Model.Description" />
+                        </div>
+                    </div>
+                    
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash mr-1"></i> Evet, Sil
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public static string GetDisplayName(GalleryType value)
+    {
+        var fieldInfo = value.GetType().GetField(value.ToString());
+        
+        if (fieldInfo.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute), false) is System.ComponentModel.DataAnnotations.DisplayAttribute[] attributes && attributes.Length > 0)
+        {
+            return attributes[0].Name;
+        }
+        
+        return value.ToString();
+    }
+} 

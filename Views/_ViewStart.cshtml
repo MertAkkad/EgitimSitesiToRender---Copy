@@ -1,0 +1,27 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.DependencyInjection
+@{
+    // Get the current HttpContext
+    var httpContext = ViewContext.HttpContext;
+    
+    // Get the DbContext from the service provider
+    var dbContext = httpContext.RequestServices.GetRequiredService<EgitimSitesi.Data.ApplicationDbContext>();
+    
+    // Get the active layout from the database
+    var siteSettings = dbContext.SiteSettings.FirstOrDefault();
+    
+    // Set the layout from database, defaulting to "_Layout" if not found
+    var activeLayout = siteSettings?.ActiveLayout ?? "_Layout";
+    Layout = activeLayout;
+    
+    // Now that we have the layout, we'll set a flag in ViewData to indicate which theme CSS to use
+    // Each Layout file already includes its own theme CSS, but this is useful for section-specific CSS to know
+    // This flag can be used in section-specific CSS to apply styles that match the current theme
+    ViewData["CurrentTheme"] = activeLayout switch
+    {
+        "_Layout1" => "teal",
+        "_Layout2" => "blue",
+        "_Layout3" => "orange",
+        _ => "teal" // Default to teal theme
+    };
+}

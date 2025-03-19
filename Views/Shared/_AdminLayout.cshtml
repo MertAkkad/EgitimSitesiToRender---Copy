@@ -1,0 +1,18 @@
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "AdminBanner" ? "active" : "")" 
+                           href="/Admin/Banner">
+                            <i class="fas fa-images"></i> Bannerlar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "GalleryAdmin" ? "active" : "")" 
+                           href="/Admin/Gallery">
+                            <i class="fas fa-camera"></i> Galeri
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "AdminIcerik" ? "active" : "")" 
+                           href="/Admin/Icerik">
+                            <i class="fas fa-file-alt"></i> İçerik
+                        </a>
+                    </li> 

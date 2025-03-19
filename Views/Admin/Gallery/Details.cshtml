@@ -1,0 +1,124 @@
+@model EgitimSitesi.Models.GalleryModel
+
+@{
+    ViewData["Title"] = "Galeri Resmi Detayları";
+
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Galeri Resmi Detayları</h1>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-edit fa-sm text-white-50 mr-1"></i> Düzenle
+            </a>
+            <a asp-action="Index" class="btn btn-sm btn-secondary shadow-sm">
+                <i class="fas fa-arrow-left fa-sm text-white-50 mr-1"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Resim Bilgileri</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">ID</dt>
+                                <dd class="col-sm-8">@Model.Id</dd>
+                                
+                                <dt class="col-sm-4">Kategori</dt>
+                                <dd class="col-sm-8">@GetDisplayName(Model.Type)</dd>
+                                
+                                <dt class="col-sm-4">Açıklama</dt>
+                                <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Description) ? "-" : Model.Description)</dd>
+                                
+                                <dt class="col-sm-4">Sıralama</dt>
+                                <dd class="col-sm-8">@Model.Order</dd>
+                                
+                                <dt class="col-sm-4">Oluşturulma Tarihi</dt>
+                                <dd class="col-sm-8">@Model.CreationDate.ToString("dd.MM.yyyy HH:mm")</dd>
+                                
+                                <dt class="col-sm-4">Durum</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </dd>
+                                
+                                <dt class="col-sm-4">Cloudinary ID</dt>
+                                <dd class="col-sm-8">
+                                    <span class="text-monospace">@(string.IsNullOrEmpty(Model.CloudinaryPublicId) ? "-" : Model.CloudinaryPublicId)</span>
+                                </dd>
+                                
+                                <dt class="col-sm-4">Resim URL</dt>
+                                <dd class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm" value="@Model.ImagePath" id="imageUrl" readonly>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-outline-secondary" type="button" onclick="copyToClipboard('imageUrl')">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="mb-3">
+                                <img src="@Model.ImagePath" class="img-fluid img-thumbnail" style="max-height: 400px;" alt="@Model.Description" />
+                            </div>
+                            <div class="btn-group">
+                                <a href="@Model.ImagePath" target="_blank" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-external-link-alt mr-1"></i> Resmi Görüntüle
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit mr-1"></i> Düzenle
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash mr-1"></i> Sil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId);
+            copyText.select();
+            document.execCommand("copy");
+            
+            // Show tooltip or notification
+            alert("URL kopyalandı: " + copyText.value);
+        }
+    </script>
+}
+
+@functions {
+    public static string GetDisplayName(GalleryType value)
+    {
+        var fieldInfo = value.GetType().GetField(value.ToString());
+        
+        if (fieldInfo.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute), false) is System.ComponentModel.DataAnnotations.DisplayAttribute[] attributes && attributes.Length > 0)
+        {
+            return attributes[0].Name;
+        }
+        
+        return value.ToString();
+    }
+} 

@@ -1,0 +1,308 @@
+@model IEnumerable<EgitimSitesi.Models.KadromuzModel>
+@using EgitimSitesi.Models
+
+@{
+    ViewData["Title"] = "Kadromuz Yönetimi";
+    
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Kadromuz Yönetimi</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Admin Panel</a></li>
+        <li class="breadcrumb-item active">Kadromuz</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><i class="fas fa-users me-1"></i> Kadromuz</div>
+                <div>
+                    <button id="startReorder" class="btn btn-info btn-sm me-2">
+                        <i class="fas fa-sort"></i> Sıralamayı Değiştir
+                    </button>
+                    <a href="/Admin/Kadromuz/Create" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i> Yeni Ekle
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reordering Controls -->
+        <div id="reorderControls" class="card-header bg-light" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Sıralama Modu</h6>
+                <div>
+                    <button id="saveOrder" class="btn btn-success btn-sm me-2">
+                        <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                    </button>
+                    <button id="cancelReorder" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-times"></i> İptal
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success and Error Messages -->
+        <div id="reorderSuccess" class="alert alert-success m-3" style="display: none;">
+            <i class="fas fa-check-circle me-2"></i> Sıralama başarıyla kaydedildi.
+        </div>
+        
+        <div id="reorderError" class="alert alert-danger m-3" style="display: none;">
+            <i class="fas fa-exclamation-circle me-2"></i> 
+            <span id="errorMessage">Bir hata oluştu.</span>
+        </div>
+        
+        <div class="card-body">
+            <div id="reorderHelp" class="alert alert-info mb-4" style="display: none;">
+                <i class="fas fa-info-circle me-2"></i> Personel sıralamasını değiştirmek için satırları sürükleyip bırakabilirsiniz.
+            </div>
+            
+            <div class="table-responsive">
+                <table id="datatablesSimple" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="70">Sıra</th>
+                            <th width="80">Görsel</th>
+                            <th>İsim</th>
+                            <th>Ünvan/Görev</th>
+                            <th>Kademe</th>
+                            <th>Alan/Branş</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kadromuzTableBody">
+                        @foreach (var item in Model)
+                        {
+                            <tr data-id="@item.Id">
+                                <td class="text-center">
+                                    <span class="order-badge">@item.Order</span>
+                                    <div class="drag-handle" style="cursor: move; display: none;">
+                                        <i class="fas fa-grip-vertical text-secondary"></i>
+                                    </div>
+                                </td>
+                                <td width="80">
+                                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                                    {
+                                        <img src="@item.ImagePath" alt="@item.Name" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-light d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                                            <i class="fas fa-user text-secondary"></i>
+                                        </div>
+                                    }
+                                </td>
+                                <td>@item.Name</td>
+                                <td>@item.Title.ToString()</td>
+                                <td>@item.Grade.ToString()</td>
+                                <td>@item.Field</td>
+                                <td>
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pasif</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <div class="btn-group" role="group">
+                                            <a href="/Admin/Kadromuz/Edit/@item.Id" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="/Admin/Kadromuz/Details/@item.Id" class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="/Admin/Kadromuz/Delete/@item.Id" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                        <div class="btn-group mt-1" role="group">
+                                            <form asp-action="MoveUp" asp-route-id="@item.Id" method="post" style="display: inline;">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm" title="Yukarı Taşı">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </button>
+                                            </form>
+                                            <form asp-action="MoveDown" asp-route-id="@item.Id" method="post" style="display: inline;">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm" title="Aşağı Taşı">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form for the anti-forgery token -->
+<form id="antiforgeryForm">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dataTable = null;
+            var sortable = null;
+            var isReorderMode = false;
+            
+            // Initialize DataTables
+            var table = document.getElementById('datatablesSimple');
+            if (table) {
+                dataTable = new DataTable(table, {
+                    paging: true,
+                    ordering: true,
+                    info: true
+                });
+            }
+
+            // Start reordering mode
+            document.getElementById('startReorder').addEventListener('click', function() {
+                if (isReorderMode) return;
+                
+                console.log('Starting reorder mode');
+                
+                // If DataTable is initialized, destroy it
+                if (dataTable) {
+                    dataTable.destroy();
+                    dataTable = null;
+                }
+                
+                // Switch to reorder mode
+                isReorderMode = true;
+                
+                // Hide the start button
+                this.style.display = 'none';
+                
+                // Show reorder controls and help message
+                document.getElementById('reorderControls').style.display = 'block';
+                document.getElementById('reorderHelp').style.display = 'block';
+                
+                // Hide action buttons and show drag handles
+                var actionButtons = document.querySelectorAll('.action-buttons');
+                var orderBadges = document.querySelectorAll('.order-badge');
+                var dragHandles = document.querySelectorAll('.drag-handle');
+                
+                actionButtons.forEach(function(el) { el.style.display = 'none'; });
+                orderBadges.forEach(function(el) { el.style.display = 'none'; });
+                dragHandles.forEach(function(el) { el.style.display = 'block'; });
+                
+                // Initialize Sortable
+                sortable = new Sortable(document.getElementById('kadromuzTableBody'), {
+                    handle: '.drag-handle',
+                    animation: 150,
+                    onEnd: function() {
+                        // Update the visual order numbers
+                        var rows = document.querySelectorAll('#kadromuzTableBody tr');
+                        rows.forEach(function(row, index) {
+                            row.querySelector('.order-badge').textContent = index + 1;
+                        });
+                    }
+                });
+            });
+
+            // Cancel reordering
+            document.getElementById('cancelReorder').addEventListener('click', function() {
+                if (!isReorderMode) return;
+                
+                exitReorderMode();
+                // Reload the page to restore original order
+                location.reload();
+            });
+
+            // Save the new order
+            document.getElementById('saveOrder').addEventListener('click', function() {
+                if (!isReorderMode) return;
+                
+                var staffIds = [];
+                
+                // Collect the staff IDs in their new order
+                var rows = document.querySelectorAll('#kadromuzTableBody tr');
+                rows.forEach(function(row) {
+                    staffIds.push(parseInt(row.getAttribute('data-id')));
+                });
+                
+                console.log('Saving new order:', staffIds);
+                
+                // Send the order to the server
+                fetch('/Admin/Kadromuz/Reorder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('#antiforgeryForm input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify(staffIds)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('reorderSuccess').style.display = 'block';
+                        
+                        // After 2 seconds, exit reorder mode and reload
+                        setTimeout(function() {
+                            exitReorderMode();
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        throw new Error(data.message || 'Unknown error');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('errorMessage').textContent = 'Sıralama kaydedilirken bir hata oluştu: ' + error.message;
+                    document.getElementById('reorderError').style.display = 'block';
+                    console.error('Error saving order:', error);
+                });
+            });
+            
+            // Helper function to exit reorder mode
+            function exitReorderMode() {
+                isReorderMode = false;
+                document.getElementById('startReorder').style.display = 'inline-block';
+                document.getElementById('reorderControls').style.display = 'none';
+                document.getElementById('reorderHelp').style.display = 'none';
+                document.getElementById('reorderSuccess').style.display = 'none';
+                document.getElementById('reorderError').style.display = 'none';
+                
+                var actionButtons = document.querySelectorAll('.action-buttons');
+                var orderBadges = document.querySelectorAll('.order-badge');
+                var dragHandles = document.querySelectorAll('.drag-handle');
+                
+                actionButtons.forEach(function(el) { el.style.display = 'block'; });
+                orderBadges.forEach(function(el) { el.style.display = 'inline'; });
+                dragHandles.forEach(function(el) { el.style.display = 'none'; });
+                
+                if (sortable) {
+                    sortable.destroy();
+                    sortable = null;
+                }
+                
+                // Reinitialize DataTables if needed
+                var table = document.getElementById('datatablesSimple');
+                if (table && !dataTable) {
+                    dataTable = new DataTable(table, {
+                        paging: true,
+                        ordering: true,
+                        info: true
+                    });
+                }
+            }
+        });
+    </script>
+} 

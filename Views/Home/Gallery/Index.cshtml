@@ -1,0 +1,202 @@
+@model EgitimSitesi.Models.GalleryViewModel
+
+@{
+    ViewData["Title"] = "Galeri";
+    ViewData["Description"] = "Kurumumuzun fotoğraf galerisi";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Galeri Kategorileri</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    @foreach (var typeOption in Model.TypeOptions)
+                    {
+                        <a href="@typeOption.Url" 
+                           class="list-group-item list-group-item-action @(Model.SelectedType == typeOption.Type ? "active" : "")">
+                            @typeOption.DisplayName
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="gallery-header mb-4">
+                <h2>@Model.TypeDisplayName</h2>
+            </div>
+
+            @if (Model.Images == null || !Model.Images.Any())
+            {
+                <div class="alert alert-info">
+                    Bu kategoride henüz fotoğraf bulunmamaktadır.
+                </div>
+            }
+            else
+            {
+                <div class="row gallery-container">
+                    @foreach (var image in Model.Images.OrderBy(i => i.Order))
+                    {
+                        <div class="col-md-4 col-lg-3 mb-4">
+                            <div class="gallery-item card h-100">
+                                <a href="javascript:void(0)" class="gallery-link" data-bs-toggle="modal" data-bs-target="#imageModal" 
+                                   data-img-src="@image.ImagePath" data-img-desc="@image.Description">
+                                    <img src="@image.ImagePath" class="card-img-top img-fluid" alt="@image.Description" loading="lazy">
+                                </a>
+                                @if (!string.IsNullOrEmpty(image.Description))
+                                {
+                                    <div class="card-body">
+                                        <p class="card-text">@image.Description</p>
+                                        <small class="text-muted">@image.CreationDate.ToString("dd.MM.yyyy")</small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img src="" id="modalImage" class="img-fluid" alt="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .gallery-container {
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-link {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: block;
+        }
+
+        .gallery-link img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-link:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Enhanced Modal Styles */
+        #imageModal .modal-xl {
+            max-width: 90%;
+        }
+        
+        #imageModal .modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        #imageModal .modal-body {
+            padding: 0;
+            background-color: rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+        
+        #modalImage {
+            max-height: 80vh;
+            object-fit: contain;
+            margin: 0 auto;
+            display: block;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        #imageModal .modal-header {
+            border-bottom: none;
+            padding: 1rem 1.5rem;
+        }
+        
+        #imageModal .modal-footer {
+            border-top: none;
+        }
+        
+        #imageModal .btn-close {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            border-radius: 50%;
+            padding: 0.75rem;
+            opacity: 0.8;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Use vanilla JavaScript instead of jQuery
+            var galleryLinks = document.querySelectorAll('.gallery-link');
+            var modalImage = document.getElementById('modalImage');
+            var modalLabel = document.getElementById('imageModalLabel');
+            var imageModal = document.getElementById('imageModal');
+            
+            // Add click event to each gallery link
+            galleryLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    var imgSrc = this.getAttribute('data-img-src');
+                    var imgDesc = this.getAttribute('data-img-desc');
+                    
+                    modalImage.setAttribute('src', imgSrc);
+                    modalLabel.textContent = imgDesc;
+                });
+            });
+            
+            // Add keyboard support - close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "Escape" && imageModal.classList.contains('show')) { 
+                    bootstrap.Modal.getInstance(imageModal).hide();
+                }
+            });
+            
+            // Allow clicking anywhere outside image to close
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === modalImage) {
+                    return; // Don't close if clicking on the image itself
+                }
+                bootstrap.Modal.getInstance(imageModal).hide();
+            });
+        });
+    </script>
+}
+

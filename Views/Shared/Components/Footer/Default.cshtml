@@ -1,0 +1,82 @@
+@model EgitimSitesi.Models.IletisimModel
+
+<div class="row gy-4">
+    <div class="col-md-4">
+        <h5 class="text-white mb-3">İletişim</h5>
+        @if (Model != null)
+        {
+            <p class="small text-break"><i class="fas fa-map-marker-alt me-2"></i>@Model.Adress</p>
+            <p class="small"><i class="fas fa-phone me-2"></i>@Model.TelNo</p>
+            <p class="small text-break"><i class="fas fa-envelope me-2"></i>@Model.Email</p>
+            @if (!string.IsNullOrEmpty(Model.CalismaSaatleri))
+            {
+                <p class="small"><i class="fas fa-clock me-2"></i>@Model.CalismaSaatleri</p>
+            }
+        }
+        else
+        {
+            <p class="small"><i class="fas fa-map-marker-alt me-2"></i>Örnek Adres, İstanbul</p>
+            <p class="small"><i class="fas fa-phone me-2"></i>0212 123 45 67</p>
+            <p class="small"><i class="fas fa-envelope me-2"></i>info@egitimdershanesi.com</p>
+        }
+    </div>
+    <div class="col-md-4">
+        <h5 class="text-white mb-3">Hızlı Bağlantılar</h5>
+        <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a href="/" class="text-decoration-none text-white-50 small">Anasayfa</a></li>
+            <li class="mb-1"><a asp-controller="Kurslarimiz" asp-action="Index" class="text-decoration-none text-white-50 small">Kurslarımız</a></li>
+            <li class="mb-1"><a asp-controller="Hakkimizda" asp-action="Index" class="text-decoration-none text-white-50 small">Hakkımızda</a></li>
+            <li class="mb-1"><a asp-controller="Kadromuz" asp-action="Index" class="text-decoration-none text-white-50 small">Kadromuz</a></li>
+            <li class="mb-1"><a asp-controller="Subelerimiz" asp-action="Index" class="text-decoration-none text-white-50 small">Şubelerimiz</a></li>
+            <li class="mb-1"><a asp-controller="KayitFormu" asp-action="Index" class="text-decoration-none text-white-50 small">Kayıt Formu</a></li>
+            <li class="mb-1"><a asp-controller="Iletisim" asp-action="Index" class="text-decoration-none text-white-50 small">İletişim</a></li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h5 class="text-white mb-3">Bizi Takip Edin</h5>
+        <div class="d-flex gap-2 mt-2">
+            @if (Model != null)
+            {
+                @if (!string.IsNullOrEmpty(Model.FacebookUrl))
+                {
+                    <a href="@Model.FacebookUrl" target="_blank" class="btn-facebook btn-sm me-2" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.InstagramUrl))
+                {
+                    <a href="@Model.InstagramUrl" target="_blank" class="btn-instagram btn-sm me-2" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.YouTubeUrl))
+                {
+                    <a href="@Model.YouTubeUrl" target="_blank" class="btn-youtube btn-sm me-2" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                }
+            }
+            else
+            {
+                <a href="#" class="btn-facebook btn-sm me-2" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="btn-instagram btn-sm me-2" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="btn-youtube btn-sm me-2" title="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            }
+        </div>
+
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <hr class="border-light" />
+        <p class="text-white-50 small">
+            &copy; @DateTime.Now.Year - Eğitim Dershanesi - Tüm Hakları Saklıdır
+        </p>
+    </div>
+</div> 
