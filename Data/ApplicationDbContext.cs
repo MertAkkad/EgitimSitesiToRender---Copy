@@ -1,5 +1,6 @@
 using EgitimSitesi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EgitimSitesi.Data
 {
@@ -23,6 +24,15 @@ namespace EgitimSitesi.Data
         public DbSet<KursModel> Kurslar { get; set; }
         public DbSet<GalleryModel> Gallery { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Suppress the pending model changes warning
+            optionsBuilder.ConfigureWarnings(warnings => 
+                warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+            
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -38,7 +48,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.ButtonUrl).HasMaxLength(200);
                 entity.Property(e => e.Order).IsRequired();
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add index for frequently queried fields
                 entity.HasIndex(e => e.IsActive);
@@ -57,7 +67,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.ButtonUrl).HasMaxLength(200);
                 entity.Property(e => e.Order).IsRequired();
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 entity.Property(e => e.AnnouncementType).HasMaxLength(50);
                 
                 // Add composite index for the most common query pattern (finding active announcements ordered by date)
@@ -77,7 +87,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
                 entity.Property(e => e.Order).IsRequired();
                 entity.Property(e => e.ImagePath).HasMaxLength(200).IsRequired(false);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add indexes for common search and filter operations
                 entity.HasIndex(e => e.IsActive);
@@ -98,7 +108,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.ZoomLevel).HasDefaultValue(15);
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
                 entity.Property(e => e.Order).IsRequired();
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add spatial index for location-based queries (if your DB supports it)
                 entity.HasIndex(e => new { e.Latitude, e.Longitude });
@@ -113,7 +123,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.Vizyonumuz).IsRequired();
                 entity.Property(e => e.Misyonumuz).IsRequired();
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add index for active status
                 entity.HasIndex(e => e.IsActive);
@@ -128,7 +138,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Grade).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add indexes for common search patterns
                 entity.HasIndex(e => e.Email);
@@ -146,7 +156,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.GoogleMapsEmbed).HasMaxLength(1000);
                 entity.Property(e => e.CalismaSaatleri).HasMaxLength(200);
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add index for active status
                 entity.HasIndex(e => e.IsActive);
@@ -162,7 +172,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.Konu).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Mesaj).IsRequired().HasMaxLength(2000);
                 entity.Property(e => e.Okundu).HasDefaultValue(false);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 entity.Property(e => e.IpAdresi).HasMaxLength(50);
                 
                 // Add indexes for common filtering
@@ -175,7 +185,7 @@ namespace EgitimSitesi.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.ActiveLayout).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add index for frequent lookups (since this is likely to be queried on every page load)
                 entity.HasIndex(e => e.ActiveLayout);
@@ -187,11 +197,11 @@ namespace EgitimSitesi.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Type).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Description).IsRequired().HasMaxLength(500);
-                entity.Property(e => e.Details).HasColumnType("nvarchar(max)");
+                entity.Property(e => e.Details).HasColumnType("text");
                 entity.Property(e => e.ImagePath).HasMaxLength(200);
                 entity.Property(e => e.Order).IsRequired();
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add indexes for filtering and sorting
                 entity.HasIndex(e => e.IsActive);
@@ -209,7 +219,7 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.CloudinaryPublicId).HasMaxLength(200);
                 entity.Property(e => e.Order).IsRequired();
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreationDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 
                 // Add indexes for common query patterns
                 entity.HasIndex(e => e.IsActive);

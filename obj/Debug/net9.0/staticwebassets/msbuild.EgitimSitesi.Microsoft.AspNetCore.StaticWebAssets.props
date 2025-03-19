@@ -1440,6 +1440,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\icerikler\e8ea1e62-a875-47f5-b49b-c5a601df44a5_istockphoto-1448837300-2048x2048.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\kurslar\1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>EgitimSitesi</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/EgitimSitesi</BasePath>
+      <RelativePath>uploads/kurslar/1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>uivihwbvqs</Fingerprint>
+      <Integrity>6u7wVyj8uJ7FBnbxgpbxR9kpP+qHhzHWt0lnLyBa51g=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\kurslar\1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\kurslar\56d77cee-1454-455d-8dd2-1da5f17abdba_images (1).jpg'))">
       <SourceType>Package</SourceType>
       <SourceId>EgitimSitesi</SourceId>

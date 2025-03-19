@@ -960,6 +960,18 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"nrxkl911yw"},{"Name":"integrity","Value":"sha256-Dc9HosQyXmH2\u002BbKuJdkNqZG1wwPikcqIJE3tKVYLExQ="},{"Name":"label","Value":"_content/EgitimSitesi/uploads/icerikler/e8ea1e62-a875-47f5-b49b-c5a601df44a5_istockphoto-1448837300-2048x2048.jpg"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"212899"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022Dc9HosQyXmH2\u002BbKuJdkNqZG1wwPikcqIJE3tKVYLExQ=\u0022"},{"Name":"Last-Modified","Value":"Wed, 12 Mar 2025 20:50:14 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EgitimSitesi/uploads/kurslar/1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\kurslar\1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-6u7wVyj8uJ7FBnbxgpbxR9kpP\u002BqHhzHWt0lnLyBa51g="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"209563"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u00226u7wVyj8uJ7FBnbxgpbxR9kpP\u002BqHhzHWt0lnLyBa51g=\u0022"},{"Name":"Last-Modified","Value":"Tue, 18 Mar 2025 16:19:09 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EgitimSitesi/uploads/kurslar/1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.uivihwbvqs.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\kurslar\1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"uivihwbvqs"},{"Name":"integrity","Value":"sha256-6u7wVyj8uJ7FBnbxgpbxR9kpP\u002BqHhzHWt0lnLyBa51g="},{"Name":"label","Value":"_content/EgitimSitesi/uploads/kurslar/1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"209563"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u00226u7wVyj8uJ7FBnbxgpbxR9kpP\u002BqHhzHWt0lnLyBa51g=\u0022"},{"Name":"Last-Modified","Value":"Tue, 18 Mar 2025 16:19:09 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/EgitimSitesi/uploads/kurslar/56d77cee-1454-455d-8dd2-1da5f17abdba_images (1).jpg">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\kurslar\56d77cee-1454-455d-8dd2-1da5f17abdba_images (1).jpg'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>

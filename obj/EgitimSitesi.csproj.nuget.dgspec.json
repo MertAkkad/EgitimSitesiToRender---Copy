@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\EgitimSitesi.csproj": {}
+    "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\EgitimSitesi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\EgitimSitesi.csproj": {
+    "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\EgitimSitesi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\EgitimSitesi.csproj",
+        "projectUniqueName": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\EgitimSitesi.csproj",
         "projectName": "EgitimSitesi",
-        "projectPath": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\EgitimSitesi.csproj",
+        "projectPath": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\EgitimSitesi.csproj",
         "packagesPath": "C:\\Users\\mert_akkad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\obj\\",
+        "outputPath": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mert_akkad\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -61,6 +61,10 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.2, )"
             }

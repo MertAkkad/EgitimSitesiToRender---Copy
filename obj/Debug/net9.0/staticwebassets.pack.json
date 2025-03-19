@@ -1,335 +1,339 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\EgitimSitesi.bundle.scp.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\EgitimSitesi.bundle.scp.css",
       "PackagePath": "staticwebassets\\EgitimSitesi.qygi9odp11.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\css\\layout1-theme.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\css\\layout1-theme.css",
       "PackagePath": "staticwebassets\\css\\layout1-theme.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\css\\layout2-theme.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\css\\layout2-theme.css",
       "PackagePath": "staticwebassets\\css\\layout2-theme.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\css\\layout3-theme.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\css\\layout3-theme.css",
       "PackagePath": "staticwebassets\\css\\layout3-theme.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\css\\site.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\favicon.ico",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\img\\download.png",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\img\\download.png",
       "PackagePath": "staticwebassets\\img\\download.png"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\img\\staff\\a12e7c3b-d927-40be-a307-d639362e040d_images (7).jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\img\\staff\\a12e7c3b-d927-40be-a307-d639362e040d_images (7).jpg",
       "PackagePath": "staticwebassets\\img\\staff\\a12e7c3b-d927-40be-a307-d639362e040d_images (7).jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\img\\staff\\a620998c-843c-4ed6-85f2-3385b8b82a07_images (6).jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\img\\staff\\a620998c-843c-4ed6-85f2-3385b8b82a07_images (6).jpg",
       "PackagePath": "staticwebassets\\img\\staff\\a620998c-843c-4ed6-85f2-3385b8b82a07_images (6).jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\img\\staff\\b2aec76a-6bbe-4777-8c5a-443d2ff6c655_images (4).jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\img\\staff\\b2aec76a-6bbe-4777-8c5a-443d2ff6c655_images (4).jpg",
       "PackagePath": "staticwebassets\\img\\staff\\b2aec76a-6bbe-4777-8c5a-443d2ff6c655_images (4).jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\img\\uploads\\logo_20250318191119.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\img\\uploads\\logo_20250318191119.jpg",
       "PackagePath": "staticwebassets\\img\\uploads\\logo_20250318191119.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\img\\uploads\\logo_20250318191133.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\img\\uploads\\logo_20250318191133.jpg",
       "PackagePath": "staticwebassets\\img\\uploads\\logo_20250318191133.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\js\\site.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.slim.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.slim.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.js",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.js"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\Logo\\logo_20250318191625.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\Logo\\logo_20250318191625.jpg",
       "PackagePath": "staticwebassets\\uploads\\Logo\\logo_20250318191625.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\banners\\bd1eed20-293e-4417-bdca-6d3d65cfeb21_istockphoto-1328847023-612x612.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\banners\\bd1eed20-293e-4417-bdca-6d3d65cfeb21_istockphoto-1328847023-612x612.jpg",
       "PackagePath": "staticwebassets\\uploads\\banners\\bd1eed20-293e-4417-bdca-6d3d65cfeb21_istockphoto-1328847023-612x612.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\banners\\d3cc60c2-7f34-46cf-adf5-2a27e1528f2a_istockphoto-1190548731-2048x2048.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\banners\\d3cc60c2-7f34-46cf-adf5-2a27e1528f2a_istockphoto-1190548731-2048x2048.jpg",
       "PackagePath": "staticwebassets\\uploads\\banners\\d3cc60c2-7f34-46cf-adf5-2a27e1528f2a_istockphoto-1190548731-2048x2048.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\banners\\e10d89ef-0fe3-42d6-bd64-42637e334ef7_college-5941918_1280.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\banners\\e10d89ef-0fe3-42d6-bd64-42637e334ef7_college-5941918_1280.jpg",
       "PackagePath": "staticwebassets\\uploads\\banners\\e10d89ef-0fe3-42d6-bd64-42637e334ef7_college-5941918_1280.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\duyurular\\f340d8a8-22c4-42d9-9f99-bde42698c6b0_istockphoto-1328847023-612x612.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\duyurular\\f340d8a8-22c4-42d9-9f99-bde42698c6b0_istockphoto-1328847023-612x612.jpg",
       "PackagePath": "staticwebassets\\uploads\\duyurular\\f340d8a8-22c4-42d9-9f99-bde42698c6b0_istockphoto-1328847023-612x612.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\hakkimizda\\78c565ba-4450-4026-9040-74614da3ba34_images (1).jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\hakkimizda\\78c565ba-4450-4026-9040-74614da3ba34_images (1).jpg",
       "PackagePath": "staticwebassets\\uploads\\hakkimizda\\78c565ba-4450-4026-9040-74614da3ba34_images (1).jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\icerikler\\937a558f-9e1c-4d1b-935b-fe44090d2ab3_istockphoto-624695614-2048x2048.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\icerikler\\937a558f-9e1c-4d1b-935b-fe44090d2ab3_istockphoto-624695614-2048x2048.jpg",
       "PackagePath": "staticwebassets\\uploads\\icerikler\\937a558f-9e1c-4d1b-935b-fe44090d2ab3_istockphoto-624695614-2048x2048.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\icerikler\\e8ea1e62-a875-47f5-b49b-c5a601df44a5_istockphoto-1448837300-2048x2048.jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\icerikler\\e8ea1e62-a875-47f5-b49b-c5a601df44a5_istockphoto-1448837300-2048x2048.jpg",
       "PackagePath": "staticwebassets\\uploads\\icerikler\\e8ea1e62-a875-47f5-b49b-c5a601df44a5_istockphoto-1448837300-2048x2048.jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\kurslar\\56d77cee-1454-455d-8dd2-1da5f17abdba_images (1).jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\kurslar\\1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg",
+      "PackagePath": "staticwebassets\\uploads\\kurslar\\1d447307-3b09-4e21-a684-2583f8ebe6d2_college-5941918_1280.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\kurslar\\56d77cee-1454-455d-8dd2-1da5f17abdba_images (1).jpg",
       "PackagePath": "staticwebassets\\uploads\\kurslar\\56d77cee-1454-455d-8dd2-1da5f17abdba_images (1).jpg"
     },
     {
-      "Id": "C:\\Users\\mert_akkad\\EgitimSitesi - Copy\\wwwroot\\uploads\\kurslar\\64b9bf14-ac11-444d-b8d1-6ab5b1ee73e2_images (4).jpg",
+      "Id": "C:\\Users\\mert_akkad\\EgitimSitesiToRender - Copy\\wwwroot\\uploads\\kurslar\\64b9bf14-ac11-444d-b8d1-6ab5b1ee73e2_images (4).jpg",
       "PackagePath": "staticwebassets\\uploads\\kurslar\\64b9bf14-ac11-444d-b8d1-6ab5b1ee73e2_images (4).jpg"
     },
     {

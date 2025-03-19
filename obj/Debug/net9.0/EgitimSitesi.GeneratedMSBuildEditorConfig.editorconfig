@@ -17,297 +17,297 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = EgitimSitesi
 build_property.RootNamespace = EgitimSitesi
-build_property.ProjectDir = C:\Users\mert_akkad\EgitimSitesi - Copy\
+build_property.ProjectDir = C:\Users\mert_akkad\EgitimSitesiToRender - Copy\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\mert_akkad\EgitimSitesi - Copy
+build_property.MSBuildProjectDirectory = C:\Users\mert_akkad\EgitimSitesiToRender - Copy
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Banner/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Banner/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQmFubmVyXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Banner/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Banner/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQmFubmVyXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Banner/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Banner/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQmFubmVyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/BizeYazin/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/BizeYazin/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQml6ZVlhemluXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/BizeYazin/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/BizeYazin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQml6ZVlhemluXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Duyurular/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Duyurular/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRHV5dXJ1bGFyXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Duyurular/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Duyurular/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRHV5dXJ1bGFyXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Duyurular/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Duyurular/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRHV5dXJ1bGFyXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Duyurular/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Duyurular/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRHV5dXJ1bGFyXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Duyurular/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Duyurular/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRHV5dXJ1bGFyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Gallery/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Gallery/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cR2FsbGVyeVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Gallery/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Gallery/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cR2FsbGVyeVxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Gallery/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Gallery/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cR2FsbGVyeVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Gallery/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Gallery/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cR2FsbGVyeVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Gallery/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Gallery/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cR2FsbGVyeVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Hakkimizda/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Hakkimizda/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSGFra2ltaXpkYVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Hakkimizda/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Hakkimizda/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSGFra2ltaXpkYVxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Hakkimizda/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Hakkimizda/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSGFra2ltaXpkYVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Hakkimizda/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Hakkimizda/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSGFra2ltaXpkYVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Hakkimizda/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Hakkimizda/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSGFra2ltaXpkYVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Icerik/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Icerik/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWNlcmlrXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Icerik/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Icerik/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWNlcmlrXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Icerik/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Icerik/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWNlcmlrXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Icerik/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Icerik/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWNlcmlrXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Icerik/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Icerik/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWNlcmlrXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Iletisim/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Iletisim/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWxldGlzaW1cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Iletisim/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Iletisim/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWxldGlzaW1cRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Iletisim/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Iletisim/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWxldGlzaW1cRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Iletisim/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Iletisim/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWxldGlzaW1cRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Iletisim/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Iletisim/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSWxldGlzaW1cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kadromuz/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kadromuz/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS2Fkcm9tdXpcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kadromuz/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kadromuz/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS2Fkcm9tdXpcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kadromuz/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kadromuz/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS2Fkcm9tdXpcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kadromuz/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kadromuz/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS2Fkcm9tdXpcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kadromuz/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kadromuz/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS2Fkcm9tdXpcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/KayitFormu/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/KayitFormu/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS2F5aXRGb3JtdVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/KayitFormu/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/KayitFormu/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS2F5aXRGb3JtdVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kurslar/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kurslar/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS3Vyc2xhclxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kurslar/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kurslar/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS3Vyc2xhclxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kurslar/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kurslar/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS3Vyc2xhclxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Kurslar/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Kurslar/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cS3Vyc2xhclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/LayoutSettings.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/LayoutSettings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTGF5b3V0U2V0dGluZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Login.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Subeler/Create.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Subeler/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3ViZWxlclxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Subeler/Delete.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Subeler/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3ViZWxlclxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Subeler/Details.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Subeler/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3ViZWxlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Subeler/Edit.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Subeler/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3ViZWxlclxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Admin/Subeler/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Admin/Subeler/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3ViZWxlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Anasayfa/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Anasayfa/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBbmFzYXlmYVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Gallery/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Gallery/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHYWxsZXJ5XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/HiddenPages/DuyuruDetay.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/HiddenPages/DuyuruDetay.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIaWRkZW5QYWdlc1xEdXl1cnVEZXRheS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/HiddenPages/Duyurular.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/HiddenPages/Duyurular.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIaWRkZW5QYWdlc1xEdXl1cnVsYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Iletisim/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Iletisim/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbGV0aXNpbVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/KayıtFormu/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/KayıtFormu/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxLYXnEsXRGb3JtdVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Kurslarimiz/Detay.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Kurslarimiz/Detay.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxLdXJzbGFyaW1pelxEZXRheS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Kurslarimiz/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Kurslarimiz/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxLdXJzbGFyaW1pelxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Kurumsal/Hakkimizda/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Kurumsal/Hakkimizda/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxLdXJ1bXNhbFxIYWtraW1pemRhXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Kurumsal/Kadromuz/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Kurumsal/Kadromuz/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxLdXJ1bXNhbFxLYWRyb211elxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Home/Subelerimiz/Index.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Home/Subelerimiz/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdWJlbGVyaW1pelxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/Components/Footer/Default.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/Components/Footer/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRm9vdGVyXERlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/Components/RecentDuyurular/Default.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/Components/RecentDuyurular/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcUmVjZW50RHV5dXJ1bGFyXERlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/Error.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/_AdminLayout.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/_Layout1.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/_Layout1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQxLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/_Layout2.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/_Layout2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/_Layout3.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/_Layout3.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/_ViewImports.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/_ViewStart.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mert_akkad/EgitimSitesi - Copy/Views/Shared/_Layout.cshtml]
+[C:/Users/mert_akkad/EgitimSitesiToRender - Copy/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-tf1ec96bmv
