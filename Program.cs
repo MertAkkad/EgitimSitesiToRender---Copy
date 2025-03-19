@@ -9,9 +9,27 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add database context
-builder.Services.AddDbContext<EgitimSitesi.Data.ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add database context - Check if we're using environment variables or connection string
+if (Environment.GetEnvironmentVariable("PGHOST") != null)
+{
+    // Build connection string from environment variables
+    var pgUser = Environment.GetEnvironmentVariable("PGUSER");
+    var pgPassword = Environment.GetEnvironmentVariable("PGPASSWORD");
+    var pgHost = Environment.GetEnvironmentVariable("PGHOST");
+    var pgPort = Environment.GetEnvironmentVariable("PGPORT");
+    var pgDatabase = Environment.GetEnvironmentVariable("PGDATABASE");
+    
+    var connectionString = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword};SSL Mode=Require;Trust Server Certificate=true";
+    
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+else
+{
+    // Use connection string from appsettings.json
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 // Add authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -22,15 +40,29 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
     });
 
-// Configure Cloudinary
-builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
-builder.Services.AddSingleton(provider => {
-    var config = provider.GetRequiredService<Microsoft.Extensions.Options.IOptions<CloudinarySettings>>().Value;
-    return new Cloudinary(new Account(
-        config.CloudName,
-        config.ApiKey,
-        config.ApiSecret));
-});
+// Configure Cloudinary - Check for environment variables first
+if (Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME") != null)
+{
+    builder.Services.AddSingleton(provider => {
+        return new Cloudinary(new Account(
+            Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME"),
+            Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY"),
+            Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET")));
+    });
+}
+else
+{
+    // Use appsettings.json config
+    builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+    builder.Services.AddSingleton(provider => {
+        var config = provider.GetRequiredService<Microsoft.Extensions.Options.IOptions<CloudinarySettings>>().Value;
+        return new Cloudinary(new Account(
+            config.CloudName,
+            config.ApiKey,
+            config.ApiSecret));
+    });
+}
+
 builder.Services.AddScoped<EgitimSitesi.Services.CloudinaryService>();
 
 var app = builder.Build();
