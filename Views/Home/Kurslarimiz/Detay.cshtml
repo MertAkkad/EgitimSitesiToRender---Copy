@@ -27,7 +27,7 @@
     <div class="row mb-4">
         <div class="col-md-8">
             <h1 class="mb-3">@Model.Type Kursu</h1>
-            <p class="lead">@Model.Description</p>
+            <p class="lead">@Html.Raw(Model.Description)</p>
         </div>
         <div class="col-md-4 text-md-end">
             <a href="@Url.Action("Index", "KayitFormu")" class="btn btn-primary btn-lg">
