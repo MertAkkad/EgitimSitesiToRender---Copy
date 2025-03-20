@@ -12,7 +12,7 @@ namespace EgitimSitesi.Models
         public string? ImagePath { get; set; }
 
         [StringLength(200)]
-        public string CloudinaryPublicId { get; set; }
+        public string? CloudinaryPublicId { get; set; }
 
         [Required(ErrorMessage = "Tarihçemiz alanı zorunludur")]
         [Display(Name = "Tarihçemiz")]

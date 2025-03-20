@@ -107,6 +107,12 @@ namespace EgitimSitesi.Controllers.AdminControllers
 
                     // Set creation date
                     hakkimizda.CreationDate = DateTime.Now;
+                    
+                    // Set a default empty value for CloudinaryPublicId to prevent NULL constraint violation
+                    if (string.IsNullOrEmpty(hakkimizda.CloudinaryPublicId))
+                    {
+                        hakkimizda.CloudinaryPublicId = "";
+                    }
 
                     // Add to database
                     _context.Add(hakkimizda);
@@ -202,6 +208,12 @@ namespace EgitimSitesi.Controllers.AdminControllers
 
                     // Preserve the creation date
                     hakkimizda.CreationDate = existingHakkimizda.CreationDate;
+                    
+                    // Preserve CloudinaryPublicId or set to empty string if null
+                    if (string.IsNullOrEmpty(hakkimizda.CloudinaryPublicId))
+                    {
+                        hakkimizda.CloudinaryPublicId = existingHakkimizda.CloudinaryPublicId ?? "";
+                    }
 
                     // Update the entity
                     _context.Update(hakkimizda);
