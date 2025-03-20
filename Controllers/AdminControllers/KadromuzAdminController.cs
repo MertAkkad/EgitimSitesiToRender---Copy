@@ -116,8 +116,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(KadromuzModel staff, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
-            {
+          
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     // Upload image to Cloudinary
@@ -138,7 +137,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 _context.Add(staff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+           
             return View("~/Views/Admin/Kadromuz/Create.cshtml", staff);
         }
 
@@ -169,8 +168,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+          
                 try
                 {
                     var existingStaff = await _context.Kadromuz.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
@@ -234,7 +232,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                         throw;
                     }
                 }
-            }
+            
             return View("~/Views/Admin/Kadromuz/Edit.cshtml", staff);
         }
 

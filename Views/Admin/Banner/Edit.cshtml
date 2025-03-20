@@ -107,8 +107,16 @@
 </div>
 
 @section Scripts {
+     <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize CKEditor for Description field
+            ClassicEditor
+                .create(document.querySelector('#Description'))
+                .catch(error => {
+                    console.error(error);
+                });
+                
             // Image preview functionality
             document.getElementById('imageFile').addEventListener('change', function() {
                 const file = this.files[0];

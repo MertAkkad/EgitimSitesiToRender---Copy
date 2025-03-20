@@ -101,8 +101,22 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
     <script>
         $(document).ready(function() {
+            // Initialize CKEditor for text areas
+            ClassicEditor
+                .create(document.querySelector('#Description'))
+                .catch(error => {
+                    console.error(error);
+                });
+                
+            ClassicEditor
+                .create(document.querySelector('#Details'))
+                .catch(error => {
+                    console.error(error);
+                });
+                
             // Form validation
             $('form').on('submit', function(e) {
                 let isValid = true;

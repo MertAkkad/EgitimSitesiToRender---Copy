@@ -123,7 +123,21 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
     <script>
+        // Initialize CKEditor for text areas
+        ClassicEditor
+            .create(document.querySelector('#Description'))
+            .catch(error => {
+                console.error(error);
+            });
+            
+        ClassicEditor
+            .create(document.querySelector('#DetailContent'))
+            .catch(error => {
+                console.error(error);
+            });
+            
         // Image preview
         document.getElementById("imageFile").onchange = function() {
             var reader = new FileReader();
