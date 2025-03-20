@@ -14,7 +14,7 @@ using EgitimSitesi.Services;
 namespace EgitimSitesi.Controllers.AdminControllers
 {
     [Authorize(Roles = "Admin")]
-    [Route("Admin/Kurs")]
+    [Route("Admin/Kurslar")]
     public class KursAdminController : Controller
     {
         private readonly ApplicationDbContext _context;

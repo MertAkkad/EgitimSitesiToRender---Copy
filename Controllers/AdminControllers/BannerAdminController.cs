@@ -246,30 +246,48 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var banner = await _context.Banners.FindAsync(id);
-            if (banner == null)
+            try
             {
-                return NotFound();
-            }
-
-            // Delete image from Cloudinary if it has a public ID
-            if (!string.IsNullOrEmpty(banner.CloudinaryPublicId))
-            {
-                await _cloudinaryService.DeleteImageAsync(banner.CloudinaryPublicId);
-            }
-            else if (!string.IsNullOrEmpty(banner.ImagePath) && banner.ImagePath.Contains("cloudinary"))
-            {
-                // Try to extract public ID from URL
-                var publicId = _cloudinaryService.GetPublicIdFromUrl(banner.ImagePath);
-                if (!string.IsNullOrEmpty(publicId))
+                var banner = await _context.Banners.FindAsync(id);
+                if (banner == null)
                 {
-                    await _cloudinaryService.DeleteImageAsync(publicId);
+                    return NotFound();
                 }
-            }
 
-            _context.Banners.Remove(banner);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                // Delete image from Cloudinary if it has a public ID
+                try
+                {
+                    if (!string.IsNullOrEmpty(banner.CloudinaryPublicId))
+                    {
+                        await _cloudinaryService.DeleteImageAsync(banner.CloudinaryPublicId);
+                    }
+                    else if (!string.IsNullOrEmpty(banner.ImagePath) && banner.ImagePath.Contains("cloudinary"))
+                    {
+                        // Try to extract public ID from URL
+                        var publicId = _cloudinaryService.GetPublicIdFromUrl(banner.ImagePath);
+                        if (!string.IsNullOrEmpty(publicId))
+                        {
+                            await _cloudinaryService.DeleteImageAsync(publicId);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the error but continue with deletion
+                    Console.WriteLine($"Error deleting image from Cloudinary: {ex.Message}");
+                    // Don't return, continue with banner deletion even if image deletion fails
+                }
+
+                _context.Banners.Remove(banner);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Log the error and return to the banner list page with an error message
+                TempData["ErrorMessage"] = $"Banner silinirken bir hata oluştu: {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool BannerExists(int id)
