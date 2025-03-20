@@ -36,14 +36,14 @@ namespace EgitimSitesi.Controllers.AdminControllers
         public async Task<IActionResult> Index()
         {
             var kurslar = await _context.Kurslar.OrderBy(k => k.Order).ToListAsync();
-            return View("~/Views/Admin/Kurs/Index.cshtml", kurslar);
+            return View("~/Views/Admin/Kurslar/Index.cshtml", kurslar);
         }
 
         // GET: Admin/Kurs/Create
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            return View("~/Views/Admin/Kurs/Create.cshtml");
+            return View("~/Views/Admin/Kurslar/Create.cshtml");
         }
 
         // POST: Admin/Kurs/Create
@@ -74,7 +74,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                         if (uploadResult == null)
                         {
                             ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
-                            return View("~/Views/Admin/Kurs/Create.cshtml", kurs);
+                            return View("~/Views/Admin/Kurslar/Create.cshtml", kurs);
                         }
                         
                         // Update the model with cloudinary URL and public ID
@@ -97,7 +97,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 }
             }
 
-            return View("~/Views/Admin/Kurs/Create.cshtml", kurs);
+            return View("~/Views/Admin/Kurslar/Create.cshtml", kurs);
         }
 
         // GET: Admin/Kurs/Edit/5
@@ -115,7 +115,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            return View("~/Views/Admin/Kurs/Edit.cshtml", kurs);
+            return View("~/Views/Admin/Kurslar/Edit.cshtml", kurs);
         }
 
         // POST: Admin/Kurs/Edit/5
@@ -162,7 +162,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                         if (uploadResult == null)
                         {
                             ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
-                            return View("~/Views/Admin/Kurs/Edit.cshtml", kurs);
+                            return View("~/Views/Admin/Kurslar/Edit.cshtml", kurs);
                         }
                         
                         // Update model with Cloudinary information
@@ -201,7 +201,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 }
             }
 
-            return View("~/Views/Admin/Kurs/Edit.cshtml", kurs);
+            return View("~/Views/Admin/Kurslar/Edit.cshtml", kurs);
         }
 
         // GET: Admin/Kurs/Delete/5
@@ -213,13 +213,13 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            var kurs = await _context.Kurslar.FindAsync(id);
+            var kurs = await _context.Kurslar.FirstOrDefaultAsync(m => m.Id == id);
             if (kurs == null)
             {
                 return NotFound();
             }
 
-            return View("~/Views/Admin/Kurs/Delete.cshtml", kurs);
+            return View("~/Views/Admin/Kurslar/Delete.cshtml", kurs);
         }
 
         // POST: Admin/Kurs/Delete/5
