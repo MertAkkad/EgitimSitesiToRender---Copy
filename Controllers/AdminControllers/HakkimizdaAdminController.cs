@@ -9,7 +9,6 @@ using EgitimSitesi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using EgitimSitesi.Services;
 
 namespace EgitimSitesi.Controllers.AdminControllers
 {
@@ -19,20 +18,15 @@ namespace EgitimSitesi.Controllers.AdminControllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _environment;
-        private readonly CloudinaryService _cloudinaryService;
 
-        public HakkimizdaAdminController(
-            ApplicationDbContext context, 
-            IWebHostEnvironment environment,
-            CloudinaryService cloudinaryService)
+        public HakkimizdaAdminController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
             _environment = environment;
-            _cloudinaryService = cloudinaryService;
         }
 
         // GET: Admin/Hakkimizda
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IActionResult> Index()
         {
             var hakkimizda = await _context.Hakkimizda.ToListAsync();
@@ -63,6 +57,12 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
+            // Check if a record already exists since this should be a singleton
+            if (_context.Hakkimizda.Any())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            
             return View("~/Views/Admin/Hakkimizda/Create.cshtml");
         }
 
@@ -71,24 +71,38 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(HakkimizdaModel hakkimizda, IFormFile imageFile)
         {
-           
+            // Check if a record already exists since this should be a singleton
+            if (_context.Hakkimizda.Any())
+            {
+                ModelState.AddModelError("", "Hakkımızda bilgileri zaten mevcut. Yeni bir kayıt eklenemez.");
+                return View("~/Views/Admin/Hakkimizda/Create.cshtml", hakkimizda);
+            }
+
+          
                 try
                 {
-                    // Upload image if provided
+                    // Process image if provided
                     if (imageFile != null && imageFile.Length > 0)
                     {
-                        // Upload to Cloudinary
-                        var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "hakkimizda");
-                        
-                        if (uploadResult == null)
+                        // Create uploads directory if it doesn't exist
+                        var uploadsDir = Path.Combine(_environment.WebRootPath, "uploads", "hakkimizda");
+                        if (!Directory.Exists(uploadsDir))
                         {
-                            ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
-                            return View("~/Views/Admin/Hakkimizda/Create.cshtml", hakkimizda);
+                            Directory.CreateDirectory(uploadsDir);
                         }
-                        
-                        // Update the model with cloudinary URL and public ID
-                        hakkimizda.ImagePath = uploadResult.SecureUrl.ToString();
-                        hakkimizda.CloudinaryPublicId = uploadResult.PublicId;
+
+                        // Create unique filename
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                        var filePath = Path.Combine(uploadsDir, uniqueFileName);
+
+                        // Save the file
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fileStream);
+                        }
+
+                        // Set the image path
+                        hakkimizda.ImagePath = "/uploads/hakkimizda/" + uniqueFileName;
                     }
 
                     // Set creation date
@@ -102,7 +116,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                    ModelState.AddModelError("", "Beklenmeyen bir hata oluştu: " + ex.Message);
                 }
             
 
@@ -132,12 +146,12 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, HakkimizdaModel hakkimizda, IFormFile imageFile)
         {
-         
+            if (id != hakkimizda.Id)
+            {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
                     var existingHakkimizda = await _context.Hakkimizda.AsNoTracking().FirstOrDefaultAsync(h => h.Id == id);
@@ -149,51 +163,55 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     // Process image if provided
                     if (imageFile != null && imageFile.Length > 0)
                     {
-                        // Delete old image from Cloudinary if it exists
-                        if (!string.IsNullOrEmpty(existingHakkimizda.CloudinaryPublicId))
+                        // Delete the existing image if there is one
+                        if (!string.IsNullOrEmpty(existingHakkimizda.ImagePath))
                         {
-                            await _cloudinaryService.DeleteImageAsync(existingHakkimizda.CloudinaryPublicId);
-                        }
-                        else if (!string.IsNullOrEmpty(existingHakkimizda.ImagePath) && existingHakkimizda.ImagePath.Contains("cloudinary"))
-                        {
-                            // Try to extract public ID from URL
-                            var publicId = _cloudinaryService.GetPublicIdFromUrl(existingHakkimizda.ImagePath);
-                            if (!string.IsNullOrEmpty(publicId))
+                            var oldFilePath = Path.Combine(_environment.WebRootPath, existingHakkimizda.ImagePath.TrimStart('/'));
+                            if (System.IO.File.Exists(oldFilePath))
                             {
-                                await _cloudinaryService.DeleteImageAsync(publicId);
+                                System.IO.File.Delete(oldFilePath);
                             }
+
                         }
 
-                        // Upload to Cloudinary
-                        var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "hakkimizda");
-                        
-                        if (uploadResult == null)
+                        // Create uploads directory if it doesn't exist
+                        var uploadsDir = Path.Combine(_environment.WebRootPath, "uploads", "hakkimizda");
+                        if (!Directory.Exists(uploadsDir))
                         {
-                            ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
-                            return View("~/Views/Admin/Hakkimizda/Edit.cshtml", hakkimizda);
+                            Directory.CreateDirectory(uploadsDir);
                         }
-                        
-                        // Update model with Cloudinary information
-                        hakkimizda.ImagePath = uploadResult.SecureUrl.ToString();
-                        hakkimizda.CloudinaryPublicId = uploadResult.PublicId;
+
+                        // Create unique filename
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                        var filePath = Path.Combine(uploadsDir, uniqueFileName);
+
+                        // Save the file
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fileStream);
+                        }
+
+                        // Set the new image path
+                        hakkimizda.ImagePath = "/uploads/hakkimizda/" + uniqueFileName;
                     }
                     else
                     {
-                        // Keep existing image and public ID
+                        // Keep the existing image path
                         hakkimizda.ImagePath = existingHakkimizda.ImagePath;
-                        hakkimizda.CloudinaryPublicId = existingHakkimizda.CloudinaryPublicId;
                     }
 
-                    // Preserve creation date
+                    // Preserve the creation date
                     hakkimizda.CreationDate = existingHakkimizda.CreationDate;
 
+                    // Update the entity
                     _context.Update(hakkimizda);
                     await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HakkimizdaExists(hakkimizda.Id))
+                    if (!await HakkimizdaExists(hakkimizda.Id))
                     {
                         return NotFound();
                     }
@@ -204,7 +222,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                    ModelState.AddModelError("", "Beklenmeyen bir hata oluştu: " + ex.Message);
                 }
             
 
@@ -220,7 +238,9 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            var hakkimizda = await _context.Hakkimizda.FindAsync(id);
+            var hakkimizda = await _context.Hakkimizda
+                .FirstOrDefaultAsync(m => m.Id == id);
+                
             if (hakkimizda == null)
             {
                 return NotFound();
@@ -235,26 +255,17 @@ namespace EgitimSitesi.Controllers.AdminControllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var hakkimizda = await _context.Hakkimizda.FindAsync(id);
-            if (hakkimizda == null)
+            
+            // Delete image if it exists
+            if (!string.IsNullOrEmpty(hakkimizda.ImagePath))
             {
-                return NotFound();
-            }
-
-            // Delete image from Cloudinary if it has a public ID
-            if (!string.IsNullOrEmpty(hakkimizda.CloudinaryPublicId))
-            {
-                await _cloudinaryService.DeleteImageAsync(hakkimizda.CloudinaryPublicId);
-            }
-            else if (!string.IsNullOrEmpty(hakkimizda.ImagePath) && hakkimizda.ImagePath.Contains("cloudinary"))
-            {
-                // Try to extract public ID from URL
-                var publicId = _cloudinaryService.GetPublicIdFromUrl(hakkimizda.ImagePath);
-                if (!string.IsNullOrEmpty(publicId))
+                var filePath = Path.Combine(_environment.WebRootPath, hakkimizda.ImagePath.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
                 {
-                    await _cloudinaryService.DeleteImageAsync(publicId);
+                    System.IO.File.Delete(filePath);
                 }
             }
-
+            
             _context.Hakkimizda.Remove(hakkimizda);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -280,9 +291,9 @@ namespace EgitimSitesi.Controllers.AdminControllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HakkimizdaExists(int id)
+        private async Task<bool> HakkimizdaExists(int id)
         {
-            return _context.Hakkimizda.Any(e => e.Id == id);
+            return await _context.Hakkimizda.AnyAsync(e => e.Id == id);
         }
     }
 } 
