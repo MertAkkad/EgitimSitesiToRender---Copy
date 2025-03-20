@@ -17,6 +17,9 @@ namespace EgitimSitesi.Models
         [StringLength(255)]
         public string ImagePath { get; set; } = "/img/download.png"; // Default value
         
+        [StringLength(200)]
+        public string CloudinaryPublicId { get; set; }
+        
         public DateTime CreationDate { get; set; } = DateTime.Now;
     }
 } 

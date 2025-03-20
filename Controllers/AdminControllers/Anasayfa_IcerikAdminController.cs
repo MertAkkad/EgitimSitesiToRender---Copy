@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using EgitimSitesi.Services;
 
 namespace EgitimSitesi.Controllers.AdminControllers
 {
@@ -19,11 +20,13 @@ namespace EgitimSitesi.Controllers.AdminControllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public Anasayfa_IcerikAdminController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public Anasayfa_IcerikAdminController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, CloudinaryService cloudinaryService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _cloudinaryService = cloudinaryService;
         }
 
         // GET: Admin/IcerikYonetimi
@@ -87,24 +90,23 @@ namespace EgitimSitesi.Controllers.AdminControllers
 
             try
             {
-                // Handle file upload
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "icerikler");
-                Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                // Upload image to Cloudinary
+                var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "icerikler");
+                
+                if (uploadResult == null)
                 {
-                    await imageFile.CopyToAsync(fileStream);
+                    ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                    return View("~/Views/Admin/Icerik/Create.cshtml", contentItem);
                 }
-
-                contentItem.ImagePath = "/uploads/icerikler/" + uniqueFileName;
+                
+                // Update the content with cloudinary URL and public ID
+                contentItem.ImagePath = uploadResult.SecureUrl.ToString();
+                contentItem.CloudinaryPublicId = uploadResult.PublicId;
 
                 // Set order if not specified
                 if (contentItem.Order <= 0)
                 {
-                    var maxOrder = await _context.AnasayfaIcerik.MaxAsync(i => (int?)i.Order) ?? 0;
+                    var maxOrder = await _context.AnasayfaIcerik.MaxAsync(b => (int?)b.Order) ?? 0;
                     contentItem.Order = maxOrder + 1;
                 }
                 else
@@ -116,7 +118,6 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 // Set creation date
                 contentItem.CreationDate = DateTime.Now;
 
-                // Add to database
                 _context.Add(contentItem);
                 await _context.SaveChangesAsync();
 
@@ -124,10 +125,9 @@ namespace EgitimSitesi.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Beklenmeyen bir hata oluştu: " + ex.Message);
+                ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                return View("~/Views/Admin/Icerik/Create.cshtml", contentItem);
             }
-
-            return View("~/Views/Admin/Icerik/Create.cshtml", contentItem);
         }
 
         // GET: Admin/IcerikYonetimi/Edit/5
@@ -152,71 +152,51 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            // Manually check required fields
-            if (string.IsNullOrEmpty(contentItem.Title))
+            // Get the existing content item to compare
+            var existingContentItem = await _context.AnasayfaIcerik.AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (existingContentItem == null)
             {
-                ModelState.AddModelError("Title", "Başlık alanı zorunludur");
-                return View("~/Views/Admin/Icerik/Edit.cshtml", contentItem);
+                return NotFound();
             }
 
-            if (string.IsNullOrEmpty(contentItem.Description))
-            {
-                ModelState.AddModelError("Description", "Açıklama alanı zorunludur");
-                return View("~/Views/Admin/Icerik/Edit.cshtml", contentItem);
-            }
-
-            if (string.IsNullOrEmpty(contentItem.ContentType))
-            {
-                ModelState.AddModelError("ContentType", "İçerik türü zorunludur");
-                return View("~/Views/Admin/Icerik/Edit.cshtml", contentItem);
-            }
-
-            if (contentItem.Order <= 0 || contentItem.Order > 100)
-            {
-                ModelState.AddModelError("Order", "Sıralama 1-100 arasında olmalıdır");
-                return View("~/Views/Admin/Icerik/Edit.cshtml", contentItem);
-            }
-
+            // Continue with the update logic
             try
             {
-                // Get the existing content item to check for changes
-                var existingContentItem = await _context.AnasayfaIcerik.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-                if (existingContentItem == null)
-                {
-                    return NotFound();
-                }
-
-                // Handle file upload only if a new image is provided
+                // Handle image upload if a new image is provided
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    // Delete old image if it exists
-                    if (!string.IsNullOrEmpty(existingContentItem.ImagePath))
+                    // Delete the old image from Cloudinary if it has a public ID
+                    if (!string.IsNullOrEmpty(existingContentItem.CloudinaryPublicId))
                     {
-                        string oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, existingContentItem.ImagePath.TrimStart('/'));
-                        if (System.IO.File.Exists(oldFilePath))
+                        await _cloudinaryService.DeleteImageAsync(existingContentItem.CloudinaryPublicId);
+                    }
+                    else if (!string.IsNullOrEmpty(existingContentItem.ImagePath) && existingContentItem.ImagePath.Contains("cloudinary"))
+                    {
+                        // Try to extract public ID from URL
+                        var publicId = _cloudinaryService.GetPublicIdFromUrl(existingContentItem.ImagePath);
+                        if (!string.IsNullOrEmpty(publicId))
                         {
-                            System.IO.File.Delete(oldFilePath);
+                            await _cloudinaryService.DeleteImageAsync(publicId);
                         }
                     }
 
                     // Upload new image
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "icerikler");
-                    Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "icerikler");
+                    if (uploadResult == null)
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                        return View("~/Views/Admin/Icerik/Edit.cshtml", contentItem);
                     }
-
-                    contentItem.ImagePath = "/uploads/icerikler/" + uniqueFileName;
+                    
+                    contentItem.ImagePath = uploadResult.SecureUrl.ToString();
+                    contentItem.CloudinaryPublicId = uploadResult.PublicId;
                 }
                 else
                 {
-                    // Keep the existing image path
+                    // Keep the existing image and cloudinary public ID
                     contentItem.ImagePath = existingContentItem.ImagePath;
+                    contentItem.CloudinaryPublicId = existingContentItem.CloudinaryPublicId;
                 }
 
                 // Check if order has changed
@@ -228,29 +208,15 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 // Preserve creation date
                 contentItem.CreationDate = existingContentItem.CreationDate;
 
-                // Update the entity
                 _context.Update(contentItem);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await IcerikExists(contentItem.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Beklenmeyen bir hata oluştu: " + ex.Message);
+                ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                return View("~/Views/Admin/Icerik/Edit.cshtml", contentItem);
             }
-
-            return View("~/Views/Admin/Icerik/Edit.cshtml", contentItem);
         }
 
         // GET: Admin/IcerikYonetimi/Delete/5
@@ -277,23 +243,23 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            // Delete the image file
-            if (!string.IsNullOrEmpty(contentItem.ImagePath))
+            // Delete image from Cloudinary if it has a public ID
+            if (!string.IsNullOrEmpty(contentItem.CloudinaryPublicId))
             {
-                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, contentItem.ImagePath.TrimStart('/'));
-                if (System.IO.File.Exists(filePath))
+                await _cloudinaryService.DeleteImageAsync(contentItem.CloudinaryPublicId);
+            }
+            else if (!string.IsNullOrEmpty(contentItem.ImagePath) && contentItem.ImagePath.Contains("cloudinary"))
+            {
+                // Try to extract public ID from URL
+                var publicId = _cloudinaryService.GetPublicIdFromUrl(contentItem.ImagePath);
+                if (!string.IsNullOrEmpty(publicId))
                 {
-                    System.IO.File.Delete(filePath);
+                    await _cloudinaryService.DeleteImageAsync(publicId);
                 }
             }
 
-            // Remove from database
             _context.AnasayfaIcerik.Remove(contentItem);
             await _context.SaveChangesAsync();
-
-            // Reorder remaining content items
-            await ReorderIceriklerAfterDelete();
-
             return RedirectToAction(nameof(Index));
         }
 

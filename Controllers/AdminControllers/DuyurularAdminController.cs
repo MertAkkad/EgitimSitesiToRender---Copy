@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using EgitimSitesi.Services;
 
 namespace EgitimSitesi.Controllers.AdminControllers
 {
@@ -19,11 +20,16 @@ namespace EgitimSitesi.Controllers.AdminControllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public DuyurularAdminController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public DuyurularAdminController(
+            ApplicationDbContext context, 
+            IWebHostEnvironment webHostEnvironment,
+            CloudinaryService cloudinaryService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _cloudinaryService = cloudinaryService;
         }
 
         // GET: Admin/DuyuruYonetimi
@@ -59,22 +65,23 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DuyurularModel duyuru, IFormFile imageFile)
         {
-         
+            try
+            {
                 // Handle image upload if present
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "duyurular");
-                    Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    // Upload image to Cloudinary
+                    var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "duyurular");
+                    
+                    if (uploadResult == null)
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                        return View("~/Views/Admin/Duyurular/Create.cshtml", duyuru);
                     }
-
-                    duyuru.ImagePath = "/uploads/duyurular/" + uniqueFileName;
+                    
+                    // Update the announcement with cloudinary URL and public ID
+                    duyuru.ImagePath = uploadResult.SecureUrl.ToString();
+                    duyuru.CloudinaryPublicId = uploadResult.PublicId;
                 }
 
                 // Set order if not specified
@@ -92,19 +99,17 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 // Set creation date
                 duyuru.CreationDate = DateTime.Now;
                 
-                // Set announcement date if not specified
-                if (duyuru.CreationDate == DateTime.MinValue)
-                {
-                    duyuru.CreationDate = DateTime.Now;
-                }
-
                 // Add to database
                 _context.Add(duyuru);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
-            
-            return View("~/Views/Admin/Duyurular/Create.cshtml", duyuru);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                return View("~/Views/Admin/Duyurular/Create.cshtml", duyuru);
+            }
         }
 
         // GET: Admin/DuyuruYonetimi/Edit/5
@@ -116,6 +121,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
             {
                 return NotFound();
             }
+
             return View("~/Views/Admin/Duyurular/Edit.cshtml", duyuru);
         }
 
@@ -129,76 +135,70 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Get the existing announcement to compare
+            var existingDuyuru = await _context.Duyurular.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
+            if (existingDuyuru == null)
             {
-                try
+                return NotFound();
+            }
+
+            // Continue with the update logic
+            try
+            {
+                // Handle image upload if a new image is provided
+                if (imageFile != null && imageFile.Length > 0)
                 {
-                    // Get existing announcement to check for changes
-                    var existingDuyuru = await _context.Duyurular.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
-                    if (existingDuyuru == null)
+                    // Delete the old image from Cloudinary if it has a public ID
+                    if (!string.IsNullOrEmpty(existingDuyuru.CloudinaryPublicId))
                     {
-                        return NotFound();
+                        await _cloudinaryService.DeleteImageAsync(existingDuyuru.CloudinaryPublicId);
                     }
-
-                    // Handle image upload if a new image is provided
-                    if (imageFile != null && imageFile.Length > 0)
+                    else if (!string.IsNullOrEmpty(existingDuyuru.ImagePath) && existingDuyuru.ImagePath.Contains("cloudinary"))
                     {
-                        // Delete old image if it exists
-                        if (!string.IsNullOrEmpty(existingDuyuru.ImagePath))
+                        // Try to extract public ID from URL
+                        var publicId = _cloudinaryService.GetPublicIdFromUrl(existingDuyuru.ImagePath);
+                        if (!string.IsNullOrEmpty(publicId))
                         {
-                            string oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, existingDuyuru.ImagePath.TrimStart('/'));
-                            if (System.IO.File.Exists(oldFilePath))
-                            {
-                                System.IO.File.Delete(oldFilePath);
-                            }
+                            await _cloudinaryService.DeleteImageAsync(publicId);
                         }
-
-                        // Upload new image
-                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "duyurular");
-                        Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-
-                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await imageFile.CopyToAsync(fileStream);
-                        }
-
-                        duyuru.ImagePath = "/uploads/duyurular/" + uniqueFileName;
                     }
-                    else
+
+                    // Upload new image
+                    var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "duyurular");
+                    if (uploadResult == null)
                     {
-                        // Keep existing image if no new one was uploaded
-                        duyuru.ImagePath = existingDuyuru.ImagePath;
+                        ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                        return View("~/Views/Admin/Duyurular/Edit.cshtml", duyuru);
                     }
-
-                    // Check if order has changed
-                    if (duyuru.Order != existingDuyuru.Order)
-                    {
-                        await ShiftDuyuruOrders(duyuru.Order, duyuru.Id);
-                    }
-
-                    // Preserve creation date
-                    duyuru.CreationDate = existingDuyuru.CreationDate;
-
-                    _context.Update(duyuru);
-                    await _context.SaveChangesAsync();
+                    
+                    duyuru.ImagePath = uploadResult.SecureUrl.ToString();
+                    duyuru.CloudinaryPublicId = uploadResult.PublicId;
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!await DuyuruExists(duyuru.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // Keep the existing image and cloudinary public ID
+                    duyuru.ImagePath = existingDuyuru.ImagePath;
+                    duyuru.CloudinaryPublicId = existingDuyuru.CloudinaryPublicId;
                 }
+
+                // Check if order has changed
+                if (duyuru.Order != existingDuyuru.Order)
+                {
+                    await ShiftDuyuruOrders(duyuru.Order, duyuru.Id);
+                }
+
+                // Preserve creation date
+                duyuru.CreationDate = existingDuyuru.CreationDate;
+
+                _context.Update(duyuru);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View("~/Views/Admin/Duyurular/Edit.cshtml", duyuru);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                return View("~/Views/Admin/Duyurular/Edit.cshtml", duyuru);
+            }
         }
 
         // GET: Admin/DuyuruYonetimi/Delete/5
@@ -225,97 +225,45 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            // Delete the image file if it exists
-            if (!string.IsNullOrEmpty(duyuru.ImagePath))
+            // Delete image from Cloudinary if it has a public ID
+            if (!string.IsNullOrEmpty(duyuru.CloudinaryPublicId))
             {
-                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, duyuru.ImagePath.TrimStart('/'));
-                if (System.IO.File.Exists(filePath))
+                await _cloudinaryService.DeleteImageAsync(duyuru.CloudinaryPublicId);
+            }
+            else if (!string.IsNullOrEmpty(duyuru.ImagePath) && duyuru.ImagePath.Contains("cloudinary"))
+            {
+                // Try to extract public ID from URL
+                var publicId = _cloudinaryService.GetPublicIdFromUrl(duyuru.ImagePath);
+                if (!string.IsNullOrEmpty(publicId))
                 {
-                    System.IO.File.Delete(filePath);
+                    await _cloudinaryService.DeleteImageAsync(publicId);
                 }
             }
 
             _context.Duyurular.Remove(duyuru);
             await _context.SaveChangesAsync();
-
-            // Reorder remaining announcements
-            await ReorderDuyurularAfterDelete();
-
             return RedirectToAction(nameof(Index));
         }
 
-        // Helpers for managing order
         private async Task ShiftDuyuruOrders(int newOrder, int? excludeId = null)
         {
-            var duyurularToUpdate = await _context.Duyurular
+            // Get all announcements with order >= newOrder, except the one being updated
+            var duyurularToShift = await _context.Duyurular
                 .Where(d => d.Order >= newOrder && (excludeId == null || d.Id != excludeId))
                 .OrderBy(d => d.Order)
                 .ToListAsync();
 
-            foreach (var duyuru in duyurularToUpdate)
+            // Shift each announcement's order up by 1
+            foreach (var duyuru in duyurularToShift)
             {
                 duyuru.Order++;
                 _context.Update(duyuru);
             }
 
-            await _context.SaveChangesAsync();
-        }
-
-        private async Task ReorderDuyurularAfterDelete()
-        {
-            var duyurular = await _context.Duyurular.OrderBy(d => d.Order).ToListAsync();
-            for (int i = 0; i < duyurular.Count; i++)
+            // Save the changes if any announcements were updated
+            if (duyurularToShift.Any())
             {
-                if (duyurular[i].Order != i + 1)
-                {
-                    duyurular[i].Order = i + 1;
-                    _context.Update(duyurular[i]);
-                }
-            }
-            await _context.SaveChangesAsync();
-        }
-
-        private async Task<bool> DuyuruExists(int id)
-        {
-            return await _context.Duyurular.AnyAsync(e => e.Id == id);
-        }
-
-        // AJAX endpoint for reordering via drag and drop
-        [HttpPost("ReorderDuyurular")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReorderDuyurular([FromBody] List<int> duyuruIds)
-        {
-            if (duyuruIds == null || duyuruIds.Count == 0)
-            {
-                return BadRequest("Duyuru listesi boş olamaz.");
-            }
-
-            try
-            {
-                // Get all announcements involved in the reordering
-                var duyurular = await _context.Duyurular
-                    .Where(d => duyuruIds.Contains(d.Id))
-                    .ToListAsync();
-
-                // Update the order of each announcement
-                for (int i = 0; i < duyuruIds.Count; i++)
-                {
-                    var duyuruId = duyuruIds[i];
-                    var duyuru = duyurular.FirstOrDefault(d => d.Id == duyuruId);
-                    
-                    if (duyuru != null)
-                    {
-                        duyuru.Order = i + 1; // New order starts at 1
-                        _context.Update(duyuru);
-                    }
-                }
-
                 await _context.SaveChangesAsync();
-                return Ok(new { success = true, message = "Duyuru sıralaması güncellendi." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { success = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }
     }

@@ -11,6 +11,9 @@ namespace EgitimSitesi.Models
         [StringLength(200, ErrorMessage = "Görsel yolu en fazla 200 karakter olabilir")]
         public string? ImagePath { get; set; }
 
+        [StringLength(200)]
+        public string CloudinaryPublicId { get; set; }
+
         [Required(ErrorMessage = "Tarihçemiz alanı zorunludur")]
         [Display(Name = "Tarihçemiz")]
         public string Tarihcemiz { get; set; }

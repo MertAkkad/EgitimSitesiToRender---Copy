@@ -9,6 +9,8 @@ using EgitimSitesi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using EgitimSitesi.Services;
 
 namespace EgitimSitesi.Controllers.AdminControllers
 {
@@ -18,24 +20,24 @@ namespace EgitimSitesi.Controllers.AdminControllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public KadromuzAdminController(ApplicationDbContext context, IWebHostEnvironment environment)
+        public KadromuzAdminController(
+            ApplicationDbContext context, 
+            IWebHostEnvironment environment,
+            CloudinaryService cloudinaryService)
         {
             _context = context;
             _environment = environment;
+            _cloudinaryService = cloudinaryService;
         }
 
         // GET: Admin/Kadromuz
-        [HttpGet("")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var kadromuz = await _context.Kadromuz
-                .OrderBy(k => k.Title)
-                .ThenBy(k => k.Grade)
-                .ThenBy(k => k.Order)
-                .ToListAsync();
-                
-            return View("~/Views/Admin/Kadromuz/Index.cshtml", kadromuz);
+            var staff = await _context.Kadromuz.OrderBy(k => k.Order).ToListAsync();
+            return View("~/Views/Admin/Kadromuz/Index.cshtml", staff);
         }
 
         // POST: Admin/Kadromuz/Reorder
@@ -98,30 +100,38 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            return View("~/Views/Admin/Kadromuz/Create.cshtml");
+            // Get next order number
+            int nextOrder = 1;
+            if (_context.Kadromuz.Any())
+            {
+                nextOrder = _context.Kadromuz.Max(k => k.Order) + 1;
+            }
+            
+            var staff = new KadromuzModel { Order = nextOrder, IsActive = true };
+            return View("~/Views/Admin/Kadromuz/Create.cshtml", staff);
         }
 
         // POST: Admin/Kadromuz/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(KadromuzModel staff, Microsoft.AspNetCore.Http.IFormFile imageFile)
+        public async Task<IActionResult> Create(KadromuzModel staff, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    var uploadsFolder = Path.Combine(_environment.WebRootPath, "img/staff");
-                    Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
+                    // Upload image to Cloudinary
+                    var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "staff");
                     
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    if (uploadResult == null)
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                        return View("~/Views/Admin/Kadromuz/Create.cshtml", staff);
                     }
                     
-                    staff.ImagePath = "/img/staff/" + uniqueFileName;
+                    // Update the staff model with cloudinary URL and public ID
+                    staff.ImagePath = uploadResult.SecureUrl.ToString();
+                    staff.CloudinaryPublicId = uploadResult.PublicId;
                 }
 
                 staff.CreationDate = DateTime.Now;
@@ -152,7 +162,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
         // POST: Admin/Kadromuz/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, KadromuzModel staff, Microsoft.AspNetCore.Http.IFormFile imageFile)
+        public async Task<IActionResult> Edit(int id, KadromuzModel staff, IFormFile imageFile)
         {
             if (id != staff.Id)
             {
@@ -172,37 +182,46 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     // Handle Image (if provided)
                     if (imageFile != null && imageFile.Length > 0)
                     {
-                        // Delete old image if it exists
-                        if (!string.IsNullOrEmpty(existingStaff.ImagePath))
+                        // Delete old image from Cloudinary if it exists
+                        if (!string.IsNullOrEmpty(existingStaff.CloudinaryPublicId))
                         {
-                            var oldFilePath = Path.Combine(_environment.WebRootPath, existingStaff.ImagePath.TrimStart('/'));
-                            if (System.IO.File.Exists(oldFilePath))
+                            await _cloudinaryService.DeleteImageAsync(existingStaff.CloudinaryPublicId);
+                        }
+                        else if (!string.IsNullOrEmpty(existingStaff.ImagePath) && existingStaff.ImagePath.Contains("cloudinary"))
+                        {
+                            // Try to extract public ID from URL
+                            var publicId = _cloudinaryService.GetPublicIdFromUrl(existingStaff.ImagePath);
+                            if (!string.IsNullOrEmpty(publicId))
                             {
-                                System.IO.File.Delete(oldFilePath);
+                                await _cloudinaryService.DeleteImageAsync(publicId);
                             }
                         }
                         
-                        var uploadsFolder = Path.Combine(_environment.WebRootPath, "img/staff");
-                        Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
+                        // Upload new image to Cloudinary
+                        var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "staff");
                         
-                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                        
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        if (uploadResult == null)
                         {
-                            await imageFile.CopyToAsync(fileStream);
+                            ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                            return View("~/Views/Admin/Kadromuz/Edit.cshtml", staff);
                         }
                         
-                        staff.ImagePath = "/img/staff/" + uniqueFileName;
+                        staff.ImagePath = uploadResult.SecureUrl.ToString();
+                        staff.CloudinaryPublicId = uploadResult.PublicId;
                     }
                     else
                     {
-                        // Keep existing image
+                        // Keep existing image and public ID
                         staff.ImagePath = existingStaff.ImagePath;
+                        staff.CloudinaryPublicId = existingStaff.CloudinaryPublicId;
                     }
 
+                    // Preserve creation date
+                    staff.CreationDate = existingStaff.CreationDate;
+                    
                     _context.Update(staff);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -215,7 +234,6 @@ namespace EgitimSitesi.Controllers.AdminControllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View("~/Views/Admin/Kadromuz/Edit.cshtml", staff);
         }
@@ -229,8 +247,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            var staff = await _context.Kadromuz
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var staff = await _context.Kadromuz.FindAsync(id);
             if (staff == null)
             {
                 return NotFound();
@@ -245,17 +262,26 @@ namespace EgitimSitesi.Controllers.AdminControllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var staff = await _context.Kadromuz.FindAsync(id);
-            
-            // Delete image if it exists
-            if (!string.IsNullOrEmpty(staff.ImagePath))
+            if (staff == null)
             {
-                var filePath = Path.Combine(_environment.WebRootPath, staff.ImagePath.TrimStart('/'));
-                if (System.IO.File.Exists(filePath))
+                return NotFound();
+            }
+
+            // Delete image from Cloudinary if it has a public ID
+            if (!string.IsNullOrEmpty(staff.CloudinaryPublicId))
+            {
+                await _cloudinaryService.DeleteImageAsync(staff.CloudinaryPublicId);
+            }
+            else if (!string.IsNullOrEmpty(staff.ImagePath) && staff.ImagePath.Contains("cloudinary"))
+            {
+                // Try to extract public ID from URL
+                var publicId = _cloudinaryService.GetPublicIdFromUrl(staff.ImagePath);
+                if (!string.IsNullOrEmpty(publicId))
                 {
-                    System.IO.File.Delete(filePath);
+                    await _cloudinaryService.DeleteImageAsync(publicId);
                 }
             }
-            
+
             _context.Kadromuz.Remove(staff);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

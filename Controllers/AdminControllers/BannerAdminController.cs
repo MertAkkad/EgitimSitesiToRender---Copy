@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using EgitimSitesi.Services;
 
 namespace EgitimSitesi.Controllers.AdminControllers
 {
@@ -19,11 +20,16 @@ namespace EgitimSitesi.Controllers.AdminControllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public BannerAdminController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public BannerAdminController(
+            ApplicationDbContext context, 
+            IWebHostEnvironment webHostEnvironment,
+            CloudinaryService cloudinaryService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -48,7 +54,15 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            return View("~/Views/Admin/Banner/Create.cshtml");
+            // Get the next available order number
+            int nextOrder = 1;
+            if (_context.Banners.Any())
+            {
+                nextOrder = _context.Banners.Max(b => b.Order) + 1;
+            }
+
+            var banner = new BannerModel { Order = nextOrder, IsActive = true };
+            return View("~/Views/Admin/Banner/Create.cshtml", banner);
         }
 
         [HttpPost("Create")]
@@ -72,52 +86,51 @@ namespace EgitimSitesi.Controllers.AdminControllers
             // Continue even if ModelState is not valid for other fields
             try
             {
-                // Handle file upload
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "banners");
-                Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                // Upload image to Cloudinary
+                var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "banners");
+                
+                if (uploadResult == null)
                 {
-                    await imageFile.CopyToAsync(fileStream);
+                    ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                    return View("~/Views/Admin/Banner/Create.cshtml", banner);
                 }
+                
+                // Update the banner with cloudinary URL and public ID
+                banner.ImagePath = uploadResult.SecureUrl.ToString();
+                banner.CloudinaryPublicId = uploadResult.PublicId;
+                banner.CreationDate = DateTime.Now;
 
-                banner.ImagePath = "/uploads/banners/" + uniqueFileName;
-
-                // Set order if not specified
-                if (banner.Order <= 0)
+                // Shift order of other banners if necessary
+                if (banner.Order > 0)
                 {
-                    var maxOrder = await _context.Banners.MaxAsync(b => (int?)b.Order) ?? 0;
-                    banner.Order = maxOrder + 1;
+                    await ShiftBannerOrders(banner.Order);
                 }
                 else
                 {
-                    // Shift other banners if this order is already taken
-                    await ShiftBannerOrders(banner.Order);
+                    // Set order to the end if not specified
+                    var maxOrder = await _context.Banners.MaxAsync(b => (int?)b.Order) ?? 0;
+                    banner.Order = maxOrder + 1;
                 }
 
-                // Set creation date
-                banner.CreationDate = DateTime.Now;
-
-                // Add to database
                 _context.Add(banner);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Beklenmeyen bir hata oluştu: " + ex.Message);
+                ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                return View("~/Views/Admin/Banner/Create.cshtml", banner);
             }
-
-            return View("~/Views/Admin/Banner/Create.cshtml", banner);
         }
 
         [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var banner = await _context.Banners.FindAsync(id);
             if (banner == null)
             {
@@ -135,63 +148,53 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            // Manually check required fields instead of relying on ModelState.IsValid
-            if (string.IsNullOrEmpty(banner.Title))
+            // Get the existing banner to compare
+            var existingBanner = await _context.Banners.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
+            if (existingBanner == null)
             {
-                ModelState.AddModelError("Title", "Başlık alanı zorunludur");
-                return View("~/Views/Admin/Banner/Edit.cshtml", banner);
+                return NotFound();
             }
 
-            if (banner.Order <= 0 || banner.Order > 100)
-            {
-                ModelState.AddModelError("Order", "Sıralama 1-100 arasında olmalıdır");
-                return View("~/Views/Admin/Banner/Edit.cshtml", banner);
-            }
-
-            // Continue even if ModelState is not valid for other fields
+            // Continue with the update logic
             try
             {
-                // Get the existing banner to check for changes
-                var existingBanner = await _context.Banners.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
-                if (existingBanner == null)
-                {
-                    return NotFound();
-                }
-
-                // Handle file upload only if a new image is provided
+                // Handle image upload if a new image is provided
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    // Delete old image if it exists
-                    if (!string.IsNullOrEmpty(existingBanner.ImagePath))
+                    // Delete the old image from Cloudinary if it has a public ID
+                    if (!string.IsNullOrEmpty(existingBanner.CloudinaryPublicId))
                     {
-                        string oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, existingBanner.ImagePath.TrimStart('/'));
-                        if (System.IO.File.Exists(oldFilePath))
+                        await _cloudinaryService.DeleteImageAsync(existingBanner.CloudinaryPublicId);
+                    }
+                    else if (!string.IsNullOrEmpty(existingBanner.ImagePath) && existingBanner.ImagePath.Contains("cloudinary"))
+                    {
+                        // Try to extract public ID from URL
+                        var publicId = _cloudinaryService.GetPublicIdFromUrl(existingBanner.ImagePath);
+                        if (!string.IsNullOrEmpty(publicId))
                         {
-                            System.IO.File.Delete(oldFilePath);
+                            await _cloudinaryService.DeleteImageAsync(publicId);
                         }
                     }
 
                     // Upload new image
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "banners");
-                    Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "banners");
+                    if (uploadResult == null)
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                        return View("~/Views/Admin/Banner/Edit.cshtml", banner);
                     }
-
-                    banner.ImagePath = "/uploads/banners/" + uniqueFileName;
+                    
+                    banner.ImagePath = uploadResult.SecureUrl.ToString();
+                    banner.CloudinaryPublicId = uploadResult.PublicId;
                 }
                 else
                 {
-                    // Keep the existing image path
+                    // Keep the existing image and cloudinary public ID
                     banner.ImagePath = existingBanner.ImagePath;
+                    banner.CloudinaryPublicId = existingBanner.CloudinaryPublicId;
                 }
 
-                // Check if order has changed
+                // Handle order changes if necessary
                 if (banner.Order != existingBanner.Order)
                 {
                     await ShiftBannerOrders(banner.Order, banner.Id);
@@ -200,15 +203,13 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 // Preserve creation date
                 banner.CreationDate = existingBanner.CreationDate;
 
-                // Update the entity
                 _context.Update(banner);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await BannerExists(banner.Id))
+                if (!BannerExists(banner.Id))
                 {
                     return NotFound();
                 }
@@ -219,22 +220,26 @@ namespace EgitimSitesi.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Beklenmeyen bir hata oluştu: " + ex.Message);
+                ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                return View("~/Views/Admin/Banner/Edit.cshtml", banner);
             }
-
-            return View("~/Views/Admin/Banner/Edit.cshtml", banner);
         }
 
         [HttpGet("Delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var banner = await _context.Banners.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var banner = await _context.Banners.FirstOrDefaultAsync(m => m.Id == id);
             if (banner == null)
             {
                 return NotFound();
             }
 
-            return View(banner);
+            return View("~/Views/Admin/Banner/Delete.cshtml", banner);
         }
 
         [HttpPost("Delete/{id}"), ActionName("Delete")]
@@ -247,59 +252,51 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            // Delete the image file
-            if (!string.IsNullOrEmpty(banner.ImagePath))
+            // Delete image from Cloudinary if it has a public ID
+            if (!string.IsNullOrEmpty(banner.CloudinaryPublicId))
             {
-                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, banner.ImagePath.TrimStart('/'));
-                if (System.IO.File.Exists(filePath))
+                await _cloudinaryService.DeleteImageAsync(banner.CloudinaryPublicId);
+            }
+            else if (!string.IsNullOrEmpty(banner.ImagePath) && banner.ImagePath.Contains("cloudinary"))
+            {
+                // Try to extract public ID from URL
+                var publicId = _cloudinaryService.GetPublicIdFromUrl(banner.ImagePath);
+                if (!string.IsNullOrEmpty(publicId))
                 {
-                    System.IO.File.Delete(filePath);
+                    await _cloudinaryService.DeleteImageAsync(publicId);
                 }
             }
 
-            // Remove from database
             _context.Banners.Remove(banner);
             await _context.SaveChangesAsync();
-
-            // Reorder remaining banners
-            await ReorderBannersAfterDelete();
-
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool BannerExists(int id)
+        {
+            return _context.Banners.Any(e => e.Id == id);
         }
 
         private async Task ShiftBannerOrders(int newOrder, int? excludeId = null)
         {
-            var bannersToUpdate = await _context.Banners
+            // Get all banners with order >= newOrder, except the one being updated
+            var bannersToShift = await _context.Banners
                 .Where(b => b.Order >= newOrder && (excludeId == null || b.Id != excludeId))
                 .OrderBy(b => b.Order)
                 .ToListAsync();
 
-            foreach (var banner in bannersToUpdate)
+            // Shift each banner's order up by 1
+            foreach (var banner in bannersToShift)
             {
                 banner.Order++;
                 _context.Update(banner);
             }
 
-            await _context.SaveChangesAsync();
-        }
-
-        private async Task ReorderBannersAfterDelete()
-        {
-            var banners = await _context.Banners.OrderBy(b => b.Order).ToListAsync();
-            for (int i = 0; i < banners.Count; i++)
+            // Save the changes if any banners were updated
+            if (bannersToShift.Any())
             {
-                if (banners[i].Order != i + 1)
-                {
-                    banners[i].Order = i + 1;
-                    _context.Update(banners[i]);
-                }
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
-        }
-
-        private async Task<bool> BannerExists(int id)
-        {
-            return await _context.Banners.AnyAsync(e => e.Id == id);
         }
 
         // New action for handling banner reordering

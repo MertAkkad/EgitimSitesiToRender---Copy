@@ -44,7 +44,10 @@ namespace EgitimSitesi.Models
 
         [StringLength(200, ErrorMessage = "Görsel yolu en fazla 200 karakter olabilir")]
         [Display(Name = "Profil Fotoğrafı")]
-        public string? ImagePath { get; set; }
+        public string ImagePath { get; set; }
+
+        [StringLength(200)]
+        public string CloudinaryPublicId { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Oluşturma Tarihi")]

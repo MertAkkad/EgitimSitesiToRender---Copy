@@ -22,6 +22,9 @@ namespace EgitimSitesi.Models
         [Display(Name = "Görsel")]
         public string ImagePath { get; set; }
 
+        [StringLength(200)]
+        public string CloudinaryPublicId { get; set; }
+
         // Font Awesome ikon kodu (fa-bullhorn, fa-calendar-alt, fa-trophy gibi)
         [StringLength(50, ErrorMessage = "İkon kodu en fazla 50 karakter olabilir")]
         [Display(Name = "İkon Kodu")]

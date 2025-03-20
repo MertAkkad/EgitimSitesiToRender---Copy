@@ -9,6 +9,9 @@ namespace EgitimSitesi.Models
 
         public string ImagePath { get; set; }
 
+        [StringLength(200)]
+        public string CloudinaryPublicId { get; set; }
+
         [Required(ErrorMessage = "Başlık alanı zorunludur")]
         [StringLength(100, ErrorMessage = "Başlık en fazla 100 karakter olabilir")]
         public string Title { get; set; }

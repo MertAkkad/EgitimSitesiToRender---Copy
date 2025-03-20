@@ -1,114 +1,129 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 using EgitimSitesi.Data;
 using EgitimSitesi.Models;
-using System;
-using System.IO;
-using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using EgitimSitesi.Services;
 
 namespace EgitimSitesi.Controllers.AdminControllers
 {
     [Authorize(Roles = "Admin")]
-    [Route("Admin/Kurslar")]
+    [Route("Admin/Kurs")]
     public class KursAdminController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public KursAdminController(ApplicationDbContext context, IWebHostEnvironment environment)
+        public KursAdminController(
+            ApplicationDbContext context, 
+            IWebHostEnvironment environment,
+            CloudinaryService cloudinaryService)
         {
             _context = context;
             _environment = environment;
+            _cloudinaryService = cloudinaryService;
         }
 
-        // GET: Admin/Kurslar
+        // GET: Admin/Kurs
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var kurslar = await _context.Kurslar
-                .OrderBy(k => k.Order)
-                .ToListAsync();
-            
-            return View("~/Views/Admin/Kurslar/Index.cshtml", kurslar);
+            var kurslar = await _context.Kurslar.OrderBy(k => k.Order).ToListAsync();
+            return View("~/Views/Admin/Kurs/Index.cshtml", kurslar);
         }
 
-        // GET: Admin/Kurslar/Create
+        // GET: Admin/Kurs/Create
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            // Get the maximum order value
-            int maxOrder = 0;
-            if (_context.Kurslar.Any())
-            {
-                maxOrder = _context.Kurslar.Max(k => k.Order);
-            }
-            
-            // Create a new model with default values
-            var model = new KursModel
-            {
-                IsActive = true,
-                Order = maxOrder + 1
-            };
-            
-            return View("~/Views/Admin/Kurslar/Create.cshtml", model);
+            return View("~/Views/Admin/Kurs/Create.cshtml");
         }
 
-        // POST: Admin/Kurslar/Create
+        // POST: Admin/Kurs/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(KursModel model, IFormFile imageFile)
+        public async Task<IActionResult> Create(KursModel kurs, IFormFile imageFile)
         {
-           
-                if (imageFile != null && imageFile.Length > 0)
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    string uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "kurslar");
-                    Directory.CreateDirectory(uploadsFolder); // Ensure the directory exists
-                    
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    // Set the highest order + 1 for new courses
+                    if (_context.Kurslar.Any())
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        kurs.Order = _context.Kurslar.Max(k => k.Order) + 1;
                     }
-                    
-                    model.ImagePath = "/uploads/kurslar/" + uniqueFileName;
+                    else
+                    {
+                        kurs.Order = 1;
+                    }
+
+                    // Upload image if provided
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        // Upload to Cloudinary
+                        var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "kurslar");
+                        
+                        if (uploadResult == null)
+                        {
+                            ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                            return View("~/Views/Admin/Kurs/Create.cshtml", kurs);
+                        }
+                        
+                        // Update the model with cloudinary URL and public ID
+                        kurs.ImagePath = uploadResult.SecureUrl.ToString();
+                        kurs.CloudinaryPublicId = uploadResult.PublicId;
+                    }
+
+                    // Set creation date
+                    kurs.CreationDate = DateTime.Now;
+
+                    // Add to database
+                    _context.Add(kurs);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
                 }
-                
-                model.CreationDate = DateTime.Now;
-                
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-                
-                return RedirectToAction(nameof(Index));
-            
-            
-            return View("~/Views/Admin/Kurslar/Create.cshtml", model);
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                }
+            }
+
+            return View("~/Views/Admin/Kurs/Create.cshtml", kurs);
         }
 
-        // GET: Admin/Kurslar/Edit/5
+        // GET: Admin/Kurs/Edit/5
         [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var kurs = await _context.Kurslar.FindAsync(id);
             if (kurs == null)
             {
                 return NotFound();
             }
-            
-            return View("~/Views/Admin/Kurslar/Edit.cshtml", kurs);
+
+            return View("~/Views/Admin/Kurs/Edit.cshtml", kurs);
         }
 
-        // POST: Admin/Kurslar/Edit/5
+        // POST: Admin/Kurs/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, KursModel model, IFormFile imageFile)
+        public async Task<IActionResult> Edit(int id, KursModel kurs, IFormFile imageFile)
         {
-            if (id != model.Id)
+            if (id != kurs.Id)
             {
                 return NotFound();
             }
@@ -117,49 +132,61 @@ namespace EgitimSitesi.Controllers.AdminControllers
             {
                 try
                 {
-                    var existingKurs = await _context.Kurslar.FindAsync(id);
+                    var existingKurs = await _context.Kurslar.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
                     if (existingKurs == null)
                     {
                         return NotFound();
                     }
-                    
-                    existingKurs.Type = model.Type;
-                    existingKurs.Description = model.Description;
-                    existingKurs.Details = model.Details;
-                    existingKurs.Order = model.Order;
-                    existingKurs.IsActive = model.IsActive;
-                    
+
+                    // Process image if provided
                     if (imageFile != null && imageFile.Length > 0)
                     {
-                        // Delete the old image file if it exists
-                        if (!string.IsNullOrEmpty(existingKurs.ImagePath))
+                        // Delete old image from Cloudinary if it exists
+                        if (!string.IsNullOrEmpty(existingKurs.CloudinaryPublicId))
                         {
-                            var oldImagePath = Path.Combine(_environment.WebRootPath, existingKurs.ImagePath.TrimStart('/'));
-                            if (System.IO.File.Exists(oldImagePath))
+                            await _cloudinaryService.DeleteImageAsync(existingKurs.CloudinaryPublicId);
+                        }
+                        else if (!string.IsNullOrEmpty(existingKurs.ImagePath) && existingKurs.ImagePath.Contains("cloudinary"))
+                        {
+                            // Try to extract public ID from URL
+                            var publicId = _cloudinaryService.GetPublicIdFromUrl(existingKurs.ImagePath);
+                            if (!string.IsNullOrEmpty(publicId))
                             {
-                                System.IO.File.Delete(oldImagePath);
+                                await _cloudinaryService.DeleteImageAsync(publicId);
                             }
                         }
+
+                        // Upload to Cloudinary
+                        var uploadResult = await _cloudinaryService.UploadImageAsync(imageFile, "kurslar");
                         
-                        string uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "kurslar");
-                        Directory.CreateDirectory(uploadsFolder); // Ensure the directory exists
-                        
-                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                        
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        if (uploadResult == null)
                         {
-                            await imageFile.CopyToAsync(fileStream);
+                            ModelState.AddModelError("imageFile", "Resim yüklenemedi. Lütfen tekrar deneyin.");
+                            return View("~/Views/Admin/Kurs/Edit.cshtml", kurs);
                         }
                         
-                        existingKurs.ImagePath = "/uploads/kurslar/" + uniqueFileName;
+                        // Update model with Cloudinary information
+                        kurs.ImagePath = uploadResult.SecureUrl.ToString();
+                        kurs.CloudinaryPublicId = uploadResult.PublicId;
                     }
-                    
+                    else
+                    {
+                        // Keep existing image and public ID
+                        kurs.ImagePath = existingKurs.ImagePath;
+                        kurs.CloudinaryPublicId = existingKurs.CloudinaryPublicId;
+                    }
+
+                    // Preserve creation date and order
+                    kurs.CreationDate = existingKurs.CreationDate;
+                    kurs.Order = existingKurs.Order;
+
+                    _context.Update(kurs);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!KursExists(model.Id))
+                    if (!KursExists(kurs.Id))
                     {
                         return NotFound();
                     }
@@ -168,30 +195,36 @@ namespace EgitimSitesi.Controllers.AdminControllers
                         throw;
                     }
                 }
-                
-                return RedirectToAction(nameof(Index));
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
+                }
             }
-            
-            return View("~/Views/Admin/Kurslar/Edit.cshtml", model);
+
+            return View("~/Views/Admin/Kurs/Edit.cshtml", kurs);
         }
 
-        // GET: Admin/Kurslar/Delete/5
+        // GET: Admin/Kurs/Delete/5
         [HttpGet("Delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var kurs = await _context.Kurslar.FindAsync(id);
             if (kurs == null)
             {
                 return NotFound();
             }
-            
-            return View("~/Views/Admin/Kurslar/Delete.cshtml", kurs);
+
+            return View("~/Views/Admin/Kurs/Delete.cshtml", kurs);
         }
 
-        // POST: Admin/Kurslar/Delete/5
-        [HttpPost("Delete/{id}")]
+        // POST: Admin/Kurs/Delete/5
+        [HttpPost("Delete/{id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var kurs = await _context.Kurslar.FindAsync(id);
@@ -199,53 +232,90 @@ namespace EgitimSitesi.Controllers.AdminControllers
             {
                 return NotFound();
             }
-            
-            // Delete the image file if it exists
-            if (!string.IsNullOrEmpty(kurs.ImagePath))
+
+            // Delete image from Cloudinary if it has a public ID
+            if (!string.IsNullOrEmpty(kurs.CloudinaryPublicId))
             {
-                var imagePath = Path.Combine(_environment.WebRootPath, kurs.ImagePath.TrimStart('/'));
-                if (System.IO.File.Exists(imagePath))
+                await _cloudinaryService.DeleteImageAsync(kurs.CloudinaryPublicId);
+            }
+            else if (!string.IsNullOrEmpty(kurs.ImagePath) && kurs.ImagePath.Contains("cloudinary"))
+            {
+                // Try to extract public ID from URL
+                var publicId = _cloudinaryService.GetPublicIdFromUrl(kurs.ImagePath);
+                if (!string.IsNullOrEmpty(publicId))
                 {
-                    System.IO.File.Delete(imagePath);
+                    await _cloudinaryService.DeleteImageAsync(publicId);
                 }
             }
-            
+
             _context.Kurslar.Remove(kurs);
             await _context.SaveChangesAsync();
-            
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: Admin/Kurslar/ReOrder
-        [HttpPost("ReOrder")]
-        public async Task<IActionResult> ReOrder([FromBody] ReOrderModel model)
+        // Move Up: Admin/Kurs/MoveUp/5
+        [HttpPost("MoveUp/{id}")]
+        public async Task<IActionResult> MoveUp(int id)
         {
-            if (model != null && model.Ids != null && model.Ids.Count > 0)
+            var currentKurs = await _context.Kurslar.FindAsync(id);
+            if (currentKurs == null)
             {
-                for (int i = 0; i < model.Ids.Count; i++)
-                {
-                    var kurs = await _context.Kurslar.FindAsync(model.Ids[i]);
-                    if (kurs != null)
-                    {
-                        kurs.Order = i + 1;
-                    }
-                }
-                
-                await _context.SaveChangesAsync();
-                return Json(new { success = true });
+                return NotFound();
             }
-            
-            return Json(new { success = false, message = "No data received" });
+
+            var higherOrderKurs = await _context.Kurslar
+                .Where(k => k.Order < currentKurs.Order)
+                .OrderByDescending(k => k.Order)
+                .FirstOrDefaultAsync();
+
+            if (higherOrderKurs != null)
+            {
+                // Swap orders
+                var tempOrder = currentKurs.Order;
+                currentKurs.Order = higherOrderKurs.Order;
+                higherOrderKurs.Order = tempOrder;
+
+                _context.Update(currentKurs);
+                _context.Update(higherOrderKurs);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Move Down: Admin/Kurs/MoveDown/5
+        [HttpPost("MoveDown/{id}")]
+        public async Task<IActionResult> MoveDown(int id)
+        {
+            var currentKurs = await _context.Kurslar.FindAsync(id);
+            if (currentKurs == null)
+            {
+                return NotFound();
+            }
+
+            var lowerOrderKurs = await _context.Kurslar
+                .Where(k => k.Order > currentKurs.Order)
+                .OrderBy(k => k.Order)
+                .FirstOrDefaultAsync();
+
+            if (lowerOrderKurs != null)
+            {
+                // Swap orders
+                var tempOrder = currentKurs.Order;
+                currentKurs.Order = lowerOrderKurs.Order;
+                lowerOrderKurs.Order = tempOrder;
+
+                _context.Update(currentKurs);
+                _context.Update(lowerOrderKurs);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         private bool KursExists(int id)
         {
             return _context.Kurslar.Any(e => e.Id == id);
         }
-    }
-    
-    public class ReOrderModel
-    {
-        public List<int> Ids { get; set; }
     }
 } 

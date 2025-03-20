@@ -3,6 +3,7 @@ using EgitimSitesi.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using EgitimSitesi.Models;
 using CloudinaryDotNet;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,9 @@ builder.Services.AddScoped<EgitimSitesi.Services.CloudinaryService>();
 
 var app = builder.Build();
 
+// Apply database migrations automatically
+app.MigrateDatabase();
+
 // Initialize the database and ensure default data exists
 await EgitimSitesi.Data.DbInitializer.Initialize(app.Services);
 
@@ -117,3 +121,27 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 await app.RunAsync();
+
+// Extension method to automatically apply database migrations
+public static class MigrationExtensions
+{
+    public static IApplicationBuilder MigrateDatabase(this WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            using (var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                try
+                {
+                    context.Database.Migrate();
+                    app.Logger.LogInformation("Database migrations applied successfully");
+                }
+                catch (Exception ex)
+                {
+                    app.Logger.LogError(ex, "An error occurred while migrating the database");
+                }
+            }
+        }
+        return app;
+    }
+}

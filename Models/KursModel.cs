@@ -23,6 +23,9 @@ namespace EgitimSitesi.Models
         [StringLength(200)]
         public string ImagePath { get; set; }
         
+        [StringLength(200)]
+        public string CloudinaryPublicId { get; set; }
+        
         [Required]
         [Display(Name = "Sıralama")]
         public int Order { get; set; }

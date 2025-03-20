@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using EgitimSitesi.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace EgitimSitesi.Controllers.AdminControllers
 {
@@ -20,11 +22,18 @@ namespace EgitimSitesi.Controllers.AdminControllers
     [Route("Admin")]
     public class AdminController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(
+            IConfiguration configuration, 
+            ApplicationDbContext context,
+            CloudinaryService cloudinaryService)
         {
+            _configuration = configuration;
             _context = context;
+            _cloudinaryService = cloudinaryService;
         }
 
         // GET: /Admin
@@ -158,66 +167,71 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LayoutSettings(LayoutSettingsViewModel model)
         {
-          
-                try
+            try
+            {
+                // Get current site settings or create a new one if none exists
+                var siteSettings = await _context.SiteSettings.FirstOrDefaultAsync();
+                
+                if (siteSettings == null)
                 {
-                    // Get current site settings or create a new one if none exists
-                    var siteSettings = await _context.SiteSettings.FirstOrDefaultAsync();
-                    
-                    if (siteSettings == null)
+                    // Create new settings if none exist
+                    siteSettings = new Models.SiteSettingsModel
                     {
-                        // Create new settings if none exist
-                        siteSettings = new Models.SiteSettingsModel
-                        {
-                            ActiveLayout = model.ActiveLayout,
-                            CreationDate = DateTime.Now
-                        };
-                        _context.SiteSettings.Add(siteSettings);
+                        ActiveLayout = model.ActiveLayout,
+                        CreationDate = DateTime.Now
+                    };
+                    _context.SiteSettings.Add(siteSettings);
+                }
+                
+                // Handle logo upload if provided
+                if (model.Logo != null && model.Logo.Length > 0)
+                {
+                    // Delete old logo from Cloudinary if it exists
+                    if (!string.IsNullOrEmpty(siteSettings.CloudinaryPublicId))
+                    {
+                        await _cloudinaryService.DeleteImageAsync(siteSettings.CloudinaryPublicId);
                     }
-                    
-                    // Handle logo upload if provided
-                    if (model.Logo != null && model.Logo.Length > 0)
+                    else if (!string.IsNullOrEmpty(siteSettings.ImagePath) && siteSettings.ImagePath.Contains("cloudinary"))
                     {
-                        // Process and save the logo
-                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "Logo");
-                        
-                        // Ensure the directory exists
-                        if (!Directory.Exists(uploadsFolder))
-                            Directory.CreateDirectory(uploadsFolder);
-                        
-                        // Generate file name - use a timestamp to avoid duplicates
-                        var fileName = $"logo_{DateTime.Now.ToString("yyyyMMddHHmmss")}{Path.GetExtension(model.Logo.FileName)}";
-                        var filePath = Path.Combine(uploadsFolder, fileName);
-                        
-                        // Save the file
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        // Try to extract public ID from URL
+                        var publicId = _cloudinaryService.GetPublicIdFromUrl(siteSettings.ImagePath);
+                        if (!string.IsNullOrEmpty(publicId))
                         {
-                            await model.Logo.CopyToAsync(fileStream);
+                            await _cloudinaryService.DeleteImageAsync(publicId);
                         }
-                        
-                        // Update the image path in the database
-                        siteSettings.ImagePath = $"/uploads/Logo/{fileName}";
                     }
                     
-                    // Update existing settings
-                    siteSettings.ActiveLayout = model.ActiveLayout;
-                    siteSettings.CreationDate = DateTime.Now;
+                    // Upload new logo to Cloudinary
+                    var uploadResult = await _cloudinaryService.UploadImageAsync(model.Logo, "logo");
                     
-                    await _context.SaveChangesAsync();
+                    if (uploadResult == null)
+                    {
+                        ModelState.AddModelError("Logo", "Logo yüklenemedi. Lütfen tekrar deneyin.");
+                        return View(model);
+                    }
                     
-                    // Add success message
-                    TempData["SuccessMessage"] = $"Site ayarları başarıyla güncellendi.";
-                    
-                    return RedirectToAction(nameof(LayoutSettings));
+                    // Update the logo in the database
+                    siteSettings.ImagePath = uploadResult.SecureUrl.ToString();
+                    siteSettings.CloudinaryPublicId = uploadResult.PublicId;
                 }
-                catch (Exception ex)
-                {
-                    // Log the error
-                    ModelState.AddModelError(string.Empty, $"Hata oluştu: {ex.Message}");
-                }
+                
+                // Update existing settings
+                siteSettings.ActiveLayout = model.ActiveLayout;
+                
+                await _context.SaveChangesAsync();
+                
+                // Add success message
+                TempData["SuccessMessage"] = $"Site ayarları başarıyla güncellendi.";
+                
+                return RedirectToAction(nameof(LayoutSettings));
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                ModelState.AddModelError(string.Empty, $"Hata oluştu: {ex.Message}");
+            }
             
-            
-            // If we got this far, something failed, redisplay form
+            // Repopulate the view model
             model.AvailableLayouts = new List<SelectListItem>
             {
                 new SelectListItem { Value = "_Layout", Text = "Default Layout", Selected = model.ActiveLayout == "_Layout" },
