@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EgitimSitesi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc787e983d74a332fc717bdc2f05f2a706b4df0e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+32e29e277ec648e63bccce6f0ed45429f3938b90")]
 [assembly: System.Reflection.AssemblyProductAttribute("EgitimSitesi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EgitimSitesi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

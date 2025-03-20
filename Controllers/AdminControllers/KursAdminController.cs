@@ -127,8 +127,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
                     var existingKurs = await _context.Kurslar.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
@@ -198,7 +197,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 {
                     ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
                 }
-            }
+            
 
             return View("~/Views/Admin/Kurslar/Edit.cshtml", kurs);
         }

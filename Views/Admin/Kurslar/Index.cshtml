@@ -41,6 +41,7 @@
                             <th width="80">Görsel</th>
                             <th>Tür</th>
                             <th>Açıklama</th>
+                            <th>Buton</th>
                             <th width="70">Sıra</th>
                             <th width="70">Durum</th>
                             <th width="130">İşlemler</th>
@@ -63,6 +64,12 @@
                                 </td>
                                 <td>@item.Type</td>
                                 <td>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.ButtonText))
+                                    {
+                                        <span class="badge bg-info">@item.ButtonText</span>
+                                    }
+                                </td>
                                 <td class="text-center">@item.Order</td>
                                 <td class="text-center">
                                     @if (item.IsActive)

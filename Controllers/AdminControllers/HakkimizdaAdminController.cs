@@ -71,8 +71,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(HakkimizdaModel hakkimizda, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
                     // Upload image if provided
@@ -105,7 +104,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 {
                     ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
                 }
-            }
+            
 
             return View("~/Views/Admin/Hakkimizda/Create.cshtml", hakkimizda);
         }
@@ -133,8 +132,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, HakkimizdaModel hakkimizda, IFormFile imageFile)
         {
-            if (id != hakkimizda.Id)
-            {
+         
                 return NotFound();
             }
 
@@ -208,7 +206,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 {
                     ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
                 }
-            }
+            
 
             return View("~/Views/Admin/Hakkimizda/Edit.cshtml", hakkimizda);
         }
