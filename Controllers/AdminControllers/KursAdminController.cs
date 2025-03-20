@@ -51,8 +51,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(KursModel kurs, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
-            {
+         
                 try
                 {
                     // Set the highest order + 1 for new courses
@@ -95,7 +94,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                 {
                     ModelState.AddModelError("", $"Hata oluştu: {ex.Message}");
                 }
-            }
+            
 
             return View("~/Views/Admin/Kurslar/Create.cshtml", kurs);
         }
