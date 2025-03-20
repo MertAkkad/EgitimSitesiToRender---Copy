@@ -221,14 +221,7 @@
                                                 <div class="card-body">
                                                     <h5 class="card-title">@course.Type</h5>
                                                     <p class="card-text">@course.Description</p>
-                                                    @if (!string.IsNullOrEmpty(course.ButtonText) && !string.IsNullOrEmpty(course.ButtonUrl))
-                                                    {
-                                                        <a href="@course.ButtonUrl" class="btn btn-outline-primary stretched-link">@course.ButtonText</a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="@Url.Action("Detay", "Kurslarimiz", new { id = course.Id })" class="btn btn-outline-primary stretched-link">Detaylı Bilgi</a>
-                                                    }
+                                                    <a href="#" class="btn btn-outline-primary stretched-link">Detaylı Bilgi</a>
                                                 </div>
                                             </div>
                                         </div>

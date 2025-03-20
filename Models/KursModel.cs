@@ -26,14 +26,6 @@ namespace EgitimSitesi.Models
         [StringLength(200)]
         public string CloudinaryPublicId { get; set; }
         
-        [Display(Name = "Buton Metni")]
-        [StringLength(50)]
-        public string? ButtonText { get; set; }
-        
-        [Display(Name = "Buton URL")]
-        [StringLength(200)]
-        public string? ButtonUrl { get; set; }
-        
         [Required]
         [Display(Name = "Sıralama")]
         public int Order { get; set; }
