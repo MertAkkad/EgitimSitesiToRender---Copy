@@ -5,124 +5,102 @@
 }
 
 <div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Kurslar Yönetimi</h1>
-        <a href="@Url.Action("Create", "KursAdmin", new { area = "" })" class="btn btn-primary">
-            <i class="fas fa-plus me-1"></i> Yeni Kurs Ekle
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Kurslar Yönetimi</h1>
+        <a href="/Admin/Kurslar/Create" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50 me-1"></i> Yeni Kurs Ekle
         </a>
     </div>
 
-    @if (!Model.Any())
+    @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-info">
-            <i class="fas fa-info-circle me-2"></i> Henüz hiç kurs eklenmemiş. Yukarıdaki "Yeni Kurs Ekle" butonuna tıklayarak yeni bir kurs ekleyebilirsiniz.
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-1"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-    else
+    
+    @if (TempData["ErrorMessage"] != null)
     {
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Kurs Listesi</h6>
-                <small class="text-muted">Sıralamayı değiştirmek için öğeleri sürükleyip bırakabilirsiniz.</small>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="kurslarTable" width="100%" cellspacing="0">
-                        <thead>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-1"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Tüm Kurslar</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="60">ID</th>
+                            <th width="80">Görsel</th>
+                            <th>Tür</th>
+                            <th>Açıklama</th>
+                            <th width="70">Sıra</th>
+                            <th width="70">Durum</th>
+                            <th width="130">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
                             <tr>
-                                <th style="width: 50px;">#</th>
-                                <th>Resim</th>
-                                <th>Tür</th>
-                                <th>Açıklama</th>
-                                <th>Sıralama</th>
-                                <th>Durum</th>
-                                <th>İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sortable">
-                            @foreach (var item in Model.OrderBy(x => x.Order))
-                            {
-                                <tr data-id="@item.Id">
-                                    <td class="handle text-center">
-                                        <i class="fas fa-grip-vertical text-muted"></i>
-                                    </td>
-                                    <td class="text-center">
-                                        @if (!string.IsNullOrEmpty(item.ImagePath))
-                                        {
-                                            <img src="@item.ImagePath" alt="@item.Type" class="img-thumbnail" style="max-height: 50px; max-width: 100px;" />
-                                        }
-                                        else
-                                        {
-                                            <span class="text-muted small">Resim yok</span>
-                                        }
-                                    </td>
-                                    <td>@item.Type</td>
-                                    <td>@(item.Description.Length > 50 ? item.Description.Substring(0, 47) + "..." : item.Description)</td>
-                                    <td class="text-center">@item.Order</td>
-                                    <td class="text-center">
-                                        @if (item.IsActive)
-                                        {
-                                            <span class="badge bg-success">Aktif</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">Pasif</span>
-                                        }
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="@Url.Action("Edit", "KursAdmin", new { id = item.Id })" class="btn btn-sm btn-info me-1">
+                                <td>@item.Id</td>
+                                <td class="text-center">
+                                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                                    {
+                                        <img src="@item.ImagePath" alt="@item.Type" class="img-thumbnail" style="max-height: 40px;" />
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-book fa-2x text-secondary"></i>
+                                    }
+                                </td>
+                                <td>@item.Type</td>
+                                <td>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</td>
+                                <td class="text-center">@item.Order</td>
+                                <td class="text-center">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pasif</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="/Admin/Kurslar/Edit/@item.Id" class="btn btn-sm btn-primary">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="@Url.Action("Delete", "KursAdmin", new { id = item.Id })" class="btn btn-sm btn-danger">
+                                        <a href="/Admin/Kurslar/Delete/@item.Id" class="btn btn-sm btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-    }
+    </div>
 </div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
-        $(function () {
-            $("#sortable").sortable({
-                handle: '.handle',
-                placeholder: 'sort-highlight',
-                forcePlaceholderSize: true,
-                update: function (event, ui) {
-                    var ids = [];
-                    $("#sortable tr").each(function () {
-                        ids.push($(this).data('id'));
-                    });
-                    
-                    $.ajax({
-                        url: '@Url.Action("ReOrder", "KursAdmin")',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({ ids: ids }),
-                        success: function (result) {
-                            if (result.success) {
-                                // Update order numbers
-                                $("#sortable tr").each(function (index) {
-                                    $(this).find("td:eq(4)").text(index + 1);
-                                });
-                                
-                                toastr.success('Sıralama başarıyla güncellendi!');
-                            } else {
-                                toastr.error('Sıralama güncellenirken bir hata oluştu!');
-                            }
-                        },
-                        error: function () {
-                            toastr.error('Sıralama güncellenirken bir hata oluştu!');
-                        }
-                    });
-                }
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json'
+                },
+                "order": [[ 4, "asc" ]] // Sort by Order column ascending
             });
         });
     </script>

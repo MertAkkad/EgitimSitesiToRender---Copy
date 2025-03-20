@@ -6,8 +6,8 @@
 
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Kurs Düzenle</h1>
-        <a href="@Url.Action("Index", "KursAdmin", new { area = "" })" class="btn btn-secondary">
+        <h1 class="h3 mb-0 text-gray-800">Kurs Düzenle</h1>
+        <a href="/Admin/Kurslar" class="btn btn-secondary">
             <i class="fas fa-arrow-left me-1"></i> Listeye Dön
         </a>
     </div>
@@ -18,72 +18,82 @@
         </div>
         <div class="card-body">
             <form action="/Admin/Kurslar/Edit/@Model.Id" method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="CreationDate" />
-                
-                <div class="row mb-3">
+                <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+                <input type="hidden" id="CloudinaryPublicId" name="CloudinaryPublicId" value="@Model.CloudinaryPublicId" />
+                <input type="hidden" id="CreationDate" name="CreationDate" value="@Model.CreationDate.ToString("o")" />
+
+                <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="Type" class="form-label">Kurs Türü</label>
-                            <select asp-for="Type" class="form-select">
+                        <div class="mb-3">
+                            <label for="Type" class="form-label">Kurs Türü <span class="text-danger">*</span></label>
+                            <select id="Type" name="Type" class="form-select" required>
                                 <option value="">Kurs Türü Seçiniz</option>
-                                <option value="İlkokul">İlkokul</option>
-                                <option value="Ortaokul">Ortaokul</option>
-                                <option value="Lise">Lise</option>
-                                <option value="LGS">LGS</option>
-                                <option value="TYT/AYT">TYT/AYT</option>
+                                <option value="İlkokul" @(Model.Type == "İlkokul" ? "selected" : "")>İlkokul</option>
+                                <option value="Ortaokul" @(Model.Type == "Ortaokul" ? "selected" : "")>Ortaokul</option>
+                                <option value="Lise" @(Model.Type == "Lise" ? "selected" : "")>Lise</option>
+                                <option value="LGS" @(Model.Type == "LGS" ? "selected" : "")>LGS</option>
+                                <option value="TYT/AYT" @(Model.Type == "TYT/AYT" ? "selected" : "")>TYT/AYT</option>
                             </select>
-                            <span asp-validation-for="Type" class="text-danger"></span>
+                            <span id="TypeValidation" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group mb-3">
-                            <label asp-for="Order" class="form-label">Sıralama</label>
-                            <input asp-for="Order" class="form-control" />
-                            <span asp-validation-for="Order" class="text-danger"></span>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="Order" class="form-label">Sıralama</label>
+                            <input type="number" id="Order" name="Order" class="form-control" value="@Model.Order" min="1" max="100" />
+                            <div class="form-text">Düşük değerler önce gösterilir.</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group mb-3">
-                            <label asp-for="IsActive" class="form-label">Durum</label>
-                            <div class="form-check form-switch mt-2">
-                                <input asp-for="IsActive" class="form-check-input" />
-                                <label class="form-check-label" for="IsActive">Aktif</label>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Description" class="form-label">Açıklama <span class="text-danger">*</span></label>
+                    <textarea id="Description" name="Description" class="form-control" rows="3" required>@Model.Description</textarea>
+                    <span id="DescriptionValidation" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Details" class="form-label">Detaylar</label>
+                    <textarea id="Details" name="Details" class="form-control" rows="5">@Model.Details</textarea>
+                    <div class="form-text">Kurs detayları (isteğe bağlı)</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="imageFile" class="form-label">Görsel</label>
+                            <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*" />
+                            <div class="form-text">Değiştirmek istemiyorsanız boş bırakın.</div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.ImagePath))
+                            {
+                                <div class="card mt-2">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <img src="@Model.ImagePath" alt="@Model.Type" class="img-thumbnail me-3" style="max-height: 60px;" />
+                                            <div>Mevcut Görsel</div>
+                                            <input type="hidden" name="ImagePath" value="@Model.ImagePath" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <div class="form-check form-switch mt-4">
+                                <input type="checkbox" id="IsActive" name="IsActive" class="form-check-input" @(Model.IsActive ? "checked" : "") />
+                                <label for="IsActive" class="form-check-label">Aktif</label>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="form-group mb-3">
-                    <label asp-for="Description" class="form-label">Açıklama</label>
-                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                
-                <div class="form-group mb-3">
-                    <label asp-for="Details" class="form-label">Detaylar</label>
-                    <textarea asp-for="Details" class="form-control" rows="6"></textarea>
-                    <span asp-validation-for="Details" class="text-danger"></span>
-                </div>
-                
-                <div class="form-group mb-3">
-                    <label for="imageFile" class="form-label">Resim</label>
-                    @if (!string.IsNullOrEmpty(Model.ImagePath))
-                    {
-                        <div class="mb-2">
-                            <img src="@Model.ImagePath" alt="@Model.Type" class="img-thumbnail" style="max-height: 200px;" />
-                        </div>
-                    }
-                    <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*" />
-                    <div class="form-text">Yeni bir resim seçilmezse mevcut resim korunacaktır. Önerilen boyut: 800x600 piksel.</div>
-                </div>
-                
-                <div class="form-group mt-4">
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="/Admin/Kurslar" class="btn btn-secondary me-2">İptal</a>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save me-1"></i> Değişiklikleri Kaydet
                     </button>
-                    <a href="@Url.Action("Index", "KursAdmin")" class="btn btn-secondary ms-2">İptal</a>
                 </div>
             </form>
         </div>
@@ -91,5 +101,30 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // Form validation
+            $('form').on('submit', function(e) {
+                let isValid = true;
+                
+                // Validate Type
+                if (!$('#Type').val()) {
+                    $('#TypeValidation').text('Kurs türü seçmelisiniz.');
+                    isValid = false;
+                } else {
+                    $('#TypeValidation').text('');
+                }
+                
+                // Validate Description
+                if (!$('#Description').val()) {
+                    $('#DescriptionValidation').text('Açıklama girmelisiniz.');
+                    isValid = false;
+                } else {
+                    $('#DescriptionValidation').text('');
+                }
+                
+                return isValid;
+            });
+        });
+    </script>
 } 
