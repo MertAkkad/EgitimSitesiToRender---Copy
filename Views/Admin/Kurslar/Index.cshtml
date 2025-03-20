@@ -7,7 +7,7 @@
 <div class="container-fluid py-4">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Kurslar Yönetimi</h1>
-        <a href="/Admin/Kurslar/Create" class="btn btn-primary shadow-sm">
+        <a asp-controller="KursAdmin" asp-action="Create" class="btn btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50 me-1"></i> Yeni Kurs Ekle
         </a>
     </div>
@@ -76,10 +76,10 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
-                                        <a href="/Admin/Kurslar/Edit/@item.Id" class="btn btn-sm btn-primary">
+                                        <a asp-controller="KursAdmin" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="/Admin/Kurslar/Delete/@item.Id" class="btn btn-sm btn-danger">
+                                        <a asp-controller="KursAdmin" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>

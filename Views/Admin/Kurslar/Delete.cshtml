@@ -7,7 +7,7 @@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">Kurs Sil</h1>
-        <a href="/Admin/Kurslar" class="btn btn-secondary">
+        <a asp-controller="KursAdmin" asp-action="Index" class="btn btn-secondary">
             <i class="fas fa-arrow-left me-1"></i> Listeye Dön
         </a>
     </div>
@@ -81,10 +81,10 @@
                 </div>
             </div>
 
-            <form action="/Admin/Kurslar/Delete/@Model.Id" method="post" class="mt-4">
+            <form asp-controller="KursAdmin" asp-action="Delete" asp-route-id="@Model.Id" method="post" class="mt-4">
                 <input type="hidden" name="Id" value="@Model.Id" />
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="/Admin/Kurslar" class="btn btn-secondary">İptal</a>
+                    <a asp-controller="KursAdmin" asp-action="Index" class="btn btn-secondary">İptal</a>
                     <button type="submit" class="btn btn-danger">
                         <i class="fas fa-trash me-1"></i> Sil
                     </button>

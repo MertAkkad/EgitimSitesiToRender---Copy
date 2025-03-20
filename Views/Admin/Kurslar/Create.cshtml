@@ -7,7 +7,7 @@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">Yeni Kurs Ekle</h1>
-        <a href="/Admin/Kurslar" class="btn btn-secondary">
+        <a asp-controller="KursAdmin" asp-action="Index" class="btn btn-secondary">
             <i class="fas fa-arrow-left me-1"></i> Listeye Dön
         </a>
     </div>
@@ -17,7 +17,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Kurs Bilgileri</h6>
         </div>
         <div class="card-body">
-            <form action="/Admin/Kurslar/Create" method="post" enctype="multipart/form-data">
+            <form asp-controller="KursAdmin" asp-action="Create" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">
-                    <a href="/Admin/Kurslar" class="btn btn-secondary me-2">İptal</a>
+                    <a asp-controller="KursAdmin" asp-action="Index" class="btn btn-secondary me-2">İptal</a>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save me-1"></i> Kaydet
                     </button>
