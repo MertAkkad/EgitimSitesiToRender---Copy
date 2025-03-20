@@ -19,16 +19,17 @@ namespace EgitimSitesi.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ImagePath = table.Column<string>(type: "text", nullable: false),
+                    CloudinaryPublicId = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     ButtonText = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     ButtonUrl = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Order = table.Column<int>(type: "integer", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ContentType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     IconClass = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    IsImageRight = table.Column<bool>(type: "boolean", nullable: false)
+                    IsImageRight = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -42,6 +43,7 @@ namespace EgitimSitesi.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ImagePath = table.Column<string>(type: "text", nullable: false),
+                    CloudinaryPublicId = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     ButtonText = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
@@ -84,6 +86,7 @@ namespace EgitimSitesi.Migrations
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     ImagePath = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    CloudinaryPublicId = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     IconClass = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     ButtonText = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     ButtonUrl = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
@@ -124,6 +127,7 @@ namespace EgitimSitesi.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ImagePath = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    CloudinaryPublicId = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Tarihcemiz = table.Column<string>(type: "text", nullable: false),
                     Vizyonumuz = table.Column<string>(type: "text", nullable: false),
                     Misyonumuz = table.Column<string>(type: "text", nullable: false),
@@ -173,6 +177,7 @@ namespace EgitimSitesi.Migrations
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     Order = table.Column<int>(type: "integer", nullable: false),
                     ImagePath = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    CloudinaryPublicId = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
@@ -204,10 +209,11 @@ namespace EgitimSitesi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Details = table.Column<string>(type: "text", nullable: false),
                     ImagePath = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    CloudinaryPublicId = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Order = table.Column<int>(type: "integer", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
@@ -225,6 +231,7 @@ namespace EgitimSitesi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ActiveLayout = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     ImagePath = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    CloudinaryPublicId = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
@@ -324,26 +331,6 @@ namespace EgitimSitesi.Migrations
                 name: "IX_KayitFormu_Email",
                 table: "KayitFormu",
                 column: "Email");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kurslar_IsActive",
-                table: "Kurslar",
-                column: "IsActive");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kurslar_IsActive_Order",
-                table: "Kurslar",
-                columns: new[] { "IsActive", "Order" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kurslar_Type",
-                table: "Kurslar",
-                column: "Type");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SiteSettings_ActiveLayout",
-                table: "SiteSettings",
-                column: "ActiveLayout");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subeler_Latitude_Longitude",

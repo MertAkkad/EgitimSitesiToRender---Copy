@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EgitimSitesi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250320110949_AddCloudinaryPublicIdToModels")]
-    partial class AddCloudinaryPublicIdToModels
+    [Migration("20250320113811_InitialPostgreSQL")]
+    partial class InitialPostgreSQL
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

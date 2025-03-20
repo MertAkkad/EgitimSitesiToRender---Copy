@@ -3,7 +3,6 @@ using EgitimSitesi.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using EgitimSitesi.Models;
 using CloudinaryDotNet;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,9 +67,6 @@ builder.Services.AddScoped<EgitimSitesi.Services.CloudinaryService>();
 
 var app = builder.Build();
 
-// Apply database migrations automatically
-app.MigrateDatabase();
-
 // Initialize the database and ensure default data exists
 await EgitimSitesi.Data.DbInitializer.Initialize(app.Services);
 
@@ -121,49 +117,3 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 await app.RunAsync();
-
-// Extension method to automatically apply database migrations
-public static class MigrationExtensions
-{
-    public static IApplicationBuilder MigrateDatabase(this WebApplication app)
-    {
-        using (var scope = app.Services.CreateScope())
-        {
-            var services = scope.ServiceProvider;
-            try
-            {
-                app.Logger.LogInformation("Starting database migration...");
-                var context = services.GetRequiredService<ApplicationDbContext>();
-                
-                // Check if the database exists, and create it if it doesn't
-                app.Logger.LogInformation("Ensuring database exists...");
-                context.Database.EnsureCreated();
-                
-                // Get pending migrations
-                var pendingMigrations = context.Database.GetPendingMigrations().ToList();
-                app.Logger.LogInformation($"Found {pendingMigrations.Count} pending migrations: {string.Join(", ", pendingMigrations)}");
-                
-                // Apply the migrations
-                if (pendingMigrations.Any())
-                {
-                    app.Logger.LogInformation("Applying pending migrations...");
-                    context.Database.Migrate();
-                    app.Logger.LogInformation("Database migrations applied successfully");
-                }
-                else 
-                {
-                    app.Logger.LogInformation("No pending migrations to apply");
-                }
-            }
-            catch (Exception ex)
-            {
-                app.Logger.LogError(ex, "An error occurred while migrating the database: {Message}", ex.Message);
-                if (ex.InnerException != null)
-                {
-                    app.Logger.LogError("Inner exception: {Message}", ex.InnerException.Message);
-                }
-            }
-        }
-        return app;
-    }
-}

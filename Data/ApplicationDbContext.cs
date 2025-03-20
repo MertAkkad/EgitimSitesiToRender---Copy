@@ -195,7 +195,6 @@ namespace EgitimSitesi.Data
                 entity.Property(e => e.Latitude).IsRequired();
                 entity.Property(e => e.Longitude).IsRequired();
                 entity.Property(e => e.MapUrl).HasMaxLength(500);
-
                 entity.Property(e => e.ZoomLevel).HasDefaultValue(15);
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
                 entity.Property(e => e.Order).IsRequired();
