@@ -67,7 +67,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
         // GET: /Admin/Login
         [HttpGet("Login")]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -77,7 +77,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
         [HttpPost("Login")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             

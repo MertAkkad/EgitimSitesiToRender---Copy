@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EgitimSitesi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250320113811_InitialPostgreSQL")]
-    partial class InitialPostgreSQL
+    [Migration("20250320113811_InitialPostgreSQLUpdated")]
+    partial class InitialPostgreSQLUpdated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
