@@ -38,13 +38,13 @@
                 }
                 
                 <section class="mb-5">
-                    <p class="fs-5 mb-4">@Model.Description</p>
+                    <p class="fs-5 mb-4">@Html.Raw(Model.Description)</p>
                     
                     @if (!string.IsNullOrEmpty(Model.DetailContent))
                     {
                         <hr class="my-4">
                         <div class="mb-4">
-                            @Model.DetailContent
+                            @Html.Raw(Model.DetailContent)
                         </div>
                     }
                 </section>

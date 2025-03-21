@@ -13,8 +13,8 @@ namespace EgitimSitesi.Models
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Açıklama alanı zorunludur")]
-        [StringLength(500, ErrorMessage = "Açıklama en fazla 500 karakter olabilir")]
         [Display(Name = "Açıklama")]
+        [DataType(DataType.Html)]
         public string Description { get; set; }
         
         // Görsel/resim yolu
@@ -56,6 +56,7 @@ namespace EgitimSitesi.Models
         
         // Detay içeriği - Detaylı duyuru metni (opsiyonel)
         [Display(Name = "Detay İçeriği")]
+        [DataType(DataType.Html)]
         public string DetailContent { get; set; }
     }
 } 
