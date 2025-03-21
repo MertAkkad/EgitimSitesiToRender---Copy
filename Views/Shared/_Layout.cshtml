@@ -135,7 +135,9 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Anasayfa" asp-action="Index">
                     @if (!string.IsNullOrEmpty(logoPath))
                     {
-                        <img src="@logoPath" alt="Eğitim Dershanesi Logo" style="max-height: 40px;" />
+                        <div class="logo-container" style="width: 150px; height: 100px; display: flex; align-items: center; justify-content: center; background-color: white; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-top: -10px; position: relative; z-index: 1000;">
+                            <img src="@logoPath" alt="Eğitim Dershanesi Logo" style="max-width: 140px; max-height: 90px; object-fit: contain;" />
+                        </div>
                     }
                     else
                     {

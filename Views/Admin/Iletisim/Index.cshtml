@@ -14,12 +14,17 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">İletişim Bilgileri</h6>
-            @if (!Model.Any())
-            {
-                <a href="/Admin/Iletisim/Create" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Yeni Ekle
+            <div>
+                <a href="/Admin" class="btn btn-secondary btn-sm me-2">
+                    <i class="fas fa-arrow-left me-1"></i> Admin Panele Dön
                 </a>
-            }
+                @if (!Model.Any())
+                {
+                    <a href="/Admin/Iletisim/Create" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Yeni Ekle
+                    </a>
+                }
+            </div>
         </div>
         <div class="card-body">
             @if (!Model.Any())

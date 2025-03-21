@@ -16,7 +16,7 @@ namespace EgitimSitesi.Models
         [StringLength(100, ErrorMessage = "Başlık en fazla 100 karakter olabilir")]
         public string Title { get; set; }
 
-        [StringLength(500, ErrorMessage = "Açıklama en fazla 500 karakter olabilir")]
+        [DataType(DataType.Html)]
         public string Description { get; set; }
 
         [StringLength(50, ErrorMessage = "Buton metni en fazla 50 karakter olabilir")]

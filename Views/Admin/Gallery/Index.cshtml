@@ -8,9 +8,14 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Galeri Yönetimi</h1>
-        <a asp-action="Create" class="btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-plus fa-sm text-white-50 mr-1"></i> Yeni Resim Ekle
-        </a>
+        <div>
+            <a href="/Admin" class="btn btn-sm btn-secondary shadow-sm me-2">
+                <i class="fas fa-arrow-left fa-sm mr-1"></i> Admin Panele Dön
+            </a>
+            <a asp-action="Create" class="btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-plus fa-sm text-white-50 mr-1"></i> Yeni Resim Ekle
+            </a>
+        </div>
     </div>
 
     <div class="card shadow mb-4">
@@ -94,8 +99,8 @@
                                             </a>
                                             <form asp-action="ToggleActive" asp-route-id="@item.Id" method="post" style="display: inline;">
                                                 @Html.AntiForgeryToken()
-                                                <button type="submit" class="btn btn-sm @(item.IsActive ? "btn-warning" : "btn-success")" title="@(item.IsActive ? "Pasif Yap" : "Aktif Yap")">
-                                                    <i class="fas @(item.IsActive ? "fa-ban" : "fa-check")"></i>
+                                                <button type="submit" class="btn btn-sm @(item.IsActive ? "btn-success" : "btn-danger")" title="@(item.IsActive ? "Pasif Yap" : "Aktif Yap")">
+                                                    <i class="fas @(item.IsActive ? "fa-check" : "fa-ban")"></i>
                                                 </button>
                                             </form>
                                         </div>

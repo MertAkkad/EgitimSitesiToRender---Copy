@@ -183,7 +183,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     _context.SiteSettings.Add(siteSettings);
                 }
                 
-                // Handle logo upload if provided
+                // Only process logo if a new one is provided
                 if (model.Logo != null && model.Logo.Length > 0)
                 {
                     // Delete old logo from Cloudinary if it exists

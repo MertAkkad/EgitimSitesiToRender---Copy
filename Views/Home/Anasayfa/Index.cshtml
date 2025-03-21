@@ -28,7 +28,7 @@
                              style="width: 100vw; height: 100%; object-fit: cover; filter: brightness(0.7);">
                         <div class="carousel-caption d-none d-md-block">
                             <h2 class="display-4 fw-bold">@banner.Title</h2>
-                            <p class="lead">@banner.Description</p>
+                            <p class="lead">@Html.Raw(banner.Description)</p>
                             @if (!string.IsNullOrEmpty(banner.ButtonText))
                             {
                                 <a href="@banner.ButtonUrl" class="btn btn-primary btn-lg">@banner.ButtonText</a>
@@ -89,7 +89,7 @@
                                     <h3 class="fw-bold mb-0">@item.Title</h3>
                                 </div>
                                 
-                                <p class="lead mb-4">@item.Description</p>
+                                <p class="lead mb-4">@Html.Raw(item.Description)</p>
                                 
                                 @if (!string.IsNullOrEmpty(item.ButtonText) && !string.IsNullOrEmpty(item.ButtonUrl))
                                 {
