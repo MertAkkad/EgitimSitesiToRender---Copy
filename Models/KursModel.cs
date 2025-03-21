@@ -13,10 +13,11 @@ namespace EgitimSitesi.Models
         
         [Required(ErrorMessage = "Açıklama gereklidir")]
         [Display(Name = "Açıklama")]
-        [StringLength(500)]
+        [DataType(DataType.Html)]
         public string Description { get; set; }
         
         [Display(Name = "Detaylar")]
+        [DataType(DataType.Html)]
         public string Details { get; set; }
         
         [Display(Name = "Resim")]
