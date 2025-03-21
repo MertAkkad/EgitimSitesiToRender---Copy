@@ -12,16 +12,16 @@
         <li class="breadcrumb-item active">Kayıt Formları</li>
     </ol>
     
+    <div class="mb-3">
+        <a href="/Admin" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Admin Paneline Dön
+        </a>
+    </div>
+    
     <div class="card mb-4">
         <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <div><i class="fas fa-table me-1"></i> Kayıt Form Başvuruları</div>
-                <div>
-                    <a href="/Admin" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-arrow-left me-1"></i>Admin Panele Dön
-                    </a>
-                </div>
-            </div>
+            <i class="fas fa-table me-1"></i>
+            Kayıt Form Başvuruları
         </div>
         <div class="card-body">
             @if (Model != null && Model.Any())

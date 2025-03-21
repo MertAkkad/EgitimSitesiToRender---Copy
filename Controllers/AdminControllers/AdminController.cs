@@ -178,13 +178,12 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     siteSettings = new Models.SiteSettingsModel
                     {
                         ActiveLayout = model.ActiveLayout,
-                        CreationDate = DateTime.Now,
-                        ImagePath = "/img/default-logo.png" // Set default logo path for new settings
+                        CreationDate = DateTime.Now
                     };
                     _context.SiteSettings.Add(siteSettings);
                 }
                 
-                // Only process logo if a new one is provided
+                // Handle logo upload if provided
                 if (model.Logo != null && model.Logo.Length > 0)
                 {
                     // Delete old logo from Cloudinary if it exists
@@ -215,7 +214,6 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     siteSettings.ImagePath = uploadResult.SecureUrl.ToString();
                     siteSettings.CloudinaryPublicId = uploadResult.PublicId;
                 }
-                // Note: If no new logo is uploaded, we keep the existing logo path in siteSettings.ImagePath
                 
                 // Update existing settings
                 siteSettings.ActiveLayout = model.ActiveLayout;
