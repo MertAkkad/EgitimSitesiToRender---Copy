@@ -178,7 +178,8 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     siteSettings = new Models.SiteSettingsModel
                     {
                         ActiveLayout = model.ActiveLayout,
-                        CreationDate = DateTime.Now
+                        CreationDate = DateTime.Now,
+                        ImagePath = "/img/default-logo.png" // Set default logo path for new settings
                     };
                     _context.SiteSettings.Add(siteSettings);
                 }
@@ -214,6 +215,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     siteSettings.ImagePath = uploadResult.SecureUrl.ToString();
                     siteSettings.CloudinaryPublicId = uploadResult.PublicId;
                 }
+                // Note: If no new logo is uploaded, we keep the existing logo path in siteSettings.ImagePath
                 
                 // Update existing settings
                 siteSettings.ActiveLayout = model.ActiveLayout;
