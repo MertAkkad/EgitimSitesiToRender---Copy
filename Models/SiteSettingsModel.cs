@@ -13,7 +13,7 @@ namespace EgitimSitesi.Models
         public string ActiveLayout { get; set; } = "_Layout"; // Default layout
         
         [Display(Name = "Logo")]
-        [Required]
+        
         [StringLength(255)]
         public string ImagePath { get; set; } = "/img/download.png"; // Default value
         
