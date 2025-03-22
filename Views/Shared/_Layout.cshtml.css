@@ -40,30 +40,30 @@ button.accept-policy {
 }
 /* Footer styling */
 footer {
-  background-color: var(--primary-dark);
-  color: white !important;
+  background-color: #343434;
+  color: rgb(0, 0, 0) !important;
   padding: 3rem 0 1rem;
   margin-top: 3rem;
 }
 
 footer h5 {
-  color: white !important;
+  color: rgb(0, 0, 0) !important;
   font-weight: 600;
   margin-bottom: 1.2rem;
 }
 
 footer p, footer .small {
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: rgba(0, 0, 0, 0.9) !important;
 }
 
 footer a {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: rgba(0, 0, 0, 0.8) !important;
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 footer a:hover {
-  color: white !important;
+  color: rgba(0, 0, 0, 0.471) !important;
   text-decoration: none;
   transform: translateX(3px);
 }
