@@ -214,6 +214,7 @@ namespace EgitimSitesi.Controllers.AdminControllers
                     siteSettings.ImagePath = uploadResult.SecureUrl.ToString();
                     siteSettings.CloudinaryPublicId = uploadResult.PublicId;
                 }
+                // If no new logo is uploaded, keep the existing image path - we don't need to modify it
                 
                 // Update existing settings
                 siteSettings.ActiveLayout = model.ActiveLayout;
